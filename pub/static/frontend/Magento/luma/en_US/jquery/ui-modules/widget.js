@@ -1,0 +1,1 @@
+/app/lib/web/jquery/ui-modules/widget.js

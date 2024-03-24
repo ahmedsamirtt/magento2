@@ -1,0 +1,2 @@
+a:4:{s:4:"hash";s:0:"";s:5:"mtime";i:1710838626;s:6:"expire";i:9999999999;s:4:"tags";s:23:"f53_REFLECTION,f53_MAGE";}
+{"getIsSubscribed":{"type":"boolean","isRequired":false,"description":null,"parameterCount":0},"setIsSubscribed":{"type":"this","isRequired":true,"description":null,"parameterCount":1}}

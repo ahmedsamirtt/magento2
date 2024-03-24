@@ -1,0 +1,1 @@
+/app/lib/web/jquery/jquery.metadata.js

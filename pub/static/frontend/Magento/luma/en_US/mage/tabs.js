@@ -1,0 +1,1 @@
+/app/lib/web/mage/tabs.js
