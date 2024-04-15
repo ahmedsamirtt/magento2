@@ -1,15 +1,7 @@
 <!-- view/frontend/templates/custom_tab.phtml -->
 
 <div class="custom-tab-content">
-    <h2><?php echo $block->escapeHtml(__('Custom Tab Title')); ?></h2>
-    <ul>
-        <?php foreach ($block->getCustomData() as $language => $tags): ?>
-            <?php foreach ($tags as $label => $value): ?>
-                <li>
-                    <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
-                    <?php echo $block->escapeHtml(__($value)); ?>
-                </li>
-            <?php endforeach; ?>
-        <?php endforeach; ?>
-    </ul>
+    <h2>Tags</h2>
+    <p>This is some static content with image tags:</p>
+    <?php echo $block->getCustomData(); ?>
 </div>
