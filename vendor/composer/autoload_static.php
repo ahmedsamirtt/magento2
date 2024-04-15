@@ -51,6 +51,7 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
         'aa75ea0761a2f40c1f3b32ad314f86c4' => __DIR__ . '/..' . '/phpseclib/mcrypt_compat/lib/mcrypt.php',
         '9b38cf48e83f5d8f60375221cd213eee' => __DIR__ . '/..' . '/phpstan/phpstan/bootstrap.php',
+        '9ce2634a0fb684813b9d9bd6c3f7b22b' => __DIR__ . '/..' . '/twentytoo/autotag/registration.php',
         '27a5783f6a5e8d8d1a4f54dff608a187' => __DIR__ . '/../..' . '/app/etc/NonComposerComponentRegistration.php',
     );
 
@@ -80,6 +81,7 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         ),
         'T' => 
         array (
+            'TwentyToo\\AutoTag\\' => 18,
             'TrueBV\\' => 7,
         ),
         'S' => 
@@ -259,8 +261,8 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
         ),
         'Zend\\Mvc\\Controller\\' => 
         array (
@@ -281,6 +283,10 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         'VaultTransports\\' => 
         array (
             0 => __DIR__ . '/..' . '/csharpru/vault-php-guzzle6-transport/src',
+        ),
+        'TwentyToo\\AutoTag\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twentytoo/autotag',
         ),
         'TrueBV\\' => 
         array (
@@ -756,8 +762,8 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         ),
         'Codeception\\' => 
         array (
-            0 => __DIR__ . '/..' . '/codeception/stub/src',
-            1 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
+            0 => __DIR__ . '/..' . '/codeception/codeception/src/Codeception',
+            1 => __DIR__ . '/..' . '/codeception/stub/src',
         ),
         'Cache\\' => 
         array (
@@ -792,10 +798,10 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         array (
             'Yandex' => 
             array (
-                0 => __DIR__ . '/..' . '/allure-framework/allure-phpunit/src',
+                0 => __DIR__ . '/..' . '/allure-framework/allure-codeception/src',
                 1 => __DIR__ . '/..' . '/allure-framework/allure-php-api/src',
                 2 => __DIR__ . '/..' . '/allure-framework/allure-php-api/test',
-                3 => __DIR__ . '/..' . '/allure-framework/allure-codeception/src',
+                3 => __DIR__ . '/..' . '/allure-framework/allure-phpunit/src',
             ),
         ),
         'P' => 
