@@ -6,24 +6,21 @@ use Magento\Framework\View\Element\Template;
 
 class CustomTab extends Template
 {
-    protected $resourceConnection;
-
-    public function __construct(
-        Template\Context $context,
-        ResourceConnection $resourceConnection,
-        array $data = []
-    ) {
-        $this->resourceConnection = $resourceConnection;
-        parent::__construct($context, $data);
-    }
+    protected $_tableName = 'twentytoo_tags';
     public function getCustomData()
     {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+        $connection = $resource->getConnection();
 
-        $connection = $this->resourceConnection->getConnection();
-        $tableName = $connection->getTableName('twentytoo_tags');
-        
-        $select = $connection->select()->from($tableName)->where('order_id = ?', "dress2");
-        $results = $connection->fetchAll($select);
-        return $result;
+        $select = $connection->select()->from($this->_tableName)
+            ->where('order_id = :order_id');
+
+        $staticOrderId = 'dress2';
+        $binds = [':order_id' => $staticOrderId];
+
+        $results = $connection->fetchAll($select, $binds);
+
+        return $results;
     }
 }

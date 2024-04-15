@@ -6275,16 +6275,16 @@
         },
         {
             "name": "twentytoo/autotag",
-            "version": "1.0.9",
+            "version": "1.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ahmedsamirtt/twentytoo-autotag.git",
-                "reference": "8173f04282779cc47de589ecdb2f81c77b74f5b5"
+                "reference": "4b4ba677415fd74e9935e6e5d510778d1e115a9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/8173f04282779cc47de589ecdb2f81c77b74f5b5",
-                "reference": "8173f04282779cc47de589ecdb2f81c77b74f5b5",
+                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/4b4ba677415fd74e9935e6e5d510778d1e115a9e",
+                "reference": "4b4ba677415fd74e9935e6e5d510778d1e115a9e",
                 "shasum": ""
             },
             "require": {
@@ -6304,9 +6304,9 @@
             "description": "Magento 2 custom tab for tags module",
             "support": {
                 "issues": "https://github.com/ahmedsamirtt/twentytoo-autotag/issues",
-                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.0.9"
+                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.0.10"
             },
-            "time": "2024-04-15T14:34:52+00:00"
+            "time": "2024-04-15T15:00:29+00:00"
         },
         {
             "name": "webimpress/safe-writer",
