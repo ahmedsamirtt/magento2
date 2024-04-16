@@ -6,7 +6,7 @@
     <ul>
         <?php foreach ($block->getCustomData() as $tag): ?>
             <li>
-                <?php echo $tag; ?>
+                <?php echo $tag['Color']; ?>: <?php echo $tag['Title']; ?>
             </li>
         <?php endforeach; ?>
     </ul>
