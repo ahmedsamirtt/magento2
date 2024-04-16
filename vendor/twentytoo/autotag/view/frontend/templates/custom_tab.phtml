@@ -3,5 +3,11 @@
 <div class="custom-tab-content">
     <h2>Tags</h2>
     <p>This is some static content with image tags:</p>
-    <?php echo $block->getCustomData(); ?>
+    <ul>
+        <?php foreach ($block->getCustomData() as $tag): ?>
+            <li>
+                <?php echo $tag; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 </div>
