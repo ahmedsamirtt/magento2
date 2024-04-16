@@ -1,12 +1,21 @@
-<!-- view/frontend/templates/custom_tab.phtml -->
-
 <div class="custom-tab-content">
     <h2>Tags</h2>
     <p>This is some static content with image tags:</p>
     <ul>
         <?php foreach ($block->getCustomData() as $tag): ?>
             <li>
-                <?php echo $tag['Color']; ?>: <?php echo $tag['Title']; ?>
+                <strong>English Tags:</strong>
+                <ul>
+                    <?php foreach ($tag['english_tags'] as $key => $value): ?>
+                        <li><?php echo $key; ?>: <?php echo $value; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+                <strong>Arabic Tags:</strong>
+                <ul>
+                    <?php foreach ($tag['arabic_tags'] as $key => $value): ?>
+                        <li><?php echo $key; ?>: <?php echo $value; ?></li>
+                    <?php endforeach; ?>
+                </ul>
             </li>
         <?php endforeach; ?>
     </ul>

@@ -32,10 +32,10 @@ class CustomTab extends Template
         $binds = [':order_id' => $staticOrderId];
 
         $results = $connection->fetchAll($select, $binds);
-
+        $decoded_result = json_decode($results, true);
         // Log the results array
-        $this->logger->info('Results array:', $results);
+        $this->logger->info('Results array:', $decoded_result);
 
-        return $results;
+        return $decoded_result;
     }
 }
