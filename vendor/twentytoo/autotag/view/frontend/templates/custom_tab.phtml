@@ -1,22 +1,15 @@
+<!-- view/frontend/templates/custom_tab.phtml -->
+
 <div class="custom-tab-content">
-    <h2>Tags</h2>
-    <p>This is some static content with image tags:</p>
+    <h2><?php echo $block->escapeHtml(__('Custom Tab Title')); ?></h2>
     <ul>
-        <?php foreach ($block->getCustomData() as $tag): ?>
-            <li>
-                <strong>English Tags:</strong>
-                <ul>
-                    <?php foreach ($tag['english_tags'] as $key => $value): ?>
-                        <li><?php echo $key; ?>: <?php echo $value; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <strong>Arabic Tags:</strong>
-                <ul>
-                    <?php foreach ($tag['arabic_tags'] as $key => $value): ?>
-                        <li><?php echo $key; ?>: <?php echo $value; ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            </li>
+        <?php foreach ($block->getCustomData() as $language => $tags): ?>
+            <?php foreach ($tags as $label => $value): ?>
+                <li>
+                    <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
+                    <?php echo $block->escapeHtml(__($value)); ?>
+                </li>
+            <?php endforeach; ?>
         <?php endforeach; ?>
     </ul>
 </div>
