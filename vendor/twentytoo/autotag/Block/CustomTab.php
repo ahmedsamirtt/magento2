@@ -32,8 +32,8 @@ class CustomTab extends Template
         $binds = [':order_id' => $staticOrderId];
 
         $results = $connection->fetchAll($select, $binds);
-        $englishTags = json_decode($data[0]['english_tags'], true);
-        $arabicTags = json_decode($data[0]['arabic_tags'], true);
+        $englishTags = json_decode($results[0]['english_tags'], true);
+        $arabicTags = json_decode($results[0]['arabic_tags'], true);
         $allTags = array_merge($englishTags, $arabicTags);
         // Log the results array
         $this->logger->info('Results array:', $allTags);
