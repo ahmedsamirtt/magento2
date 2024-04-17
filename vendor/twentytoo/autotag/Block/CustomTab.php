@@ -19,7 +19,7 @@ class CustomTab extends Template
         parent::__construct($context, $data);
     }
 
-    public function getCustomData()
+    public function getCustomData($page_title)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
@@ -40,6 +40,7 @@ class CustomTab extends Template
         ];
         // Log the results array
         $this->logger->info('Results array:', $allTags);
+        $this->logger->info('page_title----------->:', $page_title);
 
         return $allTags;
     }
