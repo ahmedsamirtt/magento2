@@ -17,6 +17,7 @@
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("--->", xhr.responseText)
                 var responseData = JSON.parse(xhr.responseText);
                 // Update the HTML content using the response data
                 var list = document.querySelector('#tt-tags-list');
