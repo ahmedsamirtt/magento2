@@ -29,11 +29,14 @@ class CustomTab extends Template
         $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
         $connection = $resource->getConnection();
 
+        // Get current product ID
+        $productId = $this->getRequest()->getParam('id'); // Assuming you're getting product ID from request parameter
+
         $select = $connection->select()->from($this->_tableName)
             ->where('order_id = :order_id');
 
-        $staticOrderId = 'dress2';
-        $binds = [':order_id' => $staticOrderId];
+        // $staticOrderId = 'dress2';
+        $binds = [':order_id' => $productId];
 
         $results = $connection->fetchAll($select, $binds);
         $englishTags = json_decode($results[0]['english_tags'], true);
@@ -42,9 +45,6 @@ class CustomTab extends Template
             'english_tags' => $englishTags,
             'arabic_tags' => $arabicTags
         ];
-
-        // Get current product ID
-        $productId = $this->getRequest()->getParam('id'); // Assuming you're getting product ID from request parameter
 
         // Get product instance
         $product = $this->productFactory->create()->load($productId);
