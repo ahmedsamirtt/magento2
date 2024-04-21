@@ -1,13 +1,13 @@
 <?php
 namespace TwentyToo\AutoTag\Setup;
 
-use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Catalog\Model\ProductFactory;
 use Psr\Log\LoggerInterface;
 
-class InstallData implements InstallDataInterface
+class UpgradeData implements UpgradeDataInterface
 {
     private $logger;
     private $productFactory;
@@ -20,7 +20,7 @@ class InstallData implements InstallDataInterface
         $this->logger = $logger;
     }
 
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
 
