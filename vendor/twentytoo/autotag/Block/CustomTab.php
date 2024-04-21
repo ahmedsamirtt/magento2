@@ -38,10 +38,11 @@ class CustomTab extends Template
             'english_tags' => $englishTags,
             'arabic_tags' => $arabicTags
         ];
+        $productId = Mage::registry('current_product')->getId();
         // Log the results array
         $this->logger->info('Results array:', $allTags);
         $this->logger->info('page_title----------->:', $page_title);
-
+        $this->logger->info('Product ID:', ['product_id' => $productId]);
         return $allTags;
     }
 }
