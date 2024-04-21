@@ -2838,9 +2838,9 @@
             ),
         ),
         'twentytoo/autotag' => array(
-            'pretty_version' => '1.0.27',
-            'version' => '1.0.27.0',
-            'reference' => '44e64b78ac69619929914c08374ba71005fa497e',
+            'pretty_version' => '1.0.28',
+            'version' => '1.0.28.0',
+            'reference' => '99ac95ba5a85253d391d6ae4cf6e712197bc9aaa',
             'type' => 'magento2-module',
             'install_path' => __DIR__ . '/../twentytoo/autotag',
             'aliases' => array(),

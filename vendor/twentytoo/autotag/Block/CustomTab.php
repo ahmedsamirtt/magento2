@@ -19,7 +19,7 @@ class CustomTab extends Template
         parent::__construct($context, $data);
     }
 
-    public function getCustomData($pageTitle)
+    public function getCustomData()
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
@@ -41,7 +41,6 @@ class CustomTab extends Template
         $productId = Mage::registry('current_product')->getId();
         // Log the results array
         $this->logger->info('Results array:', $allTags);
-        $this->logger->info('page_title----------->:', $page_title);
         $this->logger->info('Product ID:', ['product_id' => $productId]);
         return $allTags;
     }

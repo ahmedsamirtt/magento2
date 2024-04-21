@@ -2,41 +2,20 @@
 
 <div class="custom-tab-content">
     <h2><?php echo $block->escapeHtml(__('Custom Tab Title')); ?></h2>
-    <ul id='tt-tags-list'>
-       
+    <ul>
+        <?php foreach ($block->getCustomData() as $language => $tags): ?>
+            <?php foreach ($tags as $label => $value): ?>
+                <li>
+                    <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
+                    <?php echo $block->escapeHtml(__($value)); ?>
+                </li>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
     </ul>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var pageTitle = document.title; // Get the page title
-        console.log("------------>", pageTitle);
-        
-        // Send the page title to the server using AJAX
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/app/vendor/twentytoo/autotag/Block/script.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                console.log("--->", xhr.responseText)
-                var responseData = JSON.parse(xhr.responseText);
-                // Update the HTML content using the response data
-                var list = document.querySelector('#tt-tags-list');
-                list.innerHTML = '';
-                for (var language in responseData) {
-                    if (responseData.hasOwnProperty(language)) {
-                        var tags = responseData[language];
-                        for (var label in tags) {
-                            if (tags.hasOwnProperty(label)) {
-                                var value = tags[label];
-                                var li = document.createElement('li');
-                                li.innerHTML = '<strong>' + label + ':</strong> ' + value;
-                                list.appendChild(li);
-                            }
-                        }
-                    }
-                }
-            }
-        };
-        xhr.send("pageTitle=" + encodeURIComponent(pageTitle)); // Send the page title as a POST parameter
+        var pageTitle = document.querySelector('.product-info-main .base').textContent;
+        console.log("------------>", pageTitle)
     });
 </script>
