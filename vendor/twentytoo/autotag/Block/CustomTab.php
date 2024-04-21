@@ -4,22 +4,22 @@ namespace TwentyToo\AutoTag\Block;
 
 use Magento\Framework\View\Element\Template;
 use Psr\Log\LoggerInterface;
-use Magento\Catalog\Model\Registry;
+use Magento\Catalog\Model\ProductFactory;
 
 class CustomTab extends Template
 {
     protected $_tableName = 'twentytoo_tags';
     protected $logger;
-    protected $registry;
+    protected $productFactory;
 
     public function __construct(
         Template\Context $context,
         LoggerInterface $logger,
-        Registry $registry,
+        ProductFactory $productFactory,
         array $data = []
     ) {
         $this->logger = $logger;
-        $this->registry = $registry;
+        $this->productFactory = $productFactory;
         parent::__construct($context, $data);
     }
 
@@ -44,7 +44,10 @@ class CustomTab extends Template
         ];
 
         // Get current product ID
-        $productId = $this->registry->registry('current_product')->getId();
+        $productId = $this->getRequest()->getParam('id'); // Assuming you're getting product ID from request parameter
+
+        // Get product instance
+        $product = $this->productFactory->create()->load($productId);
         
         // Log the results array
         $this->logger->info('Results array:', $allTags);
