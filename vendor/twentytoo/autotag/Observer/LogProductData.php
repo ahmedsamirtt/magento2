@@ -20,25 +20,46 @@ class LogProductData implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        // Check if the event is triggered by Composer installation
-        if ($observer->getEvent()->getOperation() == 'install') {
-            // Execute your logic to fetch and log data from catalog_product_entity
-            $data = $this->getDataFromCatalogProductEntity();
+        $event = $observer->getEvent()->getName();
 
-            // Log the data
-            $this->logger->info('Data retrieved from catalog_product_entity during Composer installation:', $data);
-
-            // Print the data array itself
-            $this->logger->info('Data Array:', $data);
-
-            // Print each product's details
-            foreach ($data as $product) {
-                $this->logger->info("Product ID: {$product['entity_id']}, SKU: {$product['sku']}, Name: {$product['name']}");
-            }
+        switch ($event) {
+            case 'composer_packages_install_after':
+                $this->handleComposerInstall();
+                break;
+            case 'cache_flush_system':
+                $this->handleCacheFlush();
+                break;
+            case 'magento_migrations_data_migrated':
+                $this->handleDataMigration();
+                break;
         }
     }
 
-    public function getDataFromCatalogProductEntity()
+    protected function handleComposerInstall()
+    {
+        // Logic to handle Composer installation event
+        $this->logger->info('Handling Composer installation event.');
+    }
+
+    protected function handleCacheFlush()
+    {
+        // Logic to handle cache flush event
+        $this->logger->info('Handling cache flush event.');
+    }
+
+    protected function handleDataMigration()
+    {
+        // Logic to handle data migration event
+        $this->logger->info('Handling data migration event.');
+
+        // Example: Fetch data from catalog_product_entity table
+        $data = $this->getDataFromCatalogProductEntity();
+
+        // Log fetched data
+        $this->logger->info('Data retrieved from catalog_product_entity during data migration:', $data);
+    }
+
+    protected function getDataFromCatalogProductEntity()
     {
         // Example function to get data from catalog_product_entity table
         $connection = $this->resourceConnection->getConnection();

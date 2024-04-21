@@ -4,9 +4,9 @@
         <observer name="twentytoo_autotag_composer_install_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
     </event>
     <event name="cache_flush_system">
-        <observer name="twentytoo_autotag_setup_upgrade_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
+        <observer name="twentytoo_autotag_cache_flush_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
     </event>
     <event name="magento_migrations_data_migrated">
-        <observer name="twentytoo_autotag_setup_upgrade_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
+        <observer name="twentytoo_autotag_migrations_data_migrated_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
     </event>
 </config>
