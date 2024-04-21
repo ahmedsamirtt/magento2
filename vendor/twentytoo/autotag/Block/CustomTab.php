@@ -4,18 +4,22 @@ namespace TwentyToo\AutoTag\Block;
 
 use Magento\Framework\View\Element\Template;
 use Psr\Log\LoggerInterface;
+use Magento\Catalog\Model\Registry;
 
 class CustomTab extends Template
 {
     protected $_tableName = 'twentytoo_tags';
     protected $logger;
+    protected $registry;
 
     public function __construct(
         Template\Context $context,
         LoggerInterface $logger,
+        Registry $registry,
         array $data = []
     ) {
         $this->logger = $logger;
+        $this->registry = $registry;
         parent::__construct($context, $data);
     }
 
@@ -38,7 +42,10 @@ class CustomTab extends Template
             'english_tags' => $englishTags,
             'arabic_tags' => $arabicTags
         ];
-        $productId = Mage::registry('current_product')->getId();
+
+        // Get current product ID
+        $productId = $this->registry->registry('current_product')->getId();
+        
         // Log the results array
         $this->logger->info('Results array:', $allTags);
         $this->logger->info('Product ID:', ['product_id' => $productId]);
