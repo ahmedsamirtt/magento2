@@ -21,7 +21,7 @@ class LogProductData implements ObserverInterface
     public function execute(Observer $observer)
     {
         $event = $observer->getEvent()->getName();
-
+    
         switch ($event) {
             case 'composer_packages_install_after':
                 $this->handleComposerInstall();
@@ -30,6 +30,8 @@ class LogProductData implements ObserverInterface
                 $this->handleCacheFlush();
                 break;
             case 'magento_migrations_data_migrated':
+            case 'setup_module_install':
+            case 'setup_module_upgrade':
                 $this->handleDataMigration();
                 break;
         }
