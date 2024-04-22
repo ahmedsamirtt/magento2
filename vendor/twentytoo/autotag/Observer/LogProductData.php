@@ -32,6 +32,7 @@ class LogProductData implements ObserverInterface
             case 'magento_migrations_data_migrated':
             case 'setup_module_install':
             case 'setup_module_upgrade':
+            case 'system_setup_section_dispatch':
                 $this->handleDataMigration();
                 break;
         }
