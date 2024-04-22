@@ -9,4 +9,10 @@
     <event name="magento_migrations_data_migrated">
         <observer name="twentytoo_autotag_migrations_data_migrated_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
     </event>
+    <event name="setup_module_install">
+        <observer name="twentytoo_autotag_observer_logproductdata" instance="TwentyToo\AutoTag\Observer\LogProductData" />
+    </event>
+    <event name="setup_module_upgrade">
+        <observer name="twentytoo_autotag_observer_logproductdata" instance="TwentyToo\AutoTag\Observer\LogProductData" />
+    </event>
 </config>
