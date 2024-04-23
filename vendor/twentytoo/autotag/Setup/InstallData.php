@@ -8,7 +8,7 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Psr\Log\LoggerInterface;
 
-class InstallData implements InstallDataInterface
+class InstallData implements ModuleDataSetupInterface
 {
     /**
      * @var LoggerInterface
@@ -33,7 +33,6 @@ class InstallData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        // Your logic to trigger the logging goes here
         $this->triggerLog();
     }
 
