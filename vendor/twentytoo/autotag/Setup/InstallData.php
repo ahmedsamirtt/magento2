@@ -1,5 +1,4 @@
 <?php
-// File: app/code/Vendor/Module/Setup/InstallData.php
 
 namespace TwentyToo\AutoTag\Setup;
 
@@ -17,6 +16,7 @@ class InstallData implements ModuleDataSetupInterface
 
     /**
      * InstallData constructor.
+     *
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -25,7 +25,7 @@ class InstallData implements ModuleDataSetupInterface
     }
 
     /**
-     * Install data method
+     * Installs data for the module
      *
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
@@ -37,14 +37,13 @@ class InstallData implements ModuleDataSetupInterface
     }
 
     /**
-     * Method to log your message
+     * Method to log a message about module installation
+     *
+     * @return void
      */
     private function triggerLog()
     {
-        // Your message to be logged
-        $message = 'Triggered on module installation';
-
-        // Log the message
+        $message = 'TwentyToo AutoTag module installed.';
         $this->logger->info($message);
     }
 }
