@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "027c857a7c93c3b61d5a516b4e1fe679",
+    "content-hash": "8ccf3a28e8d882ec4daf63943d3b732b",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -6274,6 +6274,40 @@
             "time": "2018-01-15T15:26:51+00:00"
         },
         {
+            "name": "twentytoo/autotag",
+            "version": "1.1.17",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ahmedsamirtt/twentytoo-autotag.git",
+                "reference": "e336b4a1100853d707481c53d6ee0f6a8d65c182"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/e336b4a1100853d707481c53d6ee0f6a8d65c182",
+                "reference": "e336b4a1100853d707481c53d6ee0f6a8d65c182",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "^102.0.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "TwentyToo\\AutoTag\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Magento 2 custom tab for tags module",
+            "support": {
+                "issues": "https://github.com/ahmedsamirtt/twentytoo-autotag/issues",
+                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.1.17"
+            },
+            "time": "2024-04-23T19:47:44+00:00"
+        },
+        {
             "name": "webimpress/safe-writer",
             "version": "2.1.0",
             "source": {
@@ -12107,5 +12141,5 @@
         "lib-libxml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.6.0"
 }

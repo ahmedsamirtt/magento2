@@ -1,0 +1,21 @@
+<!-- view/frontend/templates/custom_tab.phtml -->
+
+<div class="custom-tab-content">
+    <h2><?php echo $block->escapeHtml(__('Custom Tab Title')); ?></h2>
+    <ul>
+        <?php foreach ($block->getCustomData() as $language => $tags): ?>
+            <?php foreach ($tags as $label => $value): ?>
+                <li>
+                    <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
+                    <?php echo $block->escapeHtml(__($value)); ?>
+                </li>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var pageTitle = document.querySelector('.product-info-main .base').textContent;
+        console.log("------------>", pageTitle)
+    });
+</script>
