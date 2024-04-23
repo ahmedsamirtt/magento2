@@ -27,6 +27,16 @@ class InstallData implements InstallDataInterface
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $this->logger->info('TwentyToo_AutoTag module installed successfully.');
+        try {
+            // Your installation logic here
+            $this->logger->info('TwentyToo_AutoTag module installed successfully.');
+            
+            // Example of an error to log
+            throw new \Exception('An error occurred during module installation.');
+            
+        } catch (\Exception $e) {
+            // Log the error
+            $this->logger->error('Error during module installation: ' . $e->getMessage());
+        }
     }
 }
