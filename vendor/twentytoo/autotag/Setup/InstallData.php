@@ -1,11 +1,12 @@
 <?php
-namespace Vendor\Module\Setup;
+namespace TwentyToo\AutoTag\Setup;
 
-use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\InstallDataInterface;
 use Psr\Log\LoggerInterface;
 
-class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
+class InstallData implements InstallDataInterface
 {
     /**
      * @var LoggerInterface
@@ -13,7 +14,7 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
     private $logger;
 
     /**
-     * InstallSchema constructor.
+     * InstallData constructor.
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -21,13 +22,11 @@ class InstallSchema implements \Magento\Framework\Setup\InstallSchemaInterface
         $this->logger = $logger;
     }
 
-    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    /**
+     * @inheritdoc
+     */
+    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $setup->startSetup();
-
-        // Log a welcome message
-        $this->logger->info('Welcome to your custom module installation!');
-
-        $setup->endSetup();
+        $this->logger->info('TwentyToo_AutoTag module installed successfully.');
     }
 }
