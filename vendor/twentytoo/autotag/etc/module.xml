@@ -3,6 +3,6 @@
   <module name="TwentyToo_AutoTag">
     <sequence>
       <module name="Magento_Catalog"/> </sequence>
-    <setup_version>1.1.11</setup_version>
+    <setup_version>1.1.12</setup_version>
   </module>
 </config>

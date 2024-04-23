@@ -37,13 +37,32 @@ class InstallData implements InstallDataInterface
     }
 
     /**
+     * Upgrade data for the module
+     *
+     * @param ModuleDataSetupInterface $setup
+     * @param ModuleContextInterface $context
+     * @return void
+     */
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+        // Your upgrade logic goes here
+        // This method will be called whenever the module's setup version is different from the installed version
+        
+        $this->triggerLog();
+
+        $setup->endSetup();
+    }
+
+    /**
      * Method to log a message about module installation
      *
      * @return void
      */
     private function triggerLog()
     {
-        $message = 'TwentyToo AutoTag module installed.';
+        $message = 'TwentyToo AutoTag module installed/updated.';
         $this->logger->info($message);
     }
 }
