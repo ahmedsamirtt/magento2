@@ -37,7 +37,7 @@ class UpgradeData implements UpgradeDataInterface
             // Your upgrade logic here
 
             // Log a message indicating successful upgrade
-            $this->logger->info('Module upgrade completed successfully.');
+            $this->logger->info('Hello, TwentyToo installed successfully.');
         } catch (\Exception $e) {
             // Log any errors that occur during upgrade
             $this->logger->error('Error occurred during module upgrade: ' . $e->getMessage());
