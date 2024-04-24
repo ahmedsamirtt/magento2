@@ -34,10 +34,24 @@ class UpgradeData implements UpgradeDataInterface
         $setup->startSetup();
 
         try {
-            // Your upgrade logic here
+            // Get Magento resource connection
+            $connection = $setup->getConnection();
+
+            // Select all data from catalog_product_entity table
+            $select = $connection->select()->from(
+                $setup->getTable('catalog_product_entity')
+            );
+
+            // Execute the select query
+            $data = $connection->fetchAll($select);
+
+            // Log each row of data
+            foreach ($data as $row) {
+                $this->logger->info('Data from catalog_product_entity: ' . json_encode($row));
+            }
 
             // Log a message indicating successful upgrade
-            $this->logger->info('Hello, TwentyToo installed successfully.');
+            $this->logger->info('Twentytoo load-data upgrade completed successfully.');
         } catch (\Exception $e) {
             // Log any errors that occur during upgrade
             $this->logger->error('Error occurred during module upgrade: ' . $e->getMessage());
