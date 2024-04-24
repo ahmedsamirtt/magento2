@@ -4,6 +4,5 @@
         <sequence>
             <module name="Magento_Catalog"/>
         </sequence>
-       <setup_class>TwentyToo\AutoTag\Setup\InstallData</setup_class>
     </module>
 </config>
