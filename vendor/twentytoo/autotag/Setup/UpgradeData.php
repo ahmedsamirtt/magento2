@@ -3,7 +3,7 @@ namespace TwentyToo\AutoTag\Setup;
 
 use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
 use Psr\Log\LoggerInterface;
 
 class UpgradeData implements UpgradeDataInterface
