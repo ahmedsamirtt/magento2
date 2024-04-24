@@ -6,7 +6,7 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\InstallDataInterface;
 use Psr\Log\LoggerInterface;
 
-class InstallData implements UpgradeDataInterface
+class UpgradeData implements UpgradeDataInterface
 {
     /**
      * @var LoggerInterface
