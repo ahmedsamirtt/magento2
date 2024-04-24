@@ -14,7 +14,7 @@ class UpgradeData implements UpgradeDataInterface
     private $logger;
 
     /**
-     * InstallData constructor.
+     * UpgradeData constructor.
      * @param LoggerInterface $logger
      */
     public function __construct(LoggerInterface $logger)
@@ -23,29 +23,24 @@ class UpgradeData implements UpgradeDataInterface
     }
 
     /**
-     * Install Data
+     * Upgrade data for the module.
      *
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
      * @return void
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
 
         try {
-            // Insert data into the twentytoo_tags table
-            $data = [
-                'order_id' => 123, // Replace with the actual order ID
-                'english_tags' => 'English Tags Value', // Replace with the actual English tags value
-                'arabic_tags' => 'Arabic Tags Value', // Replace with the actual Arabic tags value
-            ];
+            // Your upgrade logic here
 
-            $setup->getConnection()->insert($setup->getTable('twentytoo_tags'), $data);
-
-            $this->logger->info('Data inserted successfully during module installation.');
+            // Log a message indicating successful upgrade
+            $this->logger->info('Module upgrade completed successfully.');
         } catch (\Exception $e) {
-            $this->logger->error('Error occurred during data insertion: ' . $e->getMessage());
+            // Log any errors that occur during upgrade
+            $this->logger->error('Error occurred during module upgrade: ' . $e->getMessage());
         }
 
         $setup->endSetup();
