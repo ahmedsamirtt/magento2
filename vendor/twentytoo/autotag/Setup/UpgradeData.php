@@ -6,6 +6,8 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
 
 class UpgradeData implements UpgradeDataInterface
 {
@@ -20,14 +22,24 @@ class UpgradeData implements UpgradeDataInterface
     private $productModel;
 
     /**
+     * @var ProductCollectionFactory
+     */
+    private $productCollectionFactory;
+
+    /**
      * UpgradeData constructor.
      * @param LoggerInterface $logger
      * @param Product $productModel
+     * @param ProductCollectionFactory $productCollectionFactory
      */
-    public function __construct(LoggerInterface $logger, Product $productModel)
-    {
+    public function __construct(
+        LoggerInterface $logger,
+        Product $productModel,
+        ProductCollectionFactory $productCollectionFactory
+    ) {
         $this->logger = $logger;
         $this->productModel = $productModel;
+        $this->productCollectionFactory = $productCollectionFactory;
     }
 
     /**
@@ -42,21 +54,20 @@ class UpgradeData implements UpgradeDataInterface
         $setup->startSetup();
 
         try {
-            // Get Magento resource connection
-            $connection = $setup->getConnection();
+            // Retrieve product collection
+            /** @var ProductCollection $productCollection */
+            $productCollection = $this->productCollectionFactory->create();
 
-            // Select all data from catalog_product_entity table
-            $select = $connection->select()->from(
-                $setup->getTable('catalog_product_entity')
-            );
+            // Add fields to select
+            $productCollection->addAttributeToSelect(['sku', 'name']);
 
-            // Execute the select query
-            $data = $connection->fetchAll($select);
-
-            // Log each row of data along with image URLs and metadata
-            foreach ($data as $row) {
+            // Iterate over each product
+            foreach ($productCollection as $product) {
                 // Load product by ID
-                $product = $this->productModel->load($row['entity_id']);
+                $productId = $product->getId();
+                $product = $this->productModel->load($productId);
+
+                // Get product images
                 $productImages = $product->getMediaGalleryImages();
 
                 // Initialize an array to store image URLs
@@ -66,14 +77,14 @@ class UpgradeData implements UpgradeDataInterface
                 }
 
                 // Log product ID, image URLs, and other metadata
-                $this->logger->info('Product ID: ' . $row['entity_id']);
+                $this->logger->info('Product ID: ' . $productId);
                 $this->logger->info('Image URLs: ' . json_encode($imageUrls));
                 $this->logger->info('Product URL: ' . $product->getProductUrl());
-                $this->logger->info('Product Data: ' . json_encode($row));
+                $this->logger->info('Product Data: ' . json_encode($product->getData()));
             }
 
             // Log a message indicating successful upgrade
-            $this->logger->info('Twentytoo upgrade completed successfully.');
+            $this->logger->info('TwentyToo upgrade completed successfully.');
         } catch (\Exception $e) {
             // Log any errors that occur during upgrade
             $this->logger->error('Error occurred during module upgrade: ' . $e->getMessage());
