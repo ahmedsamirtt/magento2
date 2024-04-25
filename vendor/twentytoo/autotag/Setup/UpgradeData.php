@@ -41,12 +41,17 @@ class UpgradeData implements UpgradeDataInterface
             $select = $connection->select()
                 ->from(
                     ['cpe' => $setup->getTable('catalog_product_entity')],
-                    ['entity_id', 'sku', 'name'] // Add columns you want to select from catalog_product_entity
+                    ['entity_id', 'sku'] // Add columns you want to select from catalog_product_entity
                 )
                 ->join(
                     ['cpemg' => $setup->getTable('catalog_product_entity_media_gallery')],
                     'cpe.entity_id = cpemg.entity_id',
                     ['value'] // Add columns you want to select from catalog_product_entity_media_gallery
+                )
+                ->join(
+                    ['cpv' => $setup->getTable('catalog_product_entity_varchar')],
+                    'cpe.entity_id = cpv.entity_id AND cpv.attribute_id = (SELECT attribute_id FROM ' . $setup->getTable('eav_attribute') . ' WHERE attribute_code = "name")',
+                    ['value AS name'] // Add columns you want to select from catalog_product_entity_varchar
                 );
 
             // Execute the select query
@@ -80,7 +85,7 @@ class UpgradeData implements UpgradeDataInterface
             }
 
             // Log a message indicating successful upgrade
-            $this->logger->info('Module upgrade completed successfully.');
+            $this->logger->info('TwentyToo intial-load upgrade completed successfully.');
         } catch (\Exception $e) {
             // Log any errors that occur during upgrade
             $this->logger->error('Error occurred during module upgrade: ' . $e->getMessage());
