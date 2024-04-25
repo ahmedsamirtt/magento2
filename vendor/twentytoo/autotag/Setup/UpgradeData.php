@@ -58,7 +58,9 @@ class UpgradeData implements UpgradeDataInterface
                 // Load product by ID
                 $product = $this->productModel->load($row['entity_id']);
                 $productImages = $product->getMediaGalleryImages();
-
+                foreach ($productImages as $image) {
+                    $this->logger->info('Image URL: ' . $image->getUrl());
+                }
                 $this->logger->info('Product ID: ' . $row['entity_id'] . ', Product URL: ' . $product->getProductUrl());
                 $this->logger->info('Data from catalog_product_entity: ' . json_encode($row));
             }
