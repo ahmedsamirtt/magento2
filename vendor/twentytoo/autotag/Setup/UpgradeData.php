@@ -73,7 +73,11 @@ class UpgradeData implements UpgradeDataInterface
                 // Initialize an array to store image URLs
                 $imageUrls = [];
                 foreach ($productImages as $image) {
-                    $imageUrls[] = $image->getUrl();
+                    // Get the public URL of the image
+                    $imageUrl = $this->getPublicImageUrl($image);
+                    if ($imageUrl) {
+                        $imageUrls[] = $imageUrl;
+                    }
                 }
 
                 // Log product ID, image URLs, and other metadata
@@ -91,5 +95,28 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         $setup->endSetup();
+    }
+
+    /**
+     * Get the public URL of the image.
+     *
+     * @param \Magento\Catalog\Model\Product\Image $image
+     * @return string|null
+     */
+    private function getPublicImageUrl($image)
+    {
+        try {
+            // Get the URL of the image
+            $imageUrl = $image->getUrl();
+            // Check if the URL is accessible
+            $headers = get_headers($imageUrl);
+            if ($headers && strpos($headers[0], '200')) {
+                return $imageUrl;
+            } else {
+                return null;
+            }
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
