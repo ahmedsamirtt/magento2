@@ -5,6 +5,7 @@ use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Catalog\Model\Product;
 
 class UpgradeData implements UpgradeDataInterface
 {
@@ -14,12 +15,19 @@ class UpgradeData implements UpgradeDataInterface
     private $logger;
 
     /**
+     * @var Product
+     */
+    private $productModel;
+
+    /**
      * UpgradeData constructor.
      * @param LoggerInterface $logger
+     * @param Product $productModel
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, Product $productModel)
     {
         $this->logger = $logger;
+        $this->productModel = $productModel;
     }
 
     /**
@@ -47,6 +55,11 @@ class UpgradeData implements UpgradeDataInterface
 
             // Log each row of data
             foreach ($data as $row) {
+                // Load product by ID
+                $product = $this->productModel->load($row['entity_id']);
+                $productImages = $product->getMediaGalleryImages();
+
+                $this->logger->info('Product ID: ' . $row['entity_id'] . ', Product URL: ' . $product->getProductUrl());
                 $this->logger->info('Data from catalog_product_entity: ' . json_encode($row));
             }
 
