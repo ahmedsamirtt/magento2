@@ -53,16 +53,23 @@ class UpgradeData implements UpgradeDataInterface
             // Execute the select query
             $data = $connection->fetchAll($select);
 
-            // Log each row of data
+            // Log each row of data along with image URLs and metadata
             foreach ($data as $row) {
                 // Load product by ID
                 $product = $this->productModel->load($row['entity_id']);
                 $productImages = $product->getMediaGalleryImages();
+
+                // Initialize an array to store image URLs
+                $imageUrls = [];
                 foreach ($productImages as $image) {
-                    $this->logger->info('Image URL: ' . $image->getUrl());
+                    $imageUrls[] = $image->getUrl();
                 }
-                $this->logger->info('Product ID: ' . $row['entity_id'] . ', Product URL: ' . $product->getProductUrl());
-                $this->logger->info('Data from catalog_product_entity: ' . json_encode($row));
+
+                // Log product ID, image URLs, and other metadata
+                $this->logger->info('Product ID: ' . $row['entity_id']);
+                $this->logger->info('Image URLs: ' . json_encode($imageUrls));
+                $this->logger->info('Product URL: ' . $product->getProductUrl());
+                $this->logger->info('Product Data: ' . json_encode($row));
             }
 
             // Log a message indicating successful upgrade
