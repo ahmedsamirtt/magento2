@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+use Zend\Http\Client;
 
 class UpgradeData implements UpgradeDataInterface
 {
@@ -32,22 +33,30 @@ class UpgradeData implements UpgradeDataInterface
     private $productCollectionFactory;
 
     /**
+     * @var Client
+     */
+    private $httpClient;
+
+    /**
      * UpgradeData constructor.
      * @param LoggerInterface $logger
      * @param ProductRepositoryInterface $productRepository
      * @param StoreManagerInterface $storeManager
      * @param ProductCollectionFactory $productCollectionFactory
+     * @param Client $httpClient
      */
     public function __construct(
         LoggerInterface $logger,
         ProductRepositoryInterface $productRepository,
         StoreManagerInterface $storeManager,
-        ProductCollectionFactory $productCollectionFactory
+        ProductCollectionFactory $productCollectionFactory,
+        Client $httpClient
     ) {
         $this->logger = $logger;
         $this->productRepository = $productRepository;
         $this->storeManager = $storeManager;
         $this->productCollectionFactory = $productCollectionFactory;
+        $this->httpClient = $httpClient;
     }
 
     /**
@@ -64,21 +73,22 @@ class UpgradeData implements UpgradeDataInterface
         try {
             // Retrieve product collection
             $productCollection = $this->productCollectionFactory->create();
-            $productCollection->addAttributeToSelect(['sku', 'name', 'image']);
+            $productCollection->addAttributeToSelect(['sku', 'name', 'image', 'meta_title', 'meta_description']);
+
+            // Array to hold product data
+            $productDataArray = [];
 
             // Iterate over each product
             foreach ($productCollection as $product) {
-                // Get product ID
-                $productId = $product->getId();
-
-                // Get product image URL
-                $productImageUrl = $this->getProductImageUrl($product);
-
-                // Log product ID, image URL, and product URL
-                $this->logger->info('Product ID: ' . $productId);
-                $this->logger->info('Product Image URL: ' . $productImageUrl);
-                $this->logger->info('Product URL: ' . $product->getProductUrl());
+                // Get product data
+                $productData = $this->prepareProductData($product);
+                $productDataArray[] = $productData;
             }
+
+            // Log a message of how payload look
+            $this->logger->info($productDataArray);
+            // Call API with product data array
+            //$this->callApi($productDataArray);
 
             // Log a message indicating successful upgrade
             $this->logger->info('TwentyToo upgrade completed successfully.');
@@ -88,6 +98,26 @@ class UpgradeData implements UpgradeDataInterface
         }
 
         $setup->endSetup();
+    }
+
+    /**
+     * Prepare product data in the required format for API call.
+     *
+     * @param \Magento\Catalog\Model\Product $product
+     * @return array
+     */
+    private function prepareProductData($product)
+    {
+        $productData = [
+            'title' => $product->getName(),
+            'description' => $product->getMetaDescription(),
+            'img' => $this->getProductImageUrl($product),
+            'department' => $product->getAttributeText('product_type'),
+            'id' => $product->getId(),
+            'target_audience' => $product->getTags()
+        ];
+
+        return $productData;
     }
 
     /**
@@ -104,6 +134,37 @@ class UpgradeData implements UpgradeDataInterface
             return $productImageUrl;
         } catch (\Exception $e) {
             return null;
+        }
+    }
+
+    /**
+     * Call the API with product data array.
+     *
+     * @param array $productDataArray
+     * @return void
+     */
+    private function callApi($productDataArray)
+    {
+        $apiUrl = 'https://apidev.twentytoo.ai/cms/v1/data-load';
+        $headers = [
+            'Content-Type' => 'application/json',
+            'language' => 'en',
+            'x-api-key' => 'xx1213213',
+            'uploadType' => 'webhook'
+        ];
+
+        $request = new \Zend\Http\Request();
+        $request->setUri($apiUrl);
+        $request->setMethod(\Zend\Http\Request::METHOD_POST);
+        $request->setHeaders($headers);
+        $request->setContent(json_encode($productDataArray));
+
+        $response = $this->httpClient->send($request);
+
+        if ($response->isSuccess()) {
+            $this->logger->info('API call successful.');
+        } else {
+            $this->logger->error('API call failed: ' . $response->getBody());
         }
     }
 }
