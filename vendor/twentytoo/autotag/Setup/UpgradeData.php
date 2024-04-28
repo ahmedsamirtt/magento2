@@ -144,28 +144,29 @@ class UpgradeData implements UpgradeDataInterface
      * @param array $productDataArray
      * @return void
      */
-    private function callApi($productDataArray)
-    {
-        $apiUrl = 'https://apidev.twentytoo.ai/cms/v1/data-load';
-        $headers = [
-            'Content-Type' => 'application/json',
-            'language' => 'en',
-            'x-api-key' => '5abo79x1nc',
-            'uploadType' => 'webhook'
-        ];
+   private function callApi($productDataArray)
+{
+    $apiUrl = 'https://apidev.twentytoo.ai/cms/v1/data-load';
+    $headers = new \Laminas\Http\Headers();
+    $headers->addHeaders([
+        'Content-Type' => 'application/json',
+        'language' => 'en',
+        'x-api-key' => '5abo79x1nc',
+        'uploadType' => 'webhook'
+    ]);
 
-        $request = new \Zend\Http\Request();
-        $request->setUri($apiUrl);
-        $request->setMethod(\Zend\Http\Request::METHOD_POST);
-        $request->setHeaders($headers);
-        $request->setContent(json_encode($productDataArray));
+    $request = new \Zend\Http\Request();
+    $request->setUri($apiUrl);
+    $request->setMethod(\Zend\Http\Request::METHOD_POST);
+    $request->setHeaders($headers); // Set headers here
+    $request->setContent(json_encode($productDataArray));
 
-        $response = $this->httpClient->send($request);
+    $response = $this->httpClient->send($request);
 
-        if ($response->isSuccess()) {
-            $this->logger->info('API call successful.');
-        } else {
-            $this->logger->error('API call failed: ' . $response->getBody());
-        }
+    if ($response->isSuccess()) {
+        $this->logger->info('API call successful.');
+    } else {
+        $this->logger->error('API call failed: ' . $response->getBody());
     }
+}
 }
