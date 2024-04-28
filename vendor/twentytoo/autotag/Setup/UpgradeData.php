@@ -89,7 +89,7 @@ class UpgradeData implements UpgradeDataInterface
             $this->logger->info('TwentyToo Payload: ' . json_encode($productDataArray));
 
             // Call API with product data array
-            //$this->callApi($productDataArray);
+            $this->callApi($productDataArray);
 
             // Log a message indicating successful upgrade
             $this->logger->info('TwentyToo upgrade completed successfully.');
@@ -150,7 +150,7 @@ class UpgradeData implements UpgradeDataInterface
         $headers = [
             'Content-Type' => 'application/json',
             'language' => 'en',
-            'x-api-key' => 'xx1213213',
+            'x-api-key' => '5abo79x1nc',
             'uploadType' => 'webhook'
         ];
 
