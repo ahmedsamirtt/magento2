@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="TwentyToo_AutoTag::twentytoo_menu" title="TwentyToo" module="TwentyToo_AutoTag" parent="Magento_Catalog::catalog" sortOrder="50" action="twentytoo/index" resource="TwentyToo_AutoTag::twentytoo_menu"/>
+    </menu>
+</config>
