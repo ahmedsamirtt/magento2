@@ -1,0 +1,17 @@
+<!-- app/code/Twentytoo/AdminButton/view/adminhtml/layout/catalog_category_edit.xml -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="category_form_additional_images">
+            <block class="Magento\Backend\Block\Template" name="twentytoo_adminbutton_category" template="Twentytoo_AdminButton::button.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
+
+<!-- app/code/Twentytoo/AdminButton/view/adminhtml/layout/catalog_product_edit.xml -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="product_form_additional_image">
+            <block class="Magento\Backend\Block\Template" name="twentytoo_adminbutton_product" template="Twentytoo_AdminButton::button.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
