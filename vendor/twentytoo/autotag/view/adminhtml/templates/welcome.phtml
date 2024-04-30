@@ -1,18 +1,17 @@
-<button type="button" class="action-default scalable" onclick="getHelloMessage()">
+<button type="button" class="action-default scalable" onclick="getHelloMessage()" data-url="<?php echo $block->getUrl('autotag/index/index'); ?>">
     <span><?php echo __('TwentyToo'); ?></span>
 </button>
 
 <script>
     function getHelloMessage() {
-        require(['jquery'], function($) {
-            $.ajax({
-                url: '<?php echo $block->getUrl('autotag/index/index'); ?>',
-                type: 'GET',
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response.message);
-                }
-            });
+        var url = $('.action-default').data('url');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log(response.message);
+            }
         });
     }
 </script>
