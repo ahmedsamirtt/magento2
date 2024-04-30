@@ -1,10 +1,18 @@
-<div class="twentytoo-welcome">
-    <h1>Welcome to TwentyToo</h1>
-    <form id="twentytoo-form" action="<?= $block->getUrl('twentytoo/autotag/save') ?>" method="post">
-        <!-- Add the form key -->
-        <input name="form_key" type="hidden" value="<?= $block->getFormKey() ?>" />
+<button type="button" class="action-default scalable" onclick="getHelloMessage()">
+    <span><?php echo __('TwentyToo'); ?></span>
+</button>
 
-        <!-- Your button -->
-        <button id="twentytoo-button">Click Me!</button>
-    </form>
-</div>
+<script>
+    function getHelloMessage() {
+        require(['jquery'], function($) {
+            $.ajax({
+                url: '<?php echo $block->getUrl('autotag/index/index'); ?>',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response.message);
+                }
+            });
+        });
+    }
+</script>
