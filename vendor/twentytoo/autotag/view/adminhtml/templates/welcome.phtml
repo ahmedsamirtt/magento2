@@ -1,17 +1,21 @@
-<button type="button" class="action-default scalable" onclick="getHelloMessage()" data-url="<?php echo $block->getUrl('autotag/index/index'); ?>">
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/welcome.phtml -->
+
+<button type="button" class="action-default scalable" onclick="getHelloMessage()">
     <span><?php echo __('TwentyToo'); ?></span>
 </button>
 
 <script>
     function getHelloMessage() {
-        var url = $('.action-default').data('url');
-        $.ajax({
-            url: url,
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                console.log(response.message);
-            }
+        require(['jquery'], function($) {
+            var url = '<?php echo $block->getUrl('autotag/index/index'); ?>';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response.message);
+                }
+            });
         });
     }
 </script>
