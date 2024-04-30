@@ -31,11 +31,12 @@ class Index extends Action implements HttpPostActionInterface
     public function execute()
     {
         try {
+            $this->logger->info('Form key generated: ' . $this->formKey->getFormKey());
+
             // Validate form key
             if (!$this->_formKeyValidator->validate($this->getRequest())) {
                 throw new \Exception('Invalid form key');
             }
-    
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Welcome to TwentyToo'));
         
