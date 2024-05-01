@@ -1,13 +1,13 @@
 <!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/welcome.phtml -->
 
 <button type="button" class="action-default scalable" onclick="getHelloMessage()">
-    <span><?php echo __('TwentyToo'); ?></span>
+    <span><?php echo $block->escapeHtml(__('TwentyToo')); ?></span>
 </button>
 
 <script>
     function getHelloMessage() {
         require(['jquery'], function($) {
-            var url = '<?php echo $block->getUrl('autotag/index/index'); ?>';
+            var url = '<?php echo $block->escapeJs($block->getUrl('autotag/index/index')); ?>';
             $.ajax({
                 url: url,
                 type: 'GET',
