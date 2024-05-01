@@ -1,21 +1,30 @@
-<!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/welcome.phtml -->
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/index.phtml -->
 
-<button type="button" class="action-default scalable" onclick="getHelloMessage()">
-    <span><?php echo $block->escapeHtml(__('TwentyToo')); ?></span>
-</button>
+<div class="twentytoo-content">
+    <h1>Welcome to TwentyToo</h1>
+    <button id="twentytoo_button">Click Me</button>
+    <div id="twentytoo_message"></div>
+</div>
 
 <script>
-    function getHelloMessage() {
-        require(['jquery'], function($) {
-            var url = '<?php echo $block->escapeJs($block->getUrl('autotag/index/index')); ?>';
+require([
+    'jquery'
+], function($) {
+    $(document).ready(function() {
+        $('#twentytoo_button').on('click', function() {
+            // AJAX request to handle button click
             $.ajax({
-                url: url,
-                type: 'GET',
+                url: '<?php echo $block->getUrl('twentytoo_autotag/index/index'); ?>',
+                type: 'POST',
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response.message);
+                    $('#twentytoo_message').text(response.message);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
                 }
             });
         });
-    }
+    });
+});
 </script>
