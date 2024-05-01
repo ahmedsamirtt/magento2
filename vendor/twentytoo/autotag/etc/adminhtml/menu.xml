@@ -1,7 +1,6 @@
-<!-- app/code/TwentyToo/AutoTag/etc/adminhtml/menu.xml -->
+<?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="TwentyToo_AutoTag::twentytoo" title="TwentyToo" module="TwentyToo_AutoTag" sortOrder="100" resource="TwentyToo_AutoTag::twentytoo"/>
-        <add id="TwentyToo_AutoTag::twentytoo_subitem" title="TwentyToo Subitem" module="TwentyToo_AutoTag" sortOrder="10" parent="TwentyToo_AutoTag::twentytoo" action="twentytoo_autotag/index/index" resource="TwentyToo_AutoTag::twentytoo_subitem"/>
+        <add id="TwentyToo_AutoTag::twentytoo_menu" title="TwentyToo" module="TwentyToo_AutoTag" parent="Magento_Catalog::catalog" sortOrder="50" action="twentytoo/index" resource="TwentyToo_AutoTag::twentytoo_menu"/>
     </menu>
 </config>
