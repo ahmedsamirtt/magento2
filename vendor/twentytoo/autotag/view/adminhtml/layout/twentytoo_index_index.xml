@@ -1,9 +1,8 @@
-<?xml version="1.0"?>
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/layout/twentytoo_autotag_index_index.xml -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="styles"/>
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Backend\Block\Template" template="TwentyToo_AutoTag::welcome.phtml" name="twentytoo_welcome"/>
+            <block class="TwentyToo\AutoTag\Block\Adminhtml\TwentyToo" name="twentytoo_index" template="TwentyToo_AutoTag::index.phtml"/>
         </referenceContainer>
     </body>
 </page>
