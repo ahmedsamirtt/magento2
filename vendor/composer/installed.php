@@ -37,6 +37,17 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'arsal/custom-tab' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'ecb43aa6eed33ad098355954c9fef1f24d9b6885',
+            'type' => 'magento2-module',
+            'install_path' => __DIR__ . '/../arsal/custom-tab',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'dev_requirement' => false,
+        ),
         'aws/aws-sdk-php' => array(
             'pretty_version' => '3.173.20',
             'version' => '3.173.20.0',

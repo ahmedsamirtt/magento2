@@ -137,4 +137,5 @@ return array(
     'Cache\\' => array($vendorDir . '/cache/cache/src'),
     'Braintree\\' => array($vendorDir . '/braintree/braintree_php/lib/Braintree'),
     'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
+    'Arsal\\CustomTab\\' => array($vendorDir . '/arsal/custom-tab'),
 );

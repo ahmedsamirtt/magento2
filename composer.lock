@@ -4,8 +4,43 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ccf3a28e8d882ec4daf63943d3b732b",
+    "content-hash": "1cd405305b1feb1109980f426b2fbc58",
     "packages": [
+        {
+            "name": "arsal/custom-tab",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arsalanworld/custom-tab.git",
+                "reference": "ecb43aa6eed33ad098355954c9fef1f24d9b6885"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arsalanworld/custom-tab/zipball/ecb43aa6eed33ad098355954c9fef1f24d9b6885",
+                "reference": "ecb43aa6eed33ad098355954c9fef1f24d9b6885",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Arsal\\CustomTab\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "description": "Create Dynamic Custom Tabs on Product View Page",
+            "support": {
+                "issues": "https://github.com/arsalanworld/custom-tab/issues",
+                "source": "https://github.com/arsalanworld/custom-tab/tree/1.0.0"
+            },
+            "time": "2020-06-26T06:15:19+00:00"
+        },
         {
             "name": "braintree/braintree_php",
             "version": "3.35.0",
@@ -12118,7 +12153,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "arsal/custom-tab": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

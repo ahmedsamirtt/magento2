@@ -179,6 +179,44 @@
             "install-path": "../allure-framework/allure-phpunit"
         },
         {
+            "name": "arsal/custom-tab",
+            "version": "dev-master",
+            "version_normalized": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arsalanworld/custom-tab.git",
+                "reference": "ecb43aa6eed33ad098355954c9fef1f24d9b6885"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arsalanworld/custom-tab/zipball/ecb43aa6eed33ad098355954c9fef1f24d9b6885",
+                "reference": "ecb43aa6eed33ad098355954c9fef1f24d9b6885",
+                "shasum": ""
+            },
+            "time": "2020-06-26T06:15:19+00:00",
+            "default-branch": true,
+            "type": "magento2-module",
+            "installation-source": "dist",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "Arsal\\CustomTab\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "description": "Create Dynamic Custom Tabs on Product View Page",
+            "support": {
+                "issues": "https://github.com/arsalanworld/custom-tab/issues",
+                "source": "https://github.com/arsalanworld/custom-tab/tree/1.0.0"
+            },
+            "install-path": "../arsal/custom-tab"
+        },
+        {
             "name": "aws/aws-sdk-php",
             "version": "3.173.20",
             "version_normalized": "3.173.20.0",

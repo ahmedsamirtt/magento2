@@ -45,6 +45,7 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '6f1be17691391caba4a7cfee00157acb' => __DIR__ . '/..' . '/laminas/laminas-form/autoload/formElementManagerPolyfill.php',
         'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
+        '20a27351fdad3a767f24a6f3e86f3be3' => __DIR__ . '/..' . '/arsal/custom-tab/registration.php',
         '8592c7b0947d8a0965a9e8c3d16f9c24' => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/autoload.php',
         '42e4ad6b595e503f62ab06915374a8ee' => __DIR__ . '/..' . '/laminas/laminas-mvc/src/autoload.php',
         'eda65932675b68b5aee4503e0762d64d' => __DIR__ . '/..' . '/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/_bootstrap.php',
@@ -246,6 +247,7 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         'A' => 
         array (
             'Aws\\' => 4,
+            'Arsal\\CustomTab\\' => 16,
         ),
     );
 
@@ -776,6 +778,10 @@ class ComposerStaticInit57ea0de0cbcf6fc2518a24d8b0b1fa33
         'Aws\\' => 
         array (
             0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
+        ),
+        'Arsal\\CustomTab\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/arsal/custom-tab',
         ),
     );
 
