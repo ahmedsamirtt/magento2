@@ -1,28 +1,7 @@
-<div class="twentytoo-content">
-    <h1>Welcome to TwentyToo</h1>
-    <button id="twentytoo_button">Click Me</button>
-    <div id="twentytoo_message"></div>
-</div>
+<button id="hello-world-button" onclick="sayHello()">Hello, World!</button>
 
-<script>
-require([
-    'jquery'
-], function($) {
-    $(document).ready(function() {
-        $('#twentytoo_button').on('click', function() {
-            // AJAX request to handle button click
-            $.ajax({
-                url: '<?php echo $block->getUrl('twentytoo/index/index'); ?>',
-                type: 'POST',
-                dataType: 'json',
-                success: function(response) {
-                    $('#twentytoo_message').text(response.message);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        });
-    });
-});
+<script type="text/javascript">
+    function sayHello() {
+        alert("Hello, World!");
+    }
 </script>
