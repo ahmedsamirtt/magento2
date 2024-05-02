@@ -136,6 +136,7 @@ return array(
     'Codeception\\' => array($vendorDir . '/codeception/codeception/src/Codeception', $vendorDir . '/codeception/stub/src'),
     'Cache\\' => array($vendorDir . '/cache/cache/src'),
     'Braintree\\' => array($vendorDir . '/braintree/braintree_php/lib/Braintree'),
+    'BKozlic\\ProductTabs\\' => array($vendorDir . '/bkozlic/product-tabs'),
     'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
     'Arsal\\CustomTab\\' => array($vendorDir . '/arsal/custom-tab'),
 );

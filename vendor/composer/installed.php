@@ -66,6 +66,15 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'bkozlic/product-tabs' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '6a726686b554e54d499870eae697ddd32e299cde',
+            'type' => 'magento2-module',
+            'install_path' => __DIR__ . '/../bkozlic/product-tabs',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'blueimp/jquery-file-upload' => array(
             'dev_requirement' => false,
             'replaced' => array(

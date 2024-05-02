@@ -45,6 +45,7 @@ return array(
     '6f1be17691391caba4a7cfee00157acb' => $vendorDir . '/laminas/laminas-form/autoload/formElementManagerPolyfill.php',
     'decc78cc4436b1292c6c0d151b19445c' => $vendorDir . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     '20a27351fdad3a767f24a6f3e86f3be3' => $vendorDir . '/arsal/custom-tab/registration.php',
+    '1d3a6a78146c43d973be643d62a79af0' => $vendorDir . '/bkozlic/product-tabs/registration.php',
     '8592c7b0947d8a0965a9e8c3d16f9c24' => $vendorDir . '/elasticsearch/elasticsearch/src/autoload.php',
     '42e4ad6b595e503f62ab06915374a8ee' => $vendorDir . '/laminas/laminas-mvc/src/autoload.php',
     'eda65932675b68b5aee4503e0762d64d' => $vendorDir . '/magento/magento2-functional-testing-framework/src/Magento/FunctionalTestingFramework/_bootstrap.php',

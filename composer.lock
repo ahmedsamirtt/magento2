@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cd405305b1feb1109980f426b2fbc58",
+    "content-hash": "6c5f09d622c1dc67a107c4622b4479ed",
     "packages": [
         {
             "name": "arsal/custom-tab",
@@ -40,6 +40,46 @@
                 "source": "https://github.com/arsalanworld/custom-tab/tree/1.0.0"
             },
             "time": "2020-06-26T06:15:19+00:00"
+        },
+        {
+            "name": "bkozlic/product-tabs",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Beraa995/product-tabs.git",
+                "reference": "6a726686b554e54d499870eae697ddd32e299cde"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Beraa995/product-tabs/zipball/6a726686b554e54d499870eae697ddd32e299cde",
+                "reference": "6a726686b554e54d499870eae697ddd32e299cde",
+                "shasum": ""
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "BKozlic\\ProductTabs\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Berin Kozlic",
+                    "email": "berin.kozlic@gmail.com"
+                }
+            ],
+            "description": "Magento 2 Module for managing tabs on product detail page",
+            "support": {
+                "issues": "https://github.com/Beraa995/product-tabs/issues",
+                "source": "https://github.com/Beraa995/product-tabs/tree/1.0.0"
+            },
+            "time": "2020-11-01T19:42:10+00:00"
         },
         {
             "name": "braintree/braintree_php",

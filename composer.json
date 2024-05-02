@@ -35,6 +35,7 @@
         "ext-zip": "*",
         "lib-libxml": "*",
         "arsal/custom-tab": "dev-master",
+        "bkozlic/product-tabs": "^1.0",
         "braintree/braintree_php": "3.35.0",
         "colinmollenhour/cache-backend-file": "~1.4.1",
         "colinmollenhour/cache-backend-redis": "1.11.0",
