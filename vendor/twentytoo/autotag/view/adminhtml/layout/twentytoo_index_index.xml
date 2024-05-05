@@ -1,11 +1,3 @@
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
-    <menu>
-        <add id="TwentyToo_AutoTag::twentytoo_menu" title="TwentyToo" module="TwentyToo_AutoTag" parent="Magento_Backend::content" sortOrder="50" action="twentytoo/index" resource="TwentyToo_AutoTag::twentytoo_menu" dependsOnConfig="twentytoo_autotag/general/enabled"/>
-        <!-- Add your button definition here -->
-        <add id="TwentyToo_AutoTag::hello_world_button" title="Hello World Button" module="TwentyToo_AutoTag" sortOrder="10" action="twentytoo/index/helloworld" resource="TwentyToo_AutoTag::hello_world_button"/>
-    </menu>
-</config>
-
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
@@ -13,5 +5,3 @@
         </referenceContainer>
     </body>
 </page>
-
-<!-- Move the button HTML and script inside the HTML file referenced by the block -->
