@@ -2,7 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="TwentyToo_AutoTag::twentytoo_menu" title="TwentyToo" module="TwentyToo_AutoTag" parent="Magento_Backend::content" sortOrder="50" action="twentytoo/index/index" resource="TwentyToo_AutoTag::twentytoo_menu" dependsOnConfig="twentytoo_autotag/general/enabled"/>
-        <!-- Add new menu item for TwentyToo Tags -->
-        <add id="TwentyToo_AutoTag::twentytoo_tags" title="TwentyToo Tags" module="TwentyToo_AutoTag" parent="TwentyToo_AutoTag::twentytoo_menu" sortOrder="10" action="twentytoo/index/tags" resource="TwentyToo_AutoTag::twentytoo_tags" dependsOnConfig="twentytoo_autotag/general/enabled"/>
+        <add id="TwentyToo_AutoTag::twentytoo_tags" title="Twenty Tags" module="TwentyToo_AutoTag" parent="TwentyToo_AutoTag::twentytoo_menu" sortOrder="10" action="twentytoo/index/tags" resource="TwentyToo_AutoTag::twentytoo_tags" dependsOnConfig="twentytoo_autotag/general/enabled"/>
     </menu>
 </config>
