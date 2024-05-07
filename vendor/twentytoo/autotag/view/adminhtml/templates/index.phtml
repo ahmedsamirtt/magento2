@@ -1,1 +1,4 @@
-<h1><?= $block->escapeHtml(__('Twenty Tags')) ?></h1>
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/index.phtml -->
+<button class="action-default" onclick="location.href='<?php /* @escapeNotVerified */ echo $block->escapeUrl($block->getUrl('adminhtml/index/tags')); ?>'">
+    <?= $block->escapeHtml(__('Get Tags')) ?>
+</button>
