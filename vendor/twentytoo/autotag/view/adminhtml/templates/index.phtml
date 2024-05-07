@@ -1,20 +1,29 @@
 <!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/index.phtml -->
 <button id="get-tags-button" class="action-default">
-    <?= $block->escapeHtml(__('Get Tags')) ?>
+    <?= __('Get Tags') ?>
 </button>
+
+<div id="response-container"></div>
 
 <script type="text/javascript">
     require(['jquery'], function($) {
-        $('#get-tags-button').click(function() {
-            $.ajax({
-                url: 'http://userbehavior-ml-nlb-e9c564bf7db7f4eb.elb.us-east-2.amazonaws.com/',
-                type: 'GET',
-                success: function(response) {
-                    alert(response); // You can replace this with any UI update logic
-                },
-                error: function(xhr, status, error) {
-                    alert('Error: ' + error);
-                }
+        $(document).ready(function() {
+            $('#get-tags-button').click(function() {
+                $.ajax({
+                    url: '<?php echo $block->getUrl('adminhtml/index/tags'); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message); // Update content
+                        } else {
+                            alert('Error: ' + response.message); // Error message
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error: ' + error); // AJAX error
+                    }
+                });
             });
         });
     });
