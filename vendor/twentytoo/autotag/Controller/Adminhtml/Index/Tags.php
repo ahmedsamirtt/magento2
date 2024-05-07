@@ -52,7 +52,7 @@ class Tags extends Action
             $this->logger->info('HTTP request response: ' . $response);
 
             // Return success message
-            $response = ['success' => true, 'message' => 'HTTP request successful.'];
+            $response = ['success' => true, 'message' => $response];
         } catch (\Exception $e) {
             // Log the error
             $this->logger->error($e->getMessage());

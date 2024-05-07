@@ -3,6 +3,8 @@
     <?= $block->escapeHtml(__('Get Tags')) ?>
 </button>
 
+<div id="response-container"></div>
+
 <script type="text/javascript">
     require(['jquery'], function($) {
         $('#get-tags-button').click(function() {
@@ -12,7 +14,7 @@
                 dataType: 'json',
                 success: function(response) {
                     if (response.success) {
-                        alert(response.message); // Success message
+                        $('#response-container').text(response.message); // Update content
                     } else {
                         alert('Error: ' + response.message); // Error message
                     }
