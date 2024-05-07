@@ -7,13 +7,18 @@
     require(['jquery'], function($) {
         $('#get-tags-button').click(function() {
             $.ajax({
-                url: 'http://userbehavior-ml-nlb-e9c564bf7db7f4eb.elb.us-east-2.amazonaws.com/',
-                type: 'GET',
+                url: '<?php echo $block->getUrl('adminhtml/index/tags'); ?>',
+                type: 'POST',
+                dataType: 'json',
                 success: function(response) {
-                    alert(response); // You can replace this with any UI update logic
+                    if (response.success) {
+                        alert(response.message); // Success message
+                    } else {
+                        alert('Error: ' + response.message); // Error message
+                    }
                 },
                 error: function(xhr, status, error) {
-                    alert('Error: ' + error);
+                    alert('Error: ' + error); // AJAX error
                 }
             });
         });
