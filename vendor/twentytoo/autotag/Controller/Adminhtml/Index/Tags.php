@@ -104,21 +104,30 @@ class Tags extends Action
             'api_key' => 'h11lwywxs6'
         ];
         $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags?product_ids=';
-
+    
         $responses = [];
         foreach ($productIds as $productId) {
             $url = $baseUrl . '["' . $productId . '"]';
             try {
                 $curl->setHeaders($headers);
                 $curl->get($url);
-                $responses[] = $curl->getBody();
+                $response = $curl->getBody();
+                
+                // Log the response for the current product
+                $this->logger->info('Response for product ID ' . $productId . ': ' . $response);
+    
+                $responses[] = $response;
             } catch (\Exception $e) {
-                throw new \Exception('Error making HTTP request: ' . $e->getMessage());
+                // Log error if request fails for the current product
+                $this->logger->error('Error for product ID ' . $productId . ': ' . $e->getMessage());
+                // Add empty response for failed request
+                $responses[] = '';
             }
         }
-
+    
         return implode("\n", $responses);
     }
+    
 
     /**
      * Get all product IDs from Magento products table.
