@@ -1,4 +1,5 @@
 <?php
+
 namespace TwentyToo\AutoTag\Controller\Adminhtml\Index;
 
 use Magento\Backend\App\Action;
@@ -6,7 +7,7 @@ use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Psr\Log\LoggerInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
-
+use Magento\Framework\HTTP\Client\CurlFactory;
 
 class Tags extends Action
 {
@@ -26,23 +27,31 @@ class Tags extends Action
     protected $productCollectionFactory;
 
     /**
+     * @var CurlFactory
+     */
+    protected $curlFactory;
+
+    /**
      * Constructor.
      *
      * @param Action\Context $context
      * @param JsonFactory $resultJsonFactory
      * @param LoggerInterface $logger
      * @param ProductCollectionFactory $productCollectionFactory
+     * @param CurlFactory $curlFactory
      */
     public function __construct(
         Action\Context $context,
         JsonFactory $resultJsonFactory,
         LoggerInterface $logger,
-        ProductCollectionFactory $productCollectionFactory
+        ProductCollectionFactory $productCollectionFactory,
+        CurlFactory $curlFactory
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->logger = $logger;
         $this->productCollectionFactory = $productCollectionFactory;
+        $this->curlFactory = $curlFactory;
     }
 
     /**
@@ -83,38 +92,35 @@ class Tags extends Action
 
     /**
      * Make HTTP request and return the response.
-        *
-        * @param array $productIds The array of product IDs.
-        * @return string The response from the HTTP request.
-        * @throws \Exception If an error occurs during the request.
+     *
+     * @param array $productIds The array of product IDs.
+     * @return string The response from the HTTP request.
+     * @throws \Exception If an error occurs during the request.
      */
     protected function makeHttpRequest(array $productIds)
     {
-        $client = new Client();
+        $curl = $this->curlFactory->create();
         $headers = [
             'api_key' => 'h11lwywxs6'
         ];
         $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags?product_ids=';
 
-        $urls = [];
+        $responses = [];
         foreach ($productIds as $productId) {
-            $urls[] = $baseUrl . '["' . $productId . '"]';
-        }
-
-        try {
-            $responses = [];
-            foreach ($urls as $url) {
-                $responses[] = $client->request('GET', $url, [
-                    'headers' => $headers
-                ])->getBody()->getContents();
+            $url = $baseUrl . '["' . $productId . '"]';
+            try {
+                $curl->setHeaders($headers);
+                $curl->get($url);
+                $responses[] = $curl->getBody();
+            } catch (\Exception $e) {
+                throw new \Exception('Error making HTTP request: ' . $e->getMessage());
             }
-
-            return implode("\n", $responses);
-        } catch (RequestException $e) {
-            throw new \Exception('Error making HTTP request: ' . $e->getMessage());
         }
+
+        return implode("\n", $responses);
     }
-     /**
+
+    /**
      * Get all product IDs from Magento products table.
      *
      * @return array Product IDs
