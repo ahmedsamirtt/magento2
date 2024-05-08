@@ -5,6 +5,8 @@ use Magento\Backend\App\Action;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Psr\Log\LoggerInterface;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
+
 
 class Tags extends Action
 {
@@ -19,20 +21,28 @@ class Tags extends Action
     protected $logger;
 
     /**
+     * @var ProductCollectionFactory
+     */
+    protected $productCollectionFactory;
+
+    /**
      * Constructor.
      *
      * @param Action\Context $context
      * @param JsonFactory $resultJsonFactory
      * @param LoggerInterface $logger
+     * @param ProductCollectionFactory $productCollectionFactory
      */
     public function __construct(
         Action\Context $context,
         JsonFactory $resultJsonFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProductCollectionFactory $productCollectionFactory
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->logger = $logger;
+        $this->productCollectionFactory = $productCollectionFactory;
     }
 
     /**
@@ -45,11 +55,18 @@ class Tags extends Action
         $resultJson = $this->resultJsonFactory->create();
 
         try {
+
+            // Get product IDs
+            $productIds = $this->getAllProductIds();
+
             // Make HTTP request
             $response = $this->makeHttpRequest('http://userbehavior-ml-nlb-e9c564bf7db7f4eb.elb.us-east-2.amazonaws.com/');
             
             // Log the response
             $this->logger->info('HTTP request response: ' . $response);
+
+            // Log the product IDs
+            $this->logger->info('Product IDs: ' . implode(', ', $productIds));
 
             // Return success message
             $response = ['success' => true, 'message' => $response];
@@ -87,5 +104,23 @@ class Tags extends Action
         }
 
         return $response;
+    }
+     /**
+     * Get all product IDs from Magento products table.
+     *
+     * @return array Product IDs
+     */
+    protected function getAllProductIds()
+    {
+        $productIds = [];
+
+        $productCollection = $this->productCollectionFactory->create();
+        $productCollection->addAttributeToSelect('entity_id');
+
+        foreach ($productCollection as $product) {
+            $productIds[] = $product->getId();
+        }
+
+        return $productIds;
     }
 }
