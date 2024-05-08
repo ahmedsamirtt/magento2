@@ -101,7 +101,7 @@ class Tags extends Action
     {
         $curl = $this->curlFactory->create();
         $headers = [
-            'api_key' => 'h11lwywxs6'
+            'api_key' => 'h11lwywxs5'
         ];
         $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags?product_ids=';
     
