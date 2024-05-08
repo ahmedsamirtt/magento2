@@ -58,10 +58,10 @@ class Tags extends Action
 
             // Get product IDs
             $productIds = $this->getAllProductIds();
-
+            $staticProductIds = ["b6f8207f6a029e48a88d5727e97bcfb069f05281", "7b18377ed501e8f34332cea99d882be7a15d1a48"];
             // Make HTTP request
-            $response = $this->makeHttpRequest('http://userbehavior-ml-nlb-e9c564bf7db7f4eb.elb.us-east-2.amazonaws.com/');
-            
+            $response = $this->makeHttpRequest($staticProductIds);
+
             // Log the response
             $this->logger->info('HTTP request response: ' . $response);
 
@@ -83,27 +83,36 @@ class Tags extends Action
 
     /**
      * Make HTTP request and return the response.
-     *
-     * @param string $url The URL to make the request to.
-     * @return string The response from the HTTP request.
-     * @throws \Exception If an error occurs during the request.
+        *
+        * @param array $productIds The array of product IDs.
+        * @return string The response from the HTTP request.
+        * @throws \Exception If an error occurs during the request.
      */
-    protected function makeHttpRequest($url)
+    protected function makeHttpRequest(array $productIds)
     {
-        // Make HTTP request using file_get_contents() or cURL
-        $response = file_get_contents($url);
-        // If using cURL, you can use the following:
-        // $ch = curl_init();
-        // curl_setopt($ch, CURLOPT_URL, $url);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        // $response = curl_exec($ch);
-        // curl_close($ch);
+        $client = new Client();
+        $headers = [
+            'api_key' => 'h11lwywxs6'
+        ];
+        $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags?product_ids=';
 
-        if ($response === false) {
-            throw new \Exception('Error making HTTP request.');
+        $urls = [];
+        foreach ($productIds as $productId) {
+            $urls[] = $baseUrl . '["' . $productId . '"]';
         }
 
-        return $response;
+        try {
+            $responses = [];
+            foreach ($urls as $url) {
+                $responses[] = $client->request('GET', $url, [
+                    'headers' => $headers
+                ])->getBody()->getContents();
+            }
+
+            return implode("\n", $responses);
+        } catch (RequestException $e) {
+            throw new \Exception('Error making HTTP request: ' . $e->getMessage());
+        }
     }
      /**
      * Get all product IDs from Magento products table.
