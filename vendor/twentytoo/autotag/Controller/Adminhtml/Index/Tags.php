@@ -101,32 +101,31 @@ class Tags extends Action
     {
         $curl = $this->curlFactory->create();
         $headers = [
-            'api_key' => 'h11lwywxs5'
+            'api_key' => 'h11lwywxs6'
         ];
-        $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags?product_ids=';
+        $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
     
-        $responses = [];
-        foreach ($productIds as $productId) {
-            $url = $baseUrl . '["' . $productId . '"]';
-            try {
-                $curl->setHeaders($headers);
-                $curl->get($url);
-                $response = $curl->getBody();
-                
-                // Log the response for the current product
-                $this->logger->info('Response for product ID ' . $productId . ': ' . $response);
+        $url = $baseUrl . '?product_ids=' . json_encode($productIds);
     
-                $responses[] = $response;
-            } catch (\Exception $e) {
-                // Log error if request fails for the current product
-                $this->logger->error('Error for product ID ' . $productId . ': ' . $e->getMessage());
-                // Add empty response for failed request
-                $responses[] = '';
-            }
+        try {
+            $curl->setHeaders($headers);
+            $curl->get($url);
+            $response = $curl->getBody();
+
+            //Log baseUrl
+            $this->logger->info('HTTP request response: ' . $url);
+
+            // Log the response
+            $this->logger->info('HTTP request response: ' . $response);
+    
+            return $response;
+        } catch (\Exception $e) {
+            // Log error if request fails
+            $this->logger->error('Error making HTTP request: ' . $e->getMessage());
+            throw new \Exception('Error making HTTP request: ' . $e->getMessage());
         }
-    
-        return implode("\n", $responses);
     }
+    
     
 
     /**
