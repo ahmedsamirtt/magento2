@@ -80,6 +80,10 @@ class Tags extends Action
             // Log the product IDs
             $this->logger->info('Product IDs: ' . implode(', ', $productIds));
 
+            //update or insert reponse products into twentytoo table
+            $this.updateProductAttributes($response);
+
+
             // Return success message
             $response = ['success' => true, 'message' => $response];
         } catch (\Exception $e) {
@@ -162,4 +166,55 @@ class Tags extends Action
 
         return $productIds;
     }
+
+    /** 
+     * Loop over array of products and its autotag and insert or update.
+     *  
+    */
+    protected function updateProductAttributes(array $responseData)
+    {
+        foreach ($responseData['message'] as $item) {
+            $productId = $item['product_id'];
+            $englishTags = $item['eng_tags'];
+            $arabicTags = $item['ar_tags'];
+
+            // Load product by product ID
+            $product = $this->productCollectionFactory->create()
+                ->addAttributeToFilter('entity_id', $productId)
+                ->getFirstItem();
+
+            // Check if product exists
+            if ($product->getId()) {
+                // Product exists, update attributes
+                $this->updateProduct($product, $englishTags, $arabicTags);
+            } else {
+                // Product does not exist, create new product
+                $this->createProduct($productId, $englishTags, $arabicTags);
+            }
+        }
+    }
+
+
+    protected function updateProduct($product, $englishTags, $arabicTags)
+    {
+        // Add english_tags and arabic_tags to the product
+        $product->setData('english_tags', $englishTags);
+        $product->setData('arabic_tags', $arabicTags);
+
+        // Save the product
+        $product->save();
+    }
+
+    protected function createProduct($productId, $englishTags, $arabicTags)
+    {
+        // Create new product
+        $product = $this->objectManager->create('Magento\Catalog\Model\Product');
+        $product->setEntityId($productId); // Set product ID
+        $product->setData('english_tags', $englishTags);
+        $product->setData('arabic_tags', $arabicTags);
+
+        // Save the product
+        $product->save();
+    }
+
 }
