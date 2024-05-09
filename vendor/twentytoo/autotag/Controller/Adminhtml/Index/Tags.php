@@ -8,6 +8,8 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Psr\Log\LoggerInterface;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 use Magento\Framework\HTTP\Client\CurlFactory;
+use Zend\Http\Client;
+use Laminas\Http\Request;
 
 class Tags extends Action
 {
@@ -97,35 +99,42 @@ class Tags extends Action
      * @return string The response from the HTTP request.
      * @throws \Exception If an error occurs during the request.
      */
-    protected function makeHttpRequest(array $productIds)
-    {
-        $curl = $this->curlFactory->create();
-        $headers = [
-            'api_key' => 'h11lwywxs6'
-        ];
-        $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
-    
-        // URL encode the JSON string
-        $url = $baseUrl . '?product_ids=' . urlencode(json_encode($productIds));
-    
-        try {
-            $curl->setHeaders($headers);
-            $curl->get($url);
-            $response = $curl->getBody();
-    
-            // Log base URL
-            $this->logger->info('Base URL: ' . $baseUrl);
-    
-            // Log the response
-            $this->logger->info('HTTP request response: ' . $response);
-    
-            return $response;
-        } catch (\Exception $e) {
-            // Log error if request fails
-            $this->logger->error('Error making HTTP request: ' . $e->getMessage());
-            throw new \Exception('Error making HTTP request: ' . $e->getMessage());
-        }
+   
+protected function makeHttpRequest(array $productIds)
+{
+    $client = new Client();
+    $headers = [
+        'api_key' => 'h11lwywxs6'
+    ];
+    $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
+
+    // Build query parameters
+    $queryParams = http_build_query(['product_ids' => json_encode($productIds)]);
+
+    // Construct URL with query parameters
+    $url = $baseUrl . '?' . $queryParams;
+
+    try {
+        $request = new Request();
+        $request->setUri($url);
+        $request->setHeaders($headers);
+        $request->setMethod(Request::METHOD_GET);
+
+        $response = $client->send($request);
+
+        // Log base URL
+        $this->logger->info('Base URL: ' . $baseUrl);
+
+        // Log the response
+        $this->logger->info('HTTP request response: ' . $response->getBody());
+
+        return $response->getBody();
+    } catch (\Exception $e) {
+        // Log error if request fails
+        $this->logger->error('Error making HTTP request: ' . $e->getMessage());
+        throw new \Exception('Error making HTTP request: ' . $e->getMessage());
     }
+}
     
     
     
