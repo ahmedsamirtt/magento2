@@ -174,29 +174,40 @@ class Tags extends Action
      *  
     */
     protected function updateProductAttributes(array $responseData)
-    {
-        // Initialize Object Manager
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+{
+    // Initialize Object Manager
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
-        // Get Resource Connection
-        $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
-        $connection = $resource->getConnection();
-        foreach ($responseData['message'] as $product) {
-            $productId = $product['product_id'];
-            $engTags = json_encode($product['eng_tags']);
-            $arTags = json_encode($product['ar_tags']);
-    
-            // Insert into the twentytoo_tags table
-            $tableName = $resource->getTableName('twentytoo_tags');
-            $sql = "INSERT INTO $tableName (order_id, english_tags, arabic_tags) VALUES ('$productId', '$engTags', '$arTags')";
-            try {
-                $connection->query($sql);
-                $this->logger->info("Record inserted successfully for english_tags ID: $engTags");
-            } catch (\Exception $e) {
-                echo "Error inserting record for product ID: $productId - " . $e->getMessage() . "<br>";
-            }
+    // Get Resource Connection
+    $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+    $connection = $resource->getConnection();
+    foreach ($responseData['message'] as $product) {
+        $productId = $product['product_id'];
+        $engTags = json_encode($product['eng_tags']);
+        $arTags = json_encode($product['ar_tags']);
+        // Decode Arabic tags to ensure proper encoding
+        $arTags = json_decode($arTags, true);
+        // Check if decoding was successful
+        if ($arTags === null && json_last_error() !== JSON_ERROR_NONE) {
+            // Log error
+            $this->logger->error("Error decoding Arabic tags: " . json_last_error_msg());
+            // Handle the error or skip this product
+            continue;
+        }
+        // Encode Arabic tags again
+        $arTags = json_encode($arTags, JSON_UNESCAPED_UNICODE);
+
+        // Insert into the twentytoo_tags table
+        $tableName = $resource->getTableName('twentytoo_tags');
+        $sql = "INSERT INTO $tableName (order_id, english_tags, arabic_tags) VALUES ('$productId', '$engTags', '$arTags')";
+        try {
+            $connection->query($sql);
+            $this->logger->info("Record inserted successfully for product ID: $productId");
+        } catch (\Exception $e) {
+            $this->logger->error("Error inserting record for product ID: $productId - " . $e->getMessage());
         }
     }
+}
     
 
 }
