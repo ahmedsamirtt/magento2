@@ -137,7 +137,7 @@ class Tags extends Action
              $this->logger->info('Base URL: ' . $baseUrl);
      
              // Log the response
-             $this->logger->info('HTTP request response: ' . $response->getBody());
+             //$this->logger->info('HTTP request response: ' . $response->getBody());
      
              return $response->getBody();
          } catch (\Exception $e) {
@@ -178,20 +178,21 @@ class Tags extends Action
         // Initialize Object Manager
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
     
-        // Get Resource Connection
+        // Get Resource Connection with UTF-8 encoding (assuming your database uses utf8mb4)
         $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
-        $connection = $resource->getConnection();
+        $connection = $resource->getConnection('default', ['charset' => 'utf8mb4']);
+    
         foreach ($responseData['message'] as $product) {
             $productId = $product['product_id'];
-            $engTags = json_encode($product['eng_tags'], JSON_UNESCAPED_UNICODE); // Encode English tags without escaping Unicode
-            $arTags = json_encode($product['ar_tags'], JSON_UNESCAPED_UNICODE); // Encode Arabic tags without escaping Unicode
-            
+            $engTags = json_encode($product['eng_tags'], JSON_UNESCAPED_UNICODE);
+            $arTags = json_encode($product['ar_tags'], JSON_UNESCAPED_UNICODE);
+    
             // Insert into the twentytoo_tags table
             $tableName = $resource->getTableName('twentytoo_tags');
             $sql = "INSERT INTO $tableName (order_id, english_tags, arabic_tags) VALUES (?, ?, ?)";
             try {
                 $connection->query($sql, [$productId, $engTags, $arTags]);
-                $this->logger->info("Record inserted successfully for product ID: $productId");
+                $this->logger->info("Record inserted successfully for arTags: $arTags");
             } catch (\Exception $e) {
                 $this->logger->error("Error inserting record for product ID: $productId - " . $e->getMessage());
             }
