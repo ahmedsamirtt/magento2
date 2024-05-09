@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c5f09d622c1dc67a107c4622b4479ed",
+    "content-hash": "72424ab9513d7af2cdd46a8bb4f6c7f2",
     "packages": [
         {
             "name": "arsal/custom-tab",
@@ -6350,16 +6350,16 @@
         },
         {
             "name": "twentytoo/autotag",
-            "version": "1.1.98",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ahmedsamirtt/twentytoo-autotag.git",
-                "reference": "59f166211eff8d37d79c56d32b5db88edadbba5d"
+                "reference": "3689826a203714e76e462d5eb85507baee6a14f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/59f166211eff8d37d79c56d32b5db88edadbba5d",
-                "reference": "59f166211eff8d37d79c56d32b5db88edadbba5d",
+                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/3689826a203714e76e462d5eb85507baee6a14f7",
+                "reference": "3689826a203714e76e462d5eb85507baee6a14f7",
                 "shasum": ""
             },
             "require": {
@@ -6378,9 +6378,9 @@
             "description": "Magento 2 custom tab for tags module",
             "support": {
                 "issues": "https://github.com/ahmedsamirtt/twentytoo-autotag/issues",
-                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.1.98"
+                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.2.0"
             },
-            "time": "2024-05-09T09:25:45+00:00"
+            "time": "2024-05-09T09:46:59+00:00"
         },
         {
             "name": "webimpress/safe-writer",

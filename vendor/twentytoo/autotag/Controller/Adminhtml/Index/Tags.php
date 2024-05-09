@@ -11,6 +11,7 @@ use Magento\Framework\HTTP\Client\CurlFactory;
 use Zend\Http\Client;
 use Laminas\Http\Request;
 use Laminas\Http\Headers;
+use TwentyToo\AutoTag\Model\TwentytooTagsFactory;
 
 class Tags extends Action
 {
@@ -35,6 +36,11 @@ class Tags extends Action
     protected $curlFactory;
 
     /**
+     * @var TwentytooTagsFactory
+     */
+    protected $twentytooTagsFactory;
+
+    /**
      * Constructor.
      *
      * @param Action\Context $context
@@ -42,19 +48,22 @@ class Tags extends Action
      * @param LoggerInterface $logger
      * @param ProductCollectionFactory $productCollectionFactory
      * @param CurlFactory $curlFactory
+     * @param TwentytooTagsFactory $twentytooTagsFactory
      */
     public function __construct(
         Action\Context $context,
         JsonFactory $resultJsonFactory,
         LoggerInterface $logger,
         ProductCollectionFactory $productCollectionFactory,
-        CurlFactory $curlFactory
+        CurlFactory $curlFactory,
+        TwentytooTagsFactory $twentytooTagsFactory
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->logger = $logger;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->curlFactory = $curlFactory;
+        $this->twentytooTagsFactory = $twentytooTagsFactory;
     }
 
     /**
@@ -67,7 +76,6 @@ class Tags extends Action
         $resultJson = $this->resultJsonFactory->create();
 
         try {
-
             // Get product IDs
             $productIds = $this->getAllProductIds();
             $staticProductIds = ["b6f8207f6a029e48a88d5727e97bcfb069f05281", "7b18377ed501e8f34332cea99d882be7a15d1a48"];
@@ -80,9 +88,8 @@ class Tags extends Action
             // Log the product IDs
             $this->logger->info('Product IDs: ' . implode(', ', $productIds));
 
-            //update or insert reponse products into twentytoo table
-            $this.updateProductAttributes($response);
-
+            // Update or insert response products into twentytoo_tags table
+            $this->updateProductAttributes($response);
 
             // Return success message
             $response = ['success' => true, 'message' => $response];
@@ -104,49 +111,45 @@ class Tags extends Action
      * @return string The response from the HTTP request.
      * @throws \Exception If an error occurs during the request.
      */
-   
-     protected function makeHttpRequest(array $productIds)
-     {
-         $client = new Client();
-         $headers = new Headers(); // Create instance of Headers
-     
-         // Add headers to the Headers instance
-         $headers->addHeaders([
-             'api_key' => 'h11lwywxs6'
-         ]);
-     
-         $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
-     
-         // Build query parameters
-         $queryParams = http_build_query(['product_ids' => json_encode($productIds)]);
-     
-         // Construct URL with query parameters
-         $url = $baseUrl . '?' . $queryParams;
-     
-         try {
-             $request = new Request();
-             $request->setUri($url);
-             $request->setHeaders($headers); // Set headers using the Headers instance
-             $request->setMethod(Request::METHOD_GET);
-     
-             $response = $client->send($request);
-     
-             // Log base URL
-             $this->logger->info('Base URL: ' . $baseUrl);
-     
-             // Log the response
-             $this->logger->info('HTTP request response: ' . $response->getBody());
-     
-             return $response->getBody();
-         } catch (\Exception $e) {
-             // Log error if request fails
-             $this->logger->error('Error making HTTP request: ' . $e->getMessage());
-             throw new \Exception('Error making HTTP request: ' . $e->getMessage());
-         }
-     }
-    
-    
-    
+    protected function makeHttpRequest(array $productIds)
+    {
+        $client = new Client();
+        $headers = new Headers(); // Create instance of Headers
+
+        // Add headers to the Headers instance
+        $headers->addHeaders([
+            'api_key' => 'h11lwywxs6'
+        ]);
+
+        $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
+
+        // Build query parameters
+        $queryParams = http_build_query(['product_ids' => json_encode($productIds)]);
+
+        // Construct URL with query parameters
+        $url = $baseUrl . '?' . $queryParams;
+
+        try {
+            $request = new Request();
+            $request->setUri($url);
+            $request->setHeaders($headers); // Set headers using the Headers instance
+            $request->setMethod(Request::METHOD_GET);
+
+            $response = $client->send($request);
+
+            // Log base URL
+            $this->logger->info('Base URL: ' . $baseUrl);
+
+            // Log the response
+            $this->logger->info('HTTP request response: ' . $response->getBody());
+
+            return $response->getBody();
+        } catch (\Exception $e) {
+            // Log error if request fails
+            $this->logger->error('Error making HTTP request: ' . $e->getMessage());
+            throw new \Exception('Error making HTTP request: ' . $e->getMessage());
+        }
+    }
 
     /**
      * Get all product IDs from Magento products table.
@@ -167,10 +170,11 @@ class Tags extends Action
         return $productIds;
     }
 
-    /** 
-     * Loop over array of products and its autotag and insert or update.
-     *  
-    */
+    /**
+     * Update or insert response products into twentytoo_tags table.
+     *
+     * @param array $responseData
+     */
     protected function updateProductAttributes(array $responseData)
     {
         foreach ($responseData['message'] as $item) {
@@ -178,43 +182,17 @@ class Tags extends Action
             $englishTags = $item['eng_tags'];
             $arabicTags = $item['ar_tags'];
 
-            // Load product by product ID
-            $product = $this->productCollectionFactory->create()
-                ->addAttributeToFilter('entity_id', $productId)
-                ->getFirstItem();
+            // Get Twentytoo Tags model instance
+            $twentytooTagsModel = $this->twentytooTagsFactory->create();
 
-            // Check if product exists
-            if ($product->getId()) {
-                // Product exists, update attributes
-                $this->updateProduct($product, $englishTags, $arabicTags);
-            } else {
-                // Product does not exist, create new product
-                $this->createProduct($productId, $englishTags, $arabicTags);
-            }
+            // Load or create record by product ID
+            $twentytooTagsModel->load($productId, 'product_id');
+            $twentytooTagsModel->setData('product_id', $productId);
+            $twentytooTagsModel->setData('english_tags', $englishTags);
+            $twentytooTagsModel->setData('arabic_tags', $arabicTags);
+
+            // Save the record
+            $twentytooTagsModel->save();
         }
     }
-
-
-    protected function updateProduct($product, $englishTags, $arabicTags)
-    {
-        // Add english_tags and arabic_tags to the product
-        $product->setData('english_tags', $englishTags);
-        $product->setData('arabic_tags', $arabicTags);
-
-        // Save the product
-        $product->save();
-    }
-
-    protected function createProduct($productId, $englishTags, $arabicTags)
-    {
-        // Create new product
-        $product = $this->objectManager->create('Magento\Catalog\Model\Product');
-        $product->setEntityId($productId); // Set product ID
-        $product->setData('english_tags', $englishTags);
-        $product->setData('arabic_tags', $arabicTags);
-
-        // Save the product
-        $product->save();
-    }
-
 }
