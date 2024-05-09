@@ -105,16 +105,17 @@ class Tags extends Action
         ];
         $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
     
-        $url = $baseUrl . '?product_ids=' . json_encode($productIds);
+        // URL encode the JSON string
+        $url = $baseUrl . '?product_ids=' . urlencode(json_encode($productIds));
     
         try {
             $curl->setHeaders($headers);
             $curl->get($url);
             $response = $curl->getBody();
-
-            //Log baseUrl
-            $this->logger->info('HTTP request response: ' . $url);
-
+    
+            // Log base URL
+            $this->logger->info('Base URL: ' . $baseUrl);
+    
             // Log the response
             $this->logger->info('HTTP request response: ' . $response);
     
@@ -125,6 +126,7 @@ class Tags extends Action
             throw new \Exception('Error making HTTP request: ' . $e->getMessage());
         }
     }
+    
     
     
 
