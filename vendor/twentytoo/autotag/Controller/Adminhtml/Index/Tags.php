@@ -81,6 +81,8 @@ class Tags extends Action
             $this->logger->info('Product IDs: ' . implode(', ', $productIds));
 
             //update or insert reponse products into twentytoo table
+            $responseData = json_decode($response, true);
+            
             $this->updateProductAttributes($response);
 
 
@@ -173,44 +175,28 @@ class Tags extends Action
     */
     protected function updateProductAttributes(array $responseData)
     {
-        foreach ($responseData['message'] as $item) {
-            $orderId = $item['product_id'];
-            $englishTags = $item['eng_tags'];
-            $arabicTags = $item['ar_tags'];
+        // Initialize Object Manager
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+
+        // Get Resource Connection
+        $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+        $connection = $resource->getConnection();
+        foreach ($responseData['message'] as $product) {
+            $productId = $product['product_id'];
+            $engTags = json_encode($product['eng_tags']);
+            $arTags = json_encode($product['ar_tags']);
     
-            // Load or create the tag object
-            $tag = $this->tagFactory->create()->load($orderId, 'order_id');
-    
-            if ($tag->getId()) {
-                // If the tag already exists, update the attributes
-                $this->updateTag($tag, $englishTags, $arabicTags);
-            } else {
-                // If the tag doesn't exist, create a new one
-                $this->createTag($orderId, $englishTags, $arabicTags);
+            // Insert into the twentytoo_tags table
+            $tableName = $resource->getTableName('twentytoo_tags');
+            $sql = "INSERT INTO $tableName (order_id, english_tags, arabic_tags) VALUES ('$productId', '$engTags', '$arTags')";
+            try {
+                $connection->query($sql);
+                $this->logger->info("Record inserted successfully for english_tags ID: $engTags");
+            } catch (\Exception $e) {
+                echo "Error inserting record for product ID: $productId - " . $e->getMessage() . "<br>";
             }
         }
     }
     
-    protected function updateTag($tag, $englishTags, $arabicTags)
-    {
-        // Update attributes
-        $tag->setEnglishTags($englishTags);
-        $tag->setArabicTags($arabicTags);
-    
-        // Save the tag
-        $tag->save();
-    }
-    
-    protected function createTag($orderId, $englishTags, $arabicTags)
-    {
-        // Create new tag
-        $tag = $this->tagFactory->create();
-        $tag->setOrderId($orderId);
-        $tag->setEnglishTags($englishTags);
-        $tag->setArabicTags($arabicTags);
-    
-        // Save the tag
-        $tag->save();
-    }
 
 }
