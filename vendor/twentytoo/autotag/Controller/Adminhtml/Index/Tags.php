@@ -80,10 +80,10 @@ class Tags extends Action
             // Log the product IDs
             $this->logger->info('Product IDs: ' . implode(', ', $productIds));
 
-            //update or insert reponse products into twentytoo table
+            //update or insert response products into twentytoo table
             $responseData = json_decode($response, true);
             
-            $this->updateProductAttributes($response);
+            $this->updateProductAttributes($responseData);
 
 
             // Return success message
