@@ -18,5 +18,8 @@
     <event name="system_setup_section_dispatch">
         <observer name="twentytoo_autotag_system_setup_section_dispatch_observer" instance="TwentyToo\AutoTag\Observer\LogProductData" />
     </event>
+     <event name="catalog_product_save_after">
+        <observer name="twentytoo_autotag_incremental_load" instance="TwentyToo\AutoTag\Observer\IncrementalLoad" />
+    </event>
 </config>
 
