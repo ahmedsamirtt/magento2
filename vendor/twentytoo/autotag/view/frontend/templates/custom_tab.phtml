@@ -3,13 +3,11 @@
 <div class="custom-tab-content">
     <h2><?php echo $block->escapeHtml(__('Custom Tab Title')); ?></h2>
     <ul>
-        <?php foreach ($block->getCustomData() as $language => $tags): ?>
-            <?php foreach ($tags as $label => $value): ?>
-                <li>
-                    <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
-                    <?php echo $block->escapeHtml(__($value)); ?>
-                </li>
-            <?php endforeach; ?>
+        <?php foreach ($block->getCustomData() as $label => $value): ?>
+            <li>
+                <strong><?php echo $block->escapeHtml(__($label)); ?>:</strong>
+                <?php echo $block->escapeHtml(__($value)); ?>
+            </li>
         <?php endforeach; ?>
     </ul>
 </div>
