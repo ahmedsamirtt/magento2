@@ -3,18 +3,21 @@ namespace TwentyToo\AutoTag\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
-
+use Magento\Catalog\Model\ProductRepository;
 class IncrementalLoad implements ObserverInterface
 {
     protected $logger;
     protected $httpClient;
+    protected $productRepository;
 
     public function __construct(
         LoggerInterface $logger,
-        \Zend\Http\Client $httpClient
+        \Zend\Http\Client $httpClient,
+        ProductRepository $productRepository
     ) {
         $this->logger = $logger;
         $this->httpClient = $httpClient;
+        $this->productRepository = $productRepository;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
