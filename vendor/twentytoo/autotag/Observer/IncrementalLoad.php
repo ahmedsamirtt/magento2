@@ -68,27 +68,42 @@ class IncrementalLoad implements ObserverInterface
             'description' => $productData['meta_description'],
             'img' => $imageUrl,
             'id' => $productId,
-            'target_audience' => $productData['tags']
+            // 'target_audience' => $productData['tags']
         ];
 
         return $payload;
     }
 
     private function getImageUrl($productData)
-    {
-        $imageUrl = '';
-        $id = $productData['entity_id'];
-        $imageMetadata = $productData['media_gallery']['images'];
-        foreach ($imageMetadata as $image) {
-            // Check if the entity ID matches
-            if (isset($image['entity_id']) && $image['entity_id'] == $id) {
-                $baseUrl = 'http://ec2-3-139-56-38.us-east-2.compute.amazonaws.com/pub/media/catalog/product';
-                $imagePath = $image['file'];
-                $imageUrl = $baseUrl . $imagePath;
-                break;
-            }
-        }
-        $this->logger->info("Exposed Public Image --> " . $imageUrl);
-        return $imageUrl;
+{
+    $imageUrl = '';
+    $id = $productData['entity_id'];
+    // $imageMetadata = $productData['media_gallery']['images'];
+    // foreach ($imageMetadata as $image) {
+    //     // Check if the entity ID matches
+    //     if (isset($image['entity_id']) && $image['entity_id'] == $id) {
+    //         $baseUrl = 'http://ec2-3-139-56-38.us-east-2.compute.amazonaws.com/pub/media/catalog/product';
+    //         $imagePath = $image['file'];
+    //         $imageUrl = $baseUrl . $imagePath;
+    //         break;
+    //     }
+    // }
+    try {
+        // Load the product using the product repository
+        $product = $this->productrepository->getById($id);
+
+        // Get the base media URL
+        $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+
+        // Get the product image URL
+        $imageUrl = $mediaUrl . 'catalog/product' . $product->getImage();
+    } catch (\Exception $e) {
+        // Handle any exceptions, such as product not found
+        $this->logger->error("Error while fetching product image: " . $e->getMessage());
     }
+
+    $this->logger->info("Exposed Public Image --> " . $imageUrl);
+    return $imageUrl;
+}
+
 }
