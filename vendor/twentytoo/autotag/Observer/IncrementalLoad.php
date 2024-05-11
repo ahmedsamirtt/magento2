@@ -3,18 +3,26 @@ namespace TwentyToo\AutoTag\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class IncrementalLoad implements ObserverInterface
 {
     protected $logger;
     protected $httpClient;
+    protected $productRepository;
+    protected $storeManager;
 
     public function __construct(
         LoggerInterface $logger,
-        \Zend\Http\Client $httpClient
+        \Zend\Http\Client $httpClient,
+        ProductRepositoryInterface $productRepository,
+        StoreManagerInterface $storeManager
     ) {
         $this->logger = $logger;
         $this->httpClient = $httpClient;
+        $this->productRepository = $productRepository;
+        $this->storeManager = $storeManager;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
@@ -27,7 +35,7 @@ class IncrementalLoad implements ObserverInterface
         // Log product data
         $this->logger->info('Incremental Product Data: ' . json_encode($product->getData()));
 
-        //Prepare data for initial Laod
+        //Prepare data for initial Load
         $parsedData = json_decode(json_encode($product->getData()), true);
         $payload = $this->prepareProductData($product->getId(), $parsedData);
 
@@ -62,7 +70,7 @@ class IncrementalLoad implements ObserverInterface
 
     private function prepareProductData($productId, $productData)
     {
-        $imageUrl = $this->getImageUrl($productData);
+        $imageUrl = $this->getImageUrl($productId, $productData);
         $payload = [
             'title' => $productData['name'],
             'description' => $productData['meta_description'],
@@ -74,36 +82,24 @@ class IncrementalLoad implements ObserverInterface
         return $payload;
     }
 
-    private function getImageUrl($productData)
-{
-    $imageUrl = '';
-    $id = $productData['entity_id'];
-    // $imageMetadata = $productData['media_gallery']['images'];
-    // foreach ($imageMetadata as $image) {
-    //     // Check if the entity ID matches
-    //     if (isset($image['entity_id']) && $image['entity_id'] == $id) {
-    //         $baseUrl = 'http://ec2-3-139-56-38.us-east-2.compute.amazonaws.com/pub/media/catalog/product';
-    //         $imagePath = $image['file'];
-    //         $imageUrl = $baseUrl . $imagePath;
-    //         break;
-    //     }
-    // }
-    try {
-        // Load the product using the product repository
-        $product = $this->productrepository->getById($id);
+    private function getImageUrl($productId, $productData)
+    {
+        $imageUrl = '';
+        try {
+            // Load the product using the product repository
+            $product = $this->productRepository->getById($productId);
 
-        // Get the base media URL
-        $mediaUrl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+            // Get the base media URL
+            $mediaUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
 
-        // Get the product image URL
-        $imageUrl = $mediaUrl . 'catalog/product' . $product->getImage();
-    } catch (\Exception $e) {
-        // Handle any exceptions, such as product not found
-        $this->logger->error("Error while fetching product image: " . $e->getMessage());
+            // Get the product image URL
+            $imageUrl = $mediaUrl . 'catalog/product' . $product->getImage();
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as product not found
+            $this->logger->error("Error while fetching product image: " . $e->getMessage());
+        }
+
+        $this->logger->info("Exposed Public Image --> " . $imageUrl);
+        return $imageUrl;
     }
-
-    $this->logger->info("Exposed Public Image --> " . $imageUrl);
-    return $imageUrl;
-}
-
 }
