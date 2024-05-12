@@ -12334,23 +12334,23 @@
         },
         {
             "name": "twentytoo/autotag",
-            "version": "1.2.16",
-            "version_normalized": "1.2.16.0",
+            "version": "1.2.17",
+            "version_normalized": "1.2.17.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ahmedsamirtt/twentytoo-autotag.git",
-                "reference": "8afca08f21d33280adc6b547c330613d9a73e318"
+                "url": "https://github.com/twentytoo-ai/twentytoo-autotag.git",
+                "reference": "57f2db8d6c0108b0aae768e502485183969b6996"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ahmedsamirtt/twentytoo-autotag/zipball/8afca08f21d33280adc6b547c330613d9a73e318",
-                "reference": "8afca08f21d33280adc6b547c330613d9a73e318",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-autotag/zipball/57f2db8d6c0108b0aae768e502485183969b6996",
+                "reference": "57f2db8d6c0108b0aae768e502485183969b6996",
                 "shasum": ""
             },
             "require": {
                 "magento/framework": "^102.0.0"
             },
-            "time": "2024-05-11T11:20:57+00:00",
+            "time": "2024-05-12T10:06:26+00:00",
             "type": "magento2-module",
             "installation-source": "dist",
             "autoload": {
@@ -12364,8 +12364,8 @@
             "notification-url": "https://packagist.org/downloads/",
             "description": "Magento 2 custom tab for tags module",
             "support": {
-                "issues": "https://github.com/ahmedsamirtt/twentytoo-autotag/issues",
-                "source": "https://github.com/ahmedsamirtt/twentytoo-autotag/tree/v1.2.16"
+                "issues": "https://github.com/twentytoo-ai/twentytoo-autotag/issues",
+                "source": "https://github.com/twentytoo-ai/twentytoo-autotag/tree/v1.2.17"
             },
             "install-path": "../twentytoo/autotag"
         },
