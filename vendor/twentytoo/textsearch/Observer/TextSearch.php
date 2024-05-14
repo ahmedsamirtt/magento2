@@ -72,69 +72,62 @@ class TextSearch implements ObserverInterface
     }
 
     /**
- * Call API with the search query
- *
- * @param string $query
- * @return array|null
- */
-protected function callApi($query)
-{
-    // API endpoint
-    $apiUrl = 'https://apidev.twentytoo.ai/cms/v2/text-search';
+     * Call API with the search query
+     *
+     * @param string $query
+     * @return array
+     */
+    protected function callApi($query)
+    {
+        // API endpoint
+        $apiUrl = 'https://apidev.twentytoo.ai/cms/v2/text-search';
 
-    // API payload
-    $payload = [
-        'text' => $query,
-        'page' => 1,
-        'page_limit' => 12,
-        'filters' => [
-            [
-                'website' => []
-            ],
-            [
-                'target_audience' => []
-            ],
-            [
-                'department' => []
+        // API payload
+        $payload = [
+            'text' => $query,
+            'page' => 1,
+            'page_limit' => 12,
+            'filters' => [
+                [
+                    'website' => []
+                ],
+                [
+                    'target_audience' => []
+                ],
+                [
+                    'department' => []
+                ]
             ]
-        ]
-    ];
+        ];
 
-    // Set headers
-    $headers = [
-        'Content-Type' => 'application/json',
-        'x-tt-api-key' => '32Z4tGu2GI9zmSPH8aJg06KmAN1ljV0UaOBDOLnp'
-    ];
+        // Set headers
+        $headers = [
+            'Content-Type' => 'application/json',
+            'x-tt-api-key' => '32Z4tGu2GI9zmSPH8aJg06KmAN1ljV0UaOBDOLnp'
+        ];
 
-    // Create HTTP client with increased timeout
-    // $client = new Client($apiUrl, [
-    //    'timeout' => 30 // Set timeout to 30 seconds
-    // ]);
-    $client = new Client($apiUrl);
-    $client->setMethod('POST');
-    $client->setHeaders($headers);
-    $client->setRawBody(json_encode($payload));
-    $client->setEncType('application/json');
+        // Create HTTP client
+        $client = new Client($apiUrl, [
+               'timeout' => 30 // Set timeout to 30 seconds
+        ]);
+        $client->setMethod('POST');
+        $client->setHeaders($headers);
+        $client->setRawBody(json_encode($payload));
+        $client->setEncType('application/json');
 
-    try {
         // Send request and get response
         $response = $client->send();
 
         // Process response
+        $responseData = [];
         if ($response->isSuccess()) {
-            return json_decode($response->getBody(), true);
+            $responseData = json_decode($response->getBody(), true);
         } else {
             // Handle API error
             $errorMessage = $response->getReasonPhrase();
             $this->logger->error('API Error: ' . $errorMessage);
-            return null; // Return null or handle the error accordingly
         }
-    } catch (\Laminas\Http\Client\Adapter\Exception\TimeoutException $e) {
-        // Log the timeout error
-        $this->logger->error('API Timeout: ' . $e->getMessage());
-        return null; // Return null or handle the timeout error accordingly
+
+        return $responseData;
     }
-}
-
-
 }
