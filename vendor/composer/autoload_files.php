@@ -53,5 +53,6 @@ return array(
     'aa75ea0761a2f40c1f3b32ad314f86c4' => $vendorDir . '/phpseclib/mcrypt_compat/lib/mcrypt.php',
     '9b38cf48e83f5d8f60375221cd213eee' => $vendorDir . '/phpstan/phpstan/bootstrap.php',
     '9ce2634a0fb684813b9d9bd6c3f7b22b' => $vendorDir . '/twentytoo/autotag/registration.php',
+    '01f6648c240d2c2cee7a6c42e124dabb' => $vendorDir . '/twentytoo/textsearch/registration.php',
     '27a5783f6a5e8d8d1a4f54dff608a187' => $baseDir . '/app/etc/NonComposerComponentRegistration.php',
 );

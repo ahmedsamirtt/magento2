@@ -2866,6 +2866,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'twentytoo/textsearch' => array(
+            'pretty_version' => '1.0.1',
+            'version' => '1.0.1.0',
+            'reference' => '6335be82f36f3dd4aafe642f7813ed62845d8e34',
+            'type' => 'magento2-module',
+            'install_path' => __DIR__ . '/../twentytoo/textsearch',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'videlalvaro/php-amqplib' => array(
             'dev_requirement' => false,
             'replaced' => array(

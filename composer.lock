@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "72424ab9513d7af2cdd46a8bb4f6c7f2",
+    "content-hash": "6aa645518b1eab41be3748f039169c70",
     "packages": [
         {
             "name": "arsal/custom-tab",
@@ -6381,6 +6381,40 @@
                 "source": "https://github.com/twentytoo-ai/twentytoo-autotag/tree/v1.2.17"
             },
             "time": "2024-05-12T10:06:26+00:00"
+        },
+        {
+            "name": "twentytoo/textsearch",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
+                "reference": "6335be82f36f3dd4aafe642f7813ed62845d8e34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/6335be82f36f3dd4aafe642f7813ed62845d8e34",
+                "reference": "6335be82f36f3dd4aafe642f7813ed62845d8e34",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "^102.0.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "TwentyToo\\TextSearch\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Magento 2 for neural text search",
+            "support": {
+                "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.1"
+            },
+            "time": "2024-05-14T09:06:01+00:00"
         },
         {
             "name": "webimpress/safe-writer",
