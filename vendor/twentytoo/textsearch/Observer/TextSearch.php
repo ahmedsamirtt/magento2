@@ -68,6 +68,13 @@ class TextSearch implements ObserverInterface
 
             // Log the response
             $this->logger->info('API Response: ' . json_encode($response));
+
+            $productIds = [1,2];
+            $layout = $observer->getLayout();
+            $block = $layout->getBlock('custom_product_display');
+            if ($block) {
+                $block->setProducts($productIds);
+}
         }
     }
 
