@@ -98,7 +98,6 @@ class TextSearch implements ObserverInterface
                     'department' => []
                 ]
                 ],
-            'meta_data' => 0
         ];
 
         // Set headers
