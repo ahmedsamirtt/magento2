@@ -103,7 +103,7 @@ class TextSearch implements ObserverInterface
         // Set headers
         $headers = [
             'Content-Type' => 'application/json',
-            'x-tt-api-key' => 'h11lwywxs6'
+            'x-tt-api-key' => '32Z4tGu2GI9zmSPH8aJg06KmAN1ljV0UaOBDOLnp'
         ];
 
         // Create HTTP client
