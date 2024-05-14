@@ -4,6 +4,8 @@ namespace TwentyToo\TextSearch\Observer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Zend\Http\Client;
+use Psr\Log\LoggerInterface;
 
 class TextSearch implements ObserverInterface
 {
@@ -18,17 +20,25 @@ class TextSearch implements ObserverInterface
     protected $scopeConfig;
 
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
      * @param \Magento\Framework\App\Request\Http $request
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         \Magento\Framework\App\Request\Http $request,
-        ScopeConfigInterface $scopeConfig
+        ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
+        $this->logger = $logger;
     }
 
     /**
@@ -50,24 +60,72 @@ class TextSearch implements ObserverInterface
             // Get search query
             $query = $controller->getRequest()->getParam('q');
 
-            // You can now make your API call using $query
-            // Example:
-            // $this->callApi($query);
-            // For demonstration purpose, let's just log the search query
-            $this->logSearchQuery($query);
+            // Log search query
+            $this->logger->info('search query: ' . $query);
+
+            // Call API with the search query
+            $response = $this->callApi($query);
+
+            // Log the response
+            $this->logger->info('API Response: ' . json_encode($response));
         }
     }
 
     /**
-     * Log the search query
+     * Call API with the search query
      *
      * @param string $query
-     * @return void
+     * @return array
      */
-    protected function logSearchQuery($query)
+    protected function callApi($query)
     {
-        // Log the search query
-        $logger = \Magento\Framework\App\ObjectManager::getInstance()->get(\Psr\Log\LoggerInterface::class);
-        $logger->info('Search Query: ' . $query);
+        // API endpoint
+        $apiUrl = 'https://apidev.twentytoo.ai/cms/v2/text-search';
+
+        // API payload
+        $payload = [
+            'text' => $query,
+            'page' => 1,
+            'page_limit' => 12,
+            'filters' => [
+                [
+                    'website' => []
+                ],
+                [
+                    'target_audience' => []
+                ],
+                [
+                    'department' => []
+                ]
+            ]
+        ];
+
+        // Set headers
+        $headers = [
+            'Content-Type' => 'application/json',
+            'x-tt-api-key' => 'h11lwywxs6'
+        ];
+
+        // Create HTTP client
+        $client = new Client($apiUrl);
+        $client->setMethod('POST');
+        $client->setHeaders($headers);
+        $client->setRawBody(json_encode($payload));
+        $client->setEncType('application/json');
+
+        // Send request and get response
+        $response = $client->send();
+
+        // Process response
+        $responseData = [];
+        if ($response->isSuccess()) {
+            $responseData = json_decode($response->getBody(), true);
+        } else {
+            // Handle API error
+            $errorMessage = $response->getReasonPhrase();
+            $this->logger->error('API Error: ' . $errorMessage);
+        }
+
+        return $responseData;
     }
 }
