@@ -6384,16 +6384,16 @@
         },
         {
             "name": "twentytoo/textsearch",
-            "version": "1.0.7",
+            "version": "1.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
-                "reference": "0c32af44236b8eea3ecbf897d6cfc301957f9bec"
+                "reference": "e0bd8ca7e1212778331c2554c9fec82e69669a81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/0c32af44236b8eea3ecbf897d6cfc301957f9bec",
-                "reference": "0c32af44236b8eea3ecbf897d6cfc301957f9bec",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/e0bd8ca7e1212778331c2554c9fec82e69669a81",
+                "reference": "e0bd8ca7e1212778331c2554c9fec82e69669a81",
                 "shasum": ""
             },
             "require": {
@@ -6412,9 +6412,9 @@
             "description": "Magento 2 for neural text search",
             "support": {
                 "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
-                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.7"
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.8"
             },
-            "time": "2024-05-14T13:20:06+00:00"
+            "time": "2024-05-14T13:28:58+00:00"
         },
         {
             "name": "webimpress/safe-writer",
