@@ -40,22 +40,13 @@ class TextSearch implements ObserverInterface
         $controller = $observer->getControllerAction();
         if ($controller->getRequest()->getFullActionName() == 'catalogsearch_result_index') {
             $query = $controller->getRequest()->getParam('q');
-            $this->logger->info('search query: ' . $query);
+            $this->logger->info('Search query: ' . $query);
             $response = $this->callApi($query);
             $this->logger->info('API Response: ' . json_encode($response));
 
-            $productIds = isset($response['productIds']) ? $response['productIds'] : [1, 2];  // Fallback to static IDs
-            $products = [];
-            foreach ($productIds as $productId) {
-                try {
-                    $product = $this->productRepository->getById($productId);
-                    $products[] = $product;
-                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
-                    $this->logger->error('Product not found: ' . $productId);
-                }
-            }
-
-            $this->session->setSearchResults($products);
+            $productIds = isset($response['productIds']) ? $response['productIds'] : [1, 2]; // Fallback to static IDs
+            $this->session->setSearchResults($productIds);
+            $this->logger->info('Stored product IDs in session: ' . implode(', ', $productIds));
         }
     }
 
