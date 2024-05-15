@@ -78,7 +78,7 @@ class TextSearch implements ObserverInterface
             'x-tt-api-key' => '32Z4tGu2GI9zmSPH8aJg06KmAN1ljV0UaOBDOLnp'
         ];
 
-        $client = new Client($apiUrl, ['timeout' => 30]);
+        $client = new \Zend\Http\Client($apiUrl, ['timeout' => 30]);
         $client->setMethod('POST');
         $client->setHeaders($headers);
         $client->setRawBody(json_encode($payload));
