@@ -5,9 +5,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface;
+use Zend\Http\Client;
 use Psr\Log\LoggerInterface;
-use Magento\Framework\App\Request\Http;
 
 class TextSearch implements ObserverInterface
 {
@@ -15,20 +14,17 @@ class TextSearch implements ObserverInterface
     protected $scopeConfig;
     protected $logger;
     protected $session;
-    protected $productRepository;
 
     public function __construct(
-        Http $request,
+        \Magento\Framework\App\Request\Http $request,
         ScopeConfigInterface $scopeConfig,
         LoggerInterface $logger,
-        SessionManagerInterface $session,
-        ProductRepositoryInterface $productRepository
+        SessionManagerInterface $session
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
         $this->logger = $logger;
         $this->session = $session;
-        $this->productRepository = $productRepository;
     }
 
     public function execute(Observer $observer)
@@ -40,13 +36,15 @@ class TextSearch implements ObserverInterface
         $controller = $observer->getControllerAction();
         if ($controller->getRequest()->getFullActionName() == 'catalogsearch_result_index') {
             $query = $controller->getRequest()->getParam('q');
-            $this->logger->info('Search query: ' . $query);
+            $this->logger->info('search query: ' . $query);
             $response = $this->callApi($query);
             $this->logger->info('API Response: ' . json_encode($response));
-
-            $productIds = isset($response['productIds']) ? $response['productIds'] : [1, 2]; // Fallback to static IDs
-            $this->session->setSearchResults($productIds);
-            $this->logger->info('Stored product IDs in session: ' . implode(', ', $productIds));
+            $productIds = [1, 2]; // Static product IDs for testing
+            if (isset($response['productIds'])) {
+                $this->session->setTextSearchProductIds([$response['productIds']]);
+                $this->logger->info("Hello we are on if right now------->>>");
+            }
+            $this->session->setTextSearchProductIds($productIds);
         }
     }
 
@@ -69,7 +67,7 @@ class TextSearch implements ObserverInterface
             'x-tt-api-key' => '32Z4tGu2GI9zmSPH8aJg06KmAN1ljV0UaOBDOLnp'
         ];
 
-        $client = new \Zend\Http\Client($apiUrl, ['timeout' => 30]);
+        $client = new Client($apiUrl, ['timeout' => 30]);
         $client->setMethod('POST');
         $client->setHeaders($headers);
         $client->setRawBody(json_encode($payload));
