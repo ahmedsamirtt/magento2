@@ -5,8 +5,9 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Session\SessionManagerInterface;
-use Zend\Http\Client;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Request\Http;
 
 class TextSearch implements ObserverInterface
 {
@@ -14,17 +15,20 @@ class TextSearch implements ObserverInterface
     protected $scopeConfig;
     protected $logger;
     protected $session;
+    protected $productRepository;
 
     public function __construct(
-        \Magento\Framework\App\Request\Http $request,
+        Http $request,
         ScopeConfigInterface $scopeConfig,
         LoggerInterface $logger,
-        SessionManagerInterface $session
+        SessionManagerInterface $session,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->request = $request;
         $this->scopeConfig = $scopeConfig;
         $this->logger = $logger;
         $this->session = $session;
+        $this->productRepository = $productRepository;
     }
 
     public function execute(Observer $observer)
@@ -39,12 +43,19 @@ class TextSearch implements ObserverInterface
             $this->logger->info('search query: ' . $query);
             $response = $this->callApi($query);
             $this->logger->info('API Response: ' . json_encode($response));
-            $productIds = [1, 2]; // Static product IDs for testing
-            if (isset($response['productIds'])) {
-                $this->session->setTextSearchProductIds([$response['productIds']]);
-                $this->logger->info("Hello we are on if right now------->>>");
+
+            $productIds = isset($response['productIds']) ? $response['productIds'] : [1, 2];  // Fallback to static IDs
+            $products = [];
+            foreach ($productIds as $productId) {
+                try {
+                    $product = $this->productRepository->getById($productId);
+                    $products[] = $product;
+                } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+                    $this->logger->error('Product not found: ' . $productId);
+                }
             }
-            $this->session->setTextSearchProductIds($productIds);
+
+            $this->session->setSearchResults($products);
         }
     }
 
