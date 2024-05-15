@@ -37,7 +37,7 @@ class CustomProductDisplay extends Template
         foreach ($productIds as $productId) {
             $products[] = $this->productFactory->create()->load($productId);
         }
-        return $products;
+        return [1,2];
     }
 
     public function getProductImageUrl($product)
