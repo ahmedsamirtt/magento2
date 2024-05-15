@@ -21,13 +21,14 @@ class CustomProductDisplay extends Template
     ) {
         $this->productFactory = $productFactory;
         $this->session = $session;
+        $this->logger = $logger; // Ensure logger is assigned
         parent::__construct($context, $data);
     }
 
     public function getProducts()
     {
         $productIds = $this->session->getTextSearchProductIds();
-        $this.logger.info('custom products display ---->' .$productIds);
+        $this->logger->info('Custom products display ----> ' . json_encode($productIds));
         if (!$productIds) {
             return [];
         }
