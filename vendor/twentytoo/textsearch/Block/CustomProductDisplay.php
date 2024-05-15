@@ -4,16 +4,19 @@ namespace TwentyToo\TextSearch\Block;
 use Magento\Framework\View\Element\Template;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Framework\Session\SessionManagerInterface;
+use Psr\Log\LoggerInterface;
 
 class CustomProductDisplay extends Template
 {
     protected $productFactory;
     protected $session;
+    protected $logger;
 
     public function __construct(
         Template\Context $context,
         ProductFactory $productFactory,
         SessionManagerInterface $session,
+        LoggerInterface $logger,
         array $data = []
     ) {
         $this->productFactory = $productFactory;
@@ -24,6 +27,7 @@ class CustomProductDisplay extends Template
     public function getProducts()
     {
         $productIds = $this->session->getTextSearchProductIds();
+        $this.logger.info('custom products display ---->' .$productIds);
         if (!$productIds) {
             return [];
         }
