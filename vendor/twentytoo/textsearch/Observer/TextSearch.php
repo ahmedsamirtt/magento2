@@ -41,7 +41,7 @@ class TextSearch implements ObserverInterface
             $this->logger->info('API Response: ' . json_encode($response));
 
             if (isset($response['productIds'])) {
-                $this->session->setTextSearchProductIds($response['productIds']);
+                $this->session->setTextSearchProductIds([1,2]);
             }
         }
     }
