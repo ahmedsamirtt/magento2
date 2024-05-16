@@ -3,41 +3,41 @@ namespace TwentyToo\TextSearch\Block;
 
 use Magento\Framework\View\Element\Template;
 use Magento\Catalog\Model\ProductFactory;
-use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class CustomProductDisplay extends Template
 {
     protected $productFactory;
-    protected $session;
     protected $logger;
 
     public function __construct(
         Template\Context $context,
         ProductFactory $productFactory,
-        SessionManagerInterface $session,
         LoggerInterface $logger,
         array $data = []
     ) {
         $this->productFactory = $productFactory;
-        $this->session = $session;
-        $this->logger = $logger; // Ensure logger is assigned
+        $this->logger = $logger;
         parent::__construct($context, $data);
     }
 
     public function getProducts()
     {
-        $productIds = $this->session->getTextSearchProductIds();
+        // Static product IDs for testing purposes
+        $productIds = [1, 2];
         $this->logger->info('Custom products display ----> ' . json_encode($productIds));
-        if (!$productIds) {
-            return [];
-        }
-
+        
         $products = [];
         foreach ($productIds as $productId) {
-            $products[] = $this->productFactory->create()->load($productId);
+            $product = $this->productFactory->create()->load($productId);
+            if ($product->getId()) {
+                $products.append($product);
+            } else {
+                $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
+            }
         }
-        return [1,2];
+        
+        return $products;
     }
 
     public function getProductImageUrl($product)
