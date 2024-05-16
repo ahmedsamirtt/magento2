@@ -35,7 +35,7 @@ class CustomProductDisplay extends Template
                 $this->logger->info('Product Name: ' . $product->getName());
                 $this->logger->info('Product Visibility: ' . $product->getVisibility());
                 $this->logger->info('Product Status: ' . $product->getStatus());
-                $this->logger->info('Product Stock: ' . $product->getStockItem()->getIsInStock());
+                // $this->logger->info('Product Stock: ' . $product->getStockItem()->getIsInStock());
                 array_push($products, $product); // Use array_push to add product to array
             } else {
                 $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
