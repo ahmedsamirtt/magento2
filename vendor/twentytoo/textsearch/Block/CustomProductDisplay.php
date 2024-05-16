@@ -27,17 +27,22 @@ class CustomProductDisplay extends Template
         $productIds = [1, 2];
         $this->logger->info('Custom products display ----> ' . json_encode($productIds));
         
-        // $products = [];
-        // foreach ($productIds as $productId) {
-        //     $product = $this->productFactory->create()->load($productId);
-        //     if ($product->getId()) {
-        //         array_push($products, $product); // Use array_push to add product to array
-        //     } else {
-        //         $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
-        //     }
-        // }
+        $products = [];
+        foreach ($productIds as $productId) {
+            $product = $this->productFactory->create()->load($productId);
+            if ($product->getId()) {
+                $this->logger->info('Loaded product ID: ' . $product->getId());
+                $this->logger->info('Product Name: ' . $product->getName());
+                $this->logger->info('Product Visibility: ' . $product->getVisibility());
+                $this->logger->info('Product Status: ' . $product->getStatus());
+                $this->logger->info('Product Stock: ' . $product->getStockItem()->getIsInStock());
+                array_push($products, $product); // Use array_push to add product to array
+            } else {
+                $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
+            }
+        }
         
-        return $productIds;
+        return $products;
     }
 
     public function getProductImageUrl($product)
