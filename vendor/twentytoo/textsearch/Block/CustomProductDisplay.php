@@ -1,5 +1,5 @@
 <?php
-namespace TwentyToo\TextSearch\Plugin;
+namespace TwentyToo\TextSearch;
 
 use Magento\Catalog\Model\ProductFactory;
 use Psr\Log\LoggerInterface;
