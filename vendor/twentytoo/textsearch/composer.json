@@ -2,7 +2,7 @@
     "name": "twentytoo/textsearch",
     "description": "Magento 2 for neural text search",
     "type": "magento2-module",
-    "version": "1.0.33",
+    "version": "1.0.34",
     "require": {
         "magento/framework": "^102.0.0"
     },

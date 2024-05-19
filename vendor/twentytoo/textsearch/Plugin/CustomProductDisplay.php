@@ -1,19 +1,19 @@
 <?php
 namespace TwentyToo\TextSearch\Plugin;
 
-use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class CustomProductDisplay
 {
-    protected $productFactory;
+    protected $productRepository;
     protected $logger;
 
     public function __construct(
-        ProductFactory $productFactory,
+        ProductRepositoryInterface $productRepository,
         LoggerInterface $logger
     ) {
-        $this->productFactory = $productFactory;
+        $this->productRepository = $productRepository;
         $this->logger = $logger;
     }
 
@@ -26,20 +26,20 @@ class CustomProductDisplay
         
         $customProducts = [];
         foreach ($productIds as $productId) {
-            $product = $this->productFactory->create()->load($productId);
-            if ($product->getId()) {
+            try {
+                $product = $this->productRepository->getById($productId);
+                $customProducts[] = $product;
                 $this->logger->info('Loaded product ID: ' . $product->getId());
                 $this->logger->info('Product Name: ' . $product->getName());
                 $this->logger->info('Product Visibility: ' . $product->getVisibility());
                 $this->logger->info('Product Status: ' . $product->getStatus());
                 $this->logger->info('Product Image: ' . $product->getImage());
-                $customProducts[] = $product;
-            } else {
+            } catch (\Exception $e) {
                 $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
             }
         }
 
-        // Optionally, merge custom products with original search results
-        return array_merge($result, $customProducts);
+        // Return only the custom products and ignore the original search results
+        return $customProducts;
     }
 }
