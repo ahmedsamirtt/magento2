@@ -1,33 +1,30 @@
 <?php
-namespace TwentyToo\TextSearch\Block;
+namespace TwentyToo\TextSearch\Plugin;
 
-use Magento\Framework\View\Element\Template;
 use Magento\Catalog\Model\ProductFactory;
 use Psr\Log\LoggerInterface;
 
-class CustomProductDisplay extends Template
+class CustomProductDisplay
 {
     protected $productFactory;
     protected $logger;
 
     public function __construct(
-        Template\Context $context,
         ProductFactory $productFactory,
-        LoggerInterface $logger,
-        array $data = []
+        LoggerInterface $logger
     ) {
         $this->productFactory = $productFactory;
         $this->logger = $logger;
-        parent::__construct($context, $data);
     }
 
-    public function getProducts()
+    public function afterGetItems(\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $subject, $result)
     {
-        // Static product IDs for testing purposes
-        $productIds = [1, 2];
-        $this->logger->info('Custom products display ----> ' . json_encode($productIds));
+        $this->logger->info('Custom products display plugin triggered');
+
+        $productIds = [1, 2]; // Static product IDs for testing purposes
+        $this->logger->info('Custom product IDs ----> ' . json_encode($productIds));
         
-        $products = [];
+        $customProducts = [];
         foreach ($productIds as $productId) {
             $product = $this->productFactory->create()->load($productId);
             if ($product->getId()) {
@@ -35,21 +32,14 @@ class CustomProductDisplay extends Template
                 $this->logger->info('Product Name: ' . $product->getName());
                 $this->logger->info('Product Visibility: ' . $product->getVisibility());
                 $this->logger->info('Product Status: ' . $product->getStatus());
-                //$this->logger->info('Product Stock: ' . $product->getExtensionAttributes()->getStockItem()->getIsInStock());
                 $this->logger->info('Product Image: ' . $product->getImage());
-                array_push($products, $product); // Use array_push to add product to array
+                $customProducts[] = $product;
             } else {
                 $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
             }
         }
-        
-        return $products;
-    }
 
-    public function getProductImageUrl($product)
-    {
-        $imageUrl = $this->_storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
-        $this->logger->info('Product Image URL: ' . $imageUrl);
-        return $imageUrl;
+        // Optionally, merge custom products with original search results
+        return array_merge($result, $customProducts);
     }
 }
