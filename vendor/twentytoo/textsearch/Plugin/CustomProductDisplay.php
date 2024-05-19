@@ -28,25 +28,23 @@ class CustomProductDisplay
         foreach ($productIds as $productId) {
             try {
                 $product = $this->productRepository->getById($productId);
-                $customProducts[] = [
-                    'id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'price' => $product->getPrice(), // Assuming you want the product's base price
-                    'image' => $product->getImage(), // Get the product's image URL
-                ];
-                $this->logger->info('Product Data: :  ' . json_encode($product));
+                // $customProducts[] = [
+                //     'id' => $product->getId(),
+                //     'name' => $product->getName(),
+                //     'price' => $product->getPrice(),
+                //     'image' => $product->getImage(),
+                // ];
                 $this->logger->info('Loaded product ID: ' . $product->getId());
                 $this->logger->info('Product Name: ' . $product->getName());
                 $this->logger->info('Product Visibility: ' . $product->getVisibility());
                 $this->logger->info('Product Status: ' . $product->getStatus());
                 $this->logger->info('Product Image: ' . $product->getImage());
             } catch (\Exception $e) {
-                $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
+                $this->logger->error('Error loading product ID ' . $productId . ': ' . $e->getMessage());
             }
         }
 
         // Return only the custom products and ignore the original search results
-        $this->logger->info('customProducts:  ' . json_encode($customProducts));
-        return $customProducts;
+        return $productIds;
     }
 }
