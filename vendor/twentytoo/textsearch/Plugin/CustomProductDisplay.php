@@ -22,29 +22,34 @@ class CustomProductDisplay
         $this->logger->info('Custom products display plugin triggered');
 
         $productIds = [1, 2]; // Static product IDs for testing purposes
-        $this->logger->info('Custom product IDs ----> ' . json_encode($productIds));
+        $this->logger->info('static product IDs ----> ' . json_encode($productIds));
         
         $customProducts = [];
         foreach ($productIds as $productId) {
             try {
                 $product = $this->productRepository->getById($productId);
-                // $customProducts[] = [
-                //     'id' => $product->getId(),
-                //     'name' => $product->getName(),
-                //     'price' => $product->getPrice(),
-                //     'image' => $product->getImage(),
-                // ];
-                $this->logger->info('Loaded product ID: ' . $product->getId());
-                $this->logger->info('Product Name: ' . $product->getName());
-                $this->logger->info('Product Visibility: ' . $product->getVisibility());
-                $this->logger->info('Product Status: ' . $product->getStatus());
-                $this->logger->info('Product Image: ' . $product->getImage());
+                if ($product) {
+                    $customProducts[] = [
+                        'id' => $product->getId(),
+                        'name' => $product->getName(),
+                        'price' => $product->getPrice(),
+                        'image' => $product->getImage(),
+                    ];
+                    $this->logger->info('Loaded product ID: ' . $product->getId());
+                    $this->logger->info('Product Name: ' . $product->getName());
+                    $this->logger->info('Product Visibility: ' . $product->getVisibility());
+                    $this->logger->info('Product Status: ' . $product->getStatus());
+                    $this->logger->info('Product Image: ' . $product->getImage());
+                } else {
+                    $this->logger->error('Product ID ' . $productId . ' not found.');
+                }
             } catch (\Exception $e) {
                 $this->logger->error('Error loading product ID ' . $productId . ': ' . $e->getMessage());
             }
         }
 
         // Return only the custom products and ignore the original search results
-        return $productIds;
+        $this->logger->info('Custom product IDs ----> ' . json_encode($customProducts));
+        return $customProducts;
     }
 }
