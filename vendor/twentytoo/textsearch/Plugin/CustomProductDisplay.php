@@ -28,7 +28,13 @@ class CustomProductDisplay
         foreach ($productIds as $productId) {
             try {
                 $product = $this->productRepository->getById($productId);
-                $customProducts[] = $product;
+                $customProducts[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'price' => $product->getPrice(), // Assuming you want the product's base price
+                    'image' => $product->getImage(), // Get the product's image URL
+                ];
+                $this->logger->info('Product Data: :  ' . json_encode($product));
                 $this->logger->info('Loaded product ID: ' . $product->getId());
                 $this->logger->info('Product Name: ' . $product->getName());
                 $this->logger->info('Product Visibility: ' . $product->getVisibility());
