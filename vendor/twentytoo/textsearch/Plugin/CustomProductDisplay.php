@@ -40,6 +40,7 @@ class CustomProductDisplay
         }
 
         // Return only the custom products and ignore the original search results
+        $this->logger->info('customProducts:  ' . json_encode($customProducts));
         return $customProducts;
     }
 }
