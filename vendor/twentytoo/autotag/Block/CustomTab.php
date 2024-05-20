@@ -38,7 +38,7 @@ class CustomTab extends Template
         $binds = [':order_id' => $productId];
     
         $results = $connection->fetchAll($select, $binds);
-    
+        $this->logger->info("Result data ------> " . json_encode($results));
         // Check if the query returned any results
         if (empty($results)) {
             $this->logger->warning('No tags found for product ID:', ['product_id' => $productId]);

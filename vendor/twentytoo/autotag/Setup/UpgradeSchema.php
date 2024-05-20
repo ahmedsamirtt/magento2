@@ -5,9 +5,25 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\DB\Ddl\Table;
+use Psr\Log\LoggerInterface;
 
 class UpgradeSchema implements UpgradeSchemaInterface
 {
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * Constructor
+     *
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * Upgrade schema for the module.
      *
@@ -48,6 +64,9 @@ class UpgradeSchema implements UpgradeSchemaInterface
 
             // Create the table in the database
             $setup->getConnection()->createTable($table);
+            $this->logger->info('Table "twentytoo_tags" created.');
+        } else {
+            $this->logger->info('Table "twentytoo_tags" already exists.');
         }
 
         $setup->endSetup();
