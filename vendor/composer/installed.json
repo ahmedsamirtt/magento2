@@ -12371,23 +12371,23 @@
         },
         {
             "name": "twentytoo/textsearch",
-            "version": "1.0.48",
-            "version_normalized": "1.0.48.0",
+            "version": "1.0.49",
+            "version_normalized": "1.0.49.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
-                "reference": "b062b51113743bb68be22440a1ebc3fc4d53f51a"
+                "reference": "7855d953b203909c501502d149e8617d66f5b9a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/b062b51113743bb68be22440a1ebc3fc4d53f51a",
-                "reference": "b062b51113743bb68be22440a1ebc3fc4d53f51a",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/7855d953b203909c501502d149e8617d66f5b9a3",
+                "reference": "7855d953b203909c501502d149e8617d66f5b9a3",
                 "shasum": ""
             },
             "require": {
                 "magento/framework": "^102.0.0"
             },
-            "time": "2024-05-20T12:15:41+00:00",
+            "time": "2024-05-20T12:28:09+00:00",
             "type": "magento2-module",
             "installation-source": "dist",
             "autoload": {
@@ -12402,7 +12402,7 @@
             "description": "Magento 2 for neural text search",
             "support": {
                 "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
-                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.48"
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.49"
             },
             "install-path": "../twentytoo/textsearch"
         },

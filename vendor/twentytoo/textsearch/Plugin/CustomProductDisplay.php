@@ -3,6 +3,7 @@ namespace TwentyToo\TextSearch\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection;
 
 class CustomProductDisplay
 {
@@ -17,7 +18,7 @@ class CustomProductDisplay
         $this->logger = $logger;
     }
 
-    public function afterGetItems(\Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $subject, $result)
+    public function afterGetItems(Collection $subject, $result)
     {
         $this->logger->info('Custom products display plugin triggered');
 
@@ -47,11 +48,14 @@ class CustomProductDisplay
             }
         }
 
-        // Combine existing search results with custom products
-        $combinedResults = array_merge($result, $customProducts);
-        $this->logger->info('Combined result count: ' . count($combinedResults));
+        // Append custom products to the existing collection
+        foreach ($customProducts as $product) {
+            $subject->addItem($product);
+        }
 
-        // Return the combined product objects
-        return $combinedResults;
+        $this->logger->info('Final combined result count: ' . count($subject->getItems()));
+
+        // Return the modified collection
+        return $subject;
     }
 }
