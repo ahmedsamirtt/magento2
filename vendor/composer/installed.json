@@ -12253,23 +12253,23 @@
         },
         {
             "name": "twentytoo/autotag",
-            "version": "1.2.24",
-            "version_normalized": "1.2.24.0",
+            "version": "1.2.26",
+            "version_normalized": "1.2.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twentytoo-ai/twentytoo-autotag.git",
-                "reference": "28909458033800b19450c25989d851ec094f13e5"
+                "reference": "ec43ad911ba736c979852dfad6deb9b77115f440"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-autotag/zipball/28909458033800b19450c25989d851ec094f13e5",
-                "reference": "28909458033800b19450c25989d851ec094f13e5",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-autotag/zipball/ec43ad911ba736c979852dfad6deb9b77115f440",
+                "reference": "ec43ad911ba736c979852dfad6deb9b77115f440",
                 "shasum": ""
             },
             "require": {
                 "magento/framework": "^102.0.0"
             },
-            "time": "2024-05-20T15:46:31+00:00",
+            "time": "2024-05-20T16:09:21+00:00",
             "type": "magento2-module",
             "installation-source": "dist",
             "autoload": {
@@ -12284,7 +12284,7 @@
             "description": "Magento 2 custom tab for tags module",
             "support": {
                 "issues": "https://github.com/twentytoo-ai/twentytoo-autotag/issues",
-                "source": "https://github.com/twentytoo-ai/twentytoo-autotag/tree/v1.2.24"
+                "source": "https://github.com/twentytoo-ai/twentytoo-autotag/tree/v1.2.26"
             },
             "install-path": "../twentytoo/autotag"
         },

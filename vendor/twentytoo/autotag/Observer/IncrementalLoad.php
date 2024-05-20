@@ -45,7 +45,7 @@ class IncrementalLoad implements ObserverInterface
         $headers->addHeaders([
             'Content-Type' => 'application/json',
             'language' => 'en',
-            'x-api-key' => '5abo79x1nc',
+            'x-api-key' => 'nm5jubrhx8',
             'uploadType' => 'webhook'
         ]);
         $request = new \Zend\Http\Request();

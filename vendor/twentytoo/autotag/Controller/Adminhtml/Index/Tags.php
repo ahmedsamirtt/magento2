@@ -114,7 +114,7 @@ class Tags extends Action
      
          // Add headers to the Headers instance
          $headers->addHeaders([
-             'api_key' => '5abo79x1nc'
+             'api_key' => 'nm5jubrhx8'
          ]);
      
          $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
