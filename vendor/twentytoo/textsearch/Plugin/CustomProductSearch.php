@@ -21,10 +21,10 @@ class CustomProductSearch
         $this->logger = $logger;
     }
 
-    public function beforeSearch(
-        \Magento\CatalogSearch\Model\Search\Search $subject,
-        $requestName,
-        \Magento\Framework\Api\Search\SearchCriteriaInterface $searchCriteria
+    public function beforeLoad(
+        \Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection $subject,
+        $printQuery = false,
+        $logQuery = false
     ) {
         $this->logger->info('Custom product search plugin triggered');
 
@@ -32,20 +32,9 @@ class CustomProductSearch
         $productIds = [1, 2];
         $this->logger->info('Static product IDs ----> ' . json_encode($productIds));
 
-        // Create a filter for the custom product IDs
-        $filter = $this->filterBuilder
-            ->setField('entity_id')
-            ->setValue($productIds)
-            ->setConditionType('in')
-            ->create();
+        // Modify the search criteria to only include custom product IDs
+        $subject->addAttributeToFilter('entity_id', ['in' => $productIds]);
 
-        // Create a new search criteria with the custom product IDs
-        $this->searchCriteriaBuilder->addFilters([$filter]);
-        $newSearchCriteria = $this->searchCriteriaBuilder->create();
-
-        $this->logger->info('Modified search criteria: ' . json_encode($newSearchCriteria->getFilterGroups()));
-
-        // Return the modified search criteria to replace the original
-        return [$requestName, $newSearchCriteria];
+        return [$printQuery, $logQuery];
     }
 }
