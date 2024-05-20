@@ -2867,9 +2867,9 @@
             'dev_requirement' => false,
         ),
         'twentytoo/textsearch' => array(
-            'pretty_version' => '1.0.47',
-            'version' => '1.0.47.0',
-            'reference' => '55eea1679561dd2edcdce3891c93f29d313897fb',
+            'pretty_version' => '1.0.48',
+            'version' => '1.0.48.0',
+            'reference' => 'b062b51113743bb68be22440a1ebc3fc4d53f51a',
             'type' => 'magento2-module',
             'install_path' => __DIR__ . '/../twentytoo/textsearch',
             'aliases' => array(),

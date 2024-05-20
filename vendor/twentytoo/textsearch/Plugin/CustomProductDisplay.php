@@ -3,7 +3,6 @@ namespace TwentyToo\TextSearch\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Catalog\Model\Product;
 
 class CustomProductDisplay
 {
@@ -47,12 +46,12 @@ class CustomProductDisplay
                 $this->logger->error('Error loading product ID ' . $productId . ': ' . $e->getMessage());
             }
         }
-        // $this->logger->info('pure result ' . print_r($result, true));
+
         // Combine existing search results with custom products
-        $result = $customProducts;
-        // $this->logger->info('customProducts debug: ' . print_r($customProducts, true));
-        // $this->logger->info('Result debug: ' . print_r($result, true));        
+        $combinedResults = array_merge($result, $customProducts);
+        $this->logger->info('Combined result count: ' . count($combinedResults));
+
         // Return the combined product objects
-        return $result;
+        return $combinedResults;
     }
 }
