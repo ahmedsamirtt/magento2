@@ -40,12 +40,12 @@ class IncrementalLoad implements ObserverInterface
 
     private function callInitialLoadApi($preparedData)
     {
-        $apiUrl = 'https://apidev.twentytoo.ai/cms/v1/data-load';
+        $apiUrl = 'https://api.twentytoo.ai/cms/v1/data-load';
         $headers = new \Laminas\Http\Headers();
         $headers->addHeaders([
             'Content-Type' => 'application/json',
             'language' => 'en',
-            'x-api-key' => 'nm5jubrhx8',
+            'x-api-key' => 'UZAuaaWG1V7DCQfcYFLLw5zzbytoCWqn5y7mwlRU',
             'uploadType' => 'webhook'
         ]);
         $request = new \Zend\Http\Request();

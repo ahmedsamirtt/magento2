@@ -70,9 +70,9 @@ class Tags extends Action
 
             // Get product IDs
             $productIds = $this->getAllProductIds();
-            $staticProductIds = ["b6f8207f6a029e48a88d5727e97bcfb069f05281", "7b18377ed501e8f34332cea99d882be7a15d1a48"];
+            //$staticProductIds = ["b6f8207f6a029e48a88d5727e97bcfb069f05281", "7b18377ed501e8f34332cea99d882be7a15d1a48"];
             // Make HTTP request
-            $response = $this->makeHttpRequest($staticProductIds);
+            $response = $this->makeHttpRequest($productIds);
 
             // Log the response
             $this->logger->info('HTTP request response: ' . $response);
@@ -114,7 +114,7 @@ class Tags extends Action
      
          // Add headers to the Headers instance
          $headers->addHeaders([
-             'api_key' => 'nm5jubrhx8'
+             'api_key' => 'UZAuaaWG1V7DCQfcYFLLw5zzbytoCWqn5y7mwlRU'
          ]);
      
          $baseUrl = 'https://api.twentytoo.ai/cms/v1/autotagging/v1/get-tags';
