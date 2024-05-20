@@ -3,7 +3,7 @@
         'name' => 'magento/magento2ce',
         'pretty_version' => '2.3.7-p3',
         'version' => '2.3.7.0-patch3',
-        'reference' => NULL,
+        'reference' => null,
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -919,7 +919,7 @@
         'magento/magento2ce' => array(
             'pretty_version' => '2.3.7-p3',
             'version' => '2.3.7.0-patch3',
-            'reference' => NULL,
+            'reference' => null,
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -2338,8 +2338,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0',
-                1 => '1.0.0',
+                0 => '1.0.0',
+                1 => '1.0',
             ),
         ),
         'psr/simple-cache' => array(
@@ -2701,7 +2701,7 @@
             'version' => '1.20.0.0',
             'reference' => '5f03a781d984aae42cebd18e7912fa80f02ee644',
             'type' => 'metapackage',
-            'install_path' => NULL,
+            'install_path' => null,
             'aliases' => array(),
             'dev_requirement' => true,
         ),
@@ -2836,6 +2836,15 @@
             'replaced' => array(
                 0 => '3.1.0',
             ),
+        ),
+        'twentytoo/autotag' => array(
+            'pretty_version' => '1.2.23',
+            'version' => '1.2.23.0',
+            'reference' => '4ee68f89bb8b402903ad2efa1e1a798d67564cbc',
+            'type' => 'magento2-module',
+            'install_path' => __DIR__ . '/../twentytoo/autotag',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'videlalvaro/php-amqplib' => array(
             'dev_requirement' => false,

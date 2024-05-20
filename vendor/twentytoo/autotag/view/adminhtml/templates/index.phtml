@@ -1,0 +1,30 @@
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/templates/index.phtml -->
+<button id="get-tags-button" class="action-default">
+    <?= __('Get Tags') ?>
+</button>
+
+<div id="response-container"></div>
+
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(document).ready(function() {
+            $('#get-tags-button').click(function() {
+                $.ajax({
+                    url: '<?php echo $block->getUrl('adminhtml/index/tags'); ?>',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message); // Update content
+                        } else {
+                            alert('Error: ' + response.message); // Error message
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error: ' + error); // AJAX error
+                    }
+                });
+            });
+        });
+    });
+</script>

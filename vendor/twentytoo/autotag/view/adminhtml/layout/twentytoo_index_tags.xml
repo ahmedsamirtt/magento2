@@ -1,0 +1,9 @@
+<!-- app/code/TwentyToo/AutoTag/view/adminhtml/layout/twentytoo_index_tags.xml -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="adminhtml_config" />
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Backend\Block\Template" template="TwentyToo_AutoTag::index.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
