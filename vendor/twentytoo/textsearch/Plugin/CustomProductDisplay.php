@@ -47,7 +47,7 @@ class CustomProductDisplay
                 $this->logger->error('Error loading product ID ' . $productId . ': ' . $e->getMessage());
             }
         }
-        $this->logger->error('result ' . $result . ' not found.');
+        $this->logger->info('pure result ' . $result);
         // Combine existing search results with custom products
         $result = array_merge($result, $customProducts);
         $this->logger->info('customProducts debug: ' . print_r($customProducts->debug(), true));
