@@ -23,18 +23,13 @@ class CustomProductDisplay
 
         $productIds = [1, 2]; // Static product IDs for testing purposes
         $this->logger->info('static product IDs ----> ' . json_encode($productIds));
-        
+
         $customProducts = [];
         foreach ($productIds as $productId) {
             try {
                 $product = $this->productRepository->getById($productId);
                 if ($product) {
-                    $customProducts[] = [
-                        'id' => $product->getId(),
-                        'name' => $product->getName(),
-                        'price' => $product->getPrice(),
-                        'image' => $product->getImage(),
-                    ];
+                    $customProducts[] = $product;
                     $this->logger->info('Loaded product ID: ' . $product->getId());
                     $this->logger->info('Product Name: ' . $product->getName());
                     $this->logger->info('Product Visibility: ' . $product->getVisibility());
@@ -48,8 +43,11 @@ class CustomProductDisplay
             }
         }
 
-        // Return only the custom products and ignore the original search results
-        $this->logger->info('Custom product IDs ----> ' . json_encode($customProducts));
+        // Return the custom product objects and ignore the original search results
+        $this->logger->info('Custom product IDs ----> ' . json_encode(array_map(function($product) {
+            return $product->getId();
+        }, $customProducts)));
+
         return $customProducts;
     }
 }
