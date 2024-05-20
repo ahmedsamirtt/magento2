@@ -21,15 +21,19 @@ class CustomProductDisplay
     {
         $this->logger->info('Custom products display plugin triggered');
 
-        $productIds = [1, 2]; // Static product IDs for testing purposes
-        $this->logger->info('static product IDs ----> ' . json_encode($productIds));
+        // Static product IDs for testing purposes
+        $productIds = [1, 2];
+        $this->logger->info('Static product IDs ----> ' . json_encode($productIds));
 
         $customProducts = [];
         foreach ($productIds as $productId) {
             try {
-                $product = $this->productRepository->getById($productId);
+                // Fetch the product object by its ID
+                $product = $this->productRepository->getById((int)$productId); // Ensure ID is an integer
                 if ($product) {
+                    // Add the product object to the customProducts array
                     $customProducts[] = $product;
+                    // Log details for debugging
                     $this->logger->info('Loaded product ID: ' . $product->getId());
                     $this->logger->info('Product Name: ' . $product->getName());
                     $this->logger->info('Product Visibility: ' . $product->getVisibility());
@@ -43,11 +47,12 @@ class CustomProductDisplay
             }
         }
 
-        // Return the custom product objects and ignore the original search results
+        // Log the custom product IDs as integers for clarity
         $this->logger->info('Custom product IDs ----> ' . json_encode(array_map(function($product) {
-            return $product->getId();
+            return (int)$product->getId(); // Ensure IDs are integers
         }, $customProducts)));
 
+        // Return the custom product objects, which are instances of \Magento\Catalog\Model\Product
         return $customProducts;
     }
 }
