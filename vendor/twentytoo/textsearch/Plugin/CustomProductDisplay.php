@@ -3,6 +3,7 @@ namespace TwentyToo\TextSearch\Plugin;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Catalog\Model\Product;
 
 class CustomProductDisplay
 {
@@ -47,8 +48,10 @@ class CustomProductDisplay
             }
         }
 
-        // Return the custom product objects, which are instances of \Magento\Catalog\Model\Product
-        $this->logger->info('Product data: ' . print_r($product->debug(), true));
-        return $customProducts;
+        // Combine existing search results with custom products
+        $result = array_merge($result, $customProducts);
+
+        // Return the combined product objects
+        return $result;
     }
 }
