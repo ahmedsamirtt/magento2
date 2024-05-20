@@ -69,7 +69,7 @@ class IncrementalLoad implements ObserverInterface
         $payload = [
             'title' => $productData['name'],
             'description' => $productData['meta_description'],
-            'img' => $imageUrl,
+            //'img' => $imageUrl,
             'id' => $productId,
             // 'target_audience' => $productData['tags']
         ];
