@@ -4,6 +4,10 @@ namespace TwentyToo\AutoTag\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use Magento\Catalog\Model\ProductRepository;
+use Laminas\Http\Client as HttpClient;
+use Laminas\Http\Headers;
+use Laminas\Http\Request;
+
 class IncrementalLoad implements ObserverInterface
 {
     protected $logger;
@@ -12,7 +16,7 @@ class IncrementalLoad implements ObserverInterface
 
     public function __construct(
         LoggerInterface $logger,
-        \Zend\Http\Client $httpClient,
+        HttpClient $httpClient,
         ProductRepository $productRepository
     ) {
         $this->logger = $logger;
@@ -30,7 +34,7 @@ class IncrementalLoad implements ObserverInterface
         // Log product data
         $this->logger->info('Incremental Product Data: ' . json_encode($product->getData()));
 
-        //Prepare data for initial Laod
+        // Prepare data for initial Load
         $parsedData = json_decode(json_encode($product->getData()), true);
         $payload = $this->prepareProductData($product->getId(), $parsedData);
 
@@ -41,21 +45,22 @@ class IncrementalLoad implements ObserverInterface
     private function callInitialLoadApi($preparedData)
     {
         $apiUrl = 'https://api.twentytoo.ai/cms/v1/data-load';
-        $headers = new \Laminas\Http\Headers();
+        $headers = new Headers();
         $headers->addHeaders([
             'Content-Type' => 'application/json',
             'language' => 'en',
             'x-api-key' => 'UZAuaaWG1V7DCQfcYFLLw5zzbytoCWqn5y7mwlRU',
             'uploadType' => 'webhook'
         ]);
-        $request = new \Zend\Http\Request();
+        $request = new Request();
         $request->setUri($apiUrl);
-        $request->setMethod(\Zend\Http\Request::METHOD_POST);
+        $request->setMethod(Request::METHOD_POST);
         $request->setHeaders($headers);
         $request->setContent(json_encode($preparedData));
-    
-        $response = $this->httpClient->send($request);
-    
+
+        $this->httpClient->setRequest($request);
+        $response = $this->httpClient->send();
+
         if ($response->isSuccess()) {
             $this->logger->info('API call successful.');
         } else {
@@ -69,7 +74,7 @@ class IncrementalLoad implements ObserverInterface
         $payload = [
             'title' => $productData['name'],
             'description' => $productData['meta_description'],
-            //'img' => $imageUrl,
+            'img' => $imageUrl,
             'id' => $productId,
             // 'target_audience' => $productData['tags']
         ];
@@ -79,14 +84,14 @@ class IncrementalLoad implements ObserverInterface
 
     private function getImageUrl($productData)
     {
-        // $imageUrl = '';
         $productId = $productData['entity_id'];
         $product = $this->productRepository->getById($productId);
         $mediaGalleryEntries = $product->getMediaGalleryEntries();
+        
         foreach ($mediaGalleryEntries as $mediaGalleryEntry) {
             if (isset($mediaGalleryEntry['file'])) {
                 $baseUrl = 'http://ec2-3-139-56-38.us-east-2.compute.amazonaws.com/pub/media/catalog/product';
-                $imageUrl = $baseUrl . $mediaGalleryEntry['file'];
+                $imageUrl = $baseUrl . $mediaGalleryEntry->getFile();
                 $this->logger->info("Exposed Public Image --> " . $imageUrl);
                 return $imageUrl;
             }
