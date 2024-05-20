@@ -47,12 +47,8 @@ class CustomProductDisplay
             }
         }
 
-        // Log the custom product IDs as integers for clarity
-        $this->logger->info('Custom product IDs ----> ' . json_encode(array_map(function($product) {
-            return (int)$product->getId(); // Ensure IDs are integers
-        }, $customProducts)));
-
         // Return the custom product objects, which are instances of \Magento\Catalog\Model\Product
+        $this->logger->info('Product data: ' . print_r($product->debug(), true));
         return $customProducts;
     }
 }
