@@ -34,13 +34,24 @@ class CustomProductSearch
 
         // Retrieve product IDs from session
         $productIds = $this->session->getTextSearchProductIds();
-        $this->logger->info('Before If Dynamic product IDs ----> ' . json_encode($productIds));
+        if ($productIds === null) {
+            $this->logger->info('No product IDs found in session.');
+        } else {
+            $this->logger->info('Product IDs from session: ' . json_encode($productIds));
+        }
+
         if (!empty($productIds)) {
             $this->logger->info('Dynamic product IDs ----> ' . json_encode($productIds));
-            $subject->addAttributeToFilter('entity_id', ['in' => [1,2]]);
+            $subject->addAttributeToFilter('entity_id', ['in' => $productIds]);
+        } else {
+            $this->logger->info('Fallback to static product IDs ----> [1, 2]');
+            $subject->addAttributeToFilter('entity_id', ['in' => [1, 2]]);
         }
-        $subject->addAttributeToFilter('entity_id', ['in' => [1,2]]);
+
+        // Log final SQL query for debugging
+        $this->logger->info('Final SQL Query: ' . $subject->getSelect()->__toString());
         $this->logger->info('<--------------Done-------------->');
+
         return [$printQuery, $logQuery];
     }
 }
