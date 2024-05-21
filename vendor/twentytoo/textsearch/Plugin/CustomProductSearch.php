@@ -39,7 +39,8 @@ class CustomProductSearch
             $this->logger->info('Dynamic product IDs ----> ' . json_encode($productIds));
             $subject->addAttributeToFilter('entity_id', ['in' => [1,2]]);
         }
-
+        $subject->addAttributeToFilter('entity_id', ['in' => [1,2]]);
+        $this->logger->info('<--------------Done-------------->');
         return [$printQuery, $logQuery];
     }
 }
