@@ -40,14 +40,20 @@ class TextSearch implements ObserverInterface
             $response = $this->callApi($query);
             $this->logger->info('API Response: ' . json_encode($response));
 
-            if (isset($response['productIds']) && !empty($response['productIds'])) {
-                $productIds = $response['productIds'];
+            $productIds = [];
+            if (!empty($response['message'])) {
+                foreach ($response['message'] as $product) {
+                    if (!empty($product['product_id'])) {
+                        $productIds[] = $product['product_id'];
+                    }
+                }
+            }
+
+            if (!empty($productIds)) {
                 $this->session->setTextSearchProductIds($productIds);
-                $this->logger->info("Product IDs set from API response: " . json_encode($productIds));
+                $this->logger->info('Set product IDs in session: ' . json_encode($productIds));
             } else {
-                $productIds = [1, 2]; // Static product IDs for fallback
-                $this->session->setTextSearchProductIds($productIds);
-                $this->logger->info("Fallback to static product IDs.");
+                $this->logger->info('No product IDs received from API');
             }
         }
     }
