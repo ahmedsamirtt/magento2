@@ -1,0 +1,15 @@
+{
+    "name": "twentytoo/textsearch",
+    "description": "Magento 2 for neural text search",
+    "type": "magento2-module",
+    "version": "1.0.52",
+    "require": {
+        "magento/framework": "^102.0.0"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {
+            "TwentyToo\\TextSearch\\": ""
+        }
+    }
+}

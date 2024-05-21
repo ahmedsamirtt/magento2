@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d347176365e89c623f802f6f2fffac3a",
+    "content-hash": "88ff6ea7eb6ba23d6a665ec1964cd446",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -6306,6 +6306,40 @@
                 "source": "https://github.com/twentytoo-ai/twentytoo-autotag/tree/v1.2.32"
             },
             "time": "2024-05-20T20:16:17+00:00"
+        },
+        {
+            "name": "twentytoo/textsearch",
+            "version": "1.0.52",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
+                "reference": "c65b47a0555262ecc32cf40062ae3da460bb3561"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/c65b47a0555262ecc32cf40062ae3da460bb3561",
+                "reference": "c65b47a0555262ecc32cf40062ae3da460bb3561",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "^102.0.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "TwentyToo\\TextSearch\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Magento 2 for neural text search",
+            "support": {
+                "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.52"
+            },
+            "time": "2024-05-20T12:55:38+00:00"
         },
         {
             "name": "webimpress/safe-writer",

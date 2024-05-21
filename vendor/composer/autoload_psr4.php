@@ -14,6 +14,7 @@ return array(
     'Webimpress\\SafeWriter\\' => array($vendorDir . '/webimpress/safe-writer/src'),
     'Vault\\' => array($vendorDir . '/csharpru/vault-php/src'),
     'VaultTransports\\' => array($vendorDir . '/csharpru/vault-php-guzzle6-transport/src'),
+    'TwentyToo\\TextSearch\\' => array($vendorDir . '/twentytoo/textsearch'),
     'TwentyToo\\AutoTag\\' => array($vendorDir . '/twentytoo/autotag'),
     'TrueBV\\' => array($vendorDir . '/true/punycode/src'),
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
