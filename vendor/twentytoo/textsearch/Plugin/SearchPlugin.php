@@ -28,7 +28,7 @@ class SearchPlugin
         $this->logger->info('SearchPlugin: Plugin executed.');
 
         // Retrieve the search query text
-        $query = $subject->getQueryText();
+        $query = $subject->getSearchQuery();
         $this->logger->info('Search query: ' . $query);
 
         // Fetch product IDs from the API
