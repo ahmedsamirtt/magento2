@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "027c857a7c93c3b61d5a516b4e1fe679",
+    "content-hash": "0c3860374a097d12116bb39a7cd01fc2",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -6274,6 +6274,40 @@
             "time": "2018-01-15T15:26:51+00:00"
         },
         {
+            "name": "twentytoo/textsearch",
+            "version": "1.0.63",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
+                "reference": "1d0699b2402f00cc4accc80f1d5ec75554196768"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/1d0699b2402f00cc4accc80f1d5ec75554196768",
+                "reference": "1d0699b2402f00cc4accc80f1d5ec75554196768",
+                "shasum": ""
+            },
+            "require": {
+                "magento/framework": "^102.0.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "TwentyToo\\TextSearch\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Magento 2 for neural text search",
+            "support": {
+                "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.63"
+            },
+            "time": "2024-05-22T11:51:37+00:00"
+        },
+        {
             "name": "webimpress/safe-writer",
             "version": "2.1.0",
             "source": {
@@ -12107,5 +12141,5 @@
         "lib-libxml": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.6.0"
 }
