@@ -1,0 +1,24 @@
+{
+    "name": "gigadesign/module-google-custom-search",
+    "description": "Replaces Magento catalog search with Google Custom Search Engine",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Mark van der Werf",
+            "email": "info@gigadesign.nl"
+        }
+    ],
+    "require": {
+        "gigadesign/module-google-client": "^1.0",
+        "magento/framework": ">=102.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gigadesign\\GoogleCustomSearch\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

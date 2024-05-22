@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="catalog">
+            <group id="search">
+                <!-- Google Custom Search Engine -->
+                <field id="googlecustomsearch_api_key" translate="label" type="text" sortOrder="81"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Custom Search API Key</label>
+                    <depends>
+                        <field id="engine">googlecustomsearch</field>
+                    </depends>
+                </field>
+                <field id="googlecustomsearch_engine_id" translate="label" type="text" sortOrder="82" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Google Custom Search Engine ID</label>
+                    <depends>
+                        <field id="engine">googlecustomsearch</field>
+                    </depends>
+                </field>
+                <field id="googlecustomsearch_enabled" translate="label" type="select" sortOrder="83" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Google Custom Search Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="engine">googlecustomsearch</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

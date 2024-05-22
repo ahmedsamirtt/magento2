@@ -41,6 +41,7 @@
         "colinmollenhour/php-redis-session-abstract": "~1.4.0",
         "composer/composer": "^1.9 || ^2.0",
         "elasticsearch/elasticsearch": "~2.0||~5.1||~6.1||~7.6",
+        "gigadesign/module-google-custom-search": "^1.0",
         "guzzlehttp/guzzle": "^6.3.3",
         "laminas/laminas-captcha": "^2.7.1",
         "laminas/laminas-code": "~3.4.1",

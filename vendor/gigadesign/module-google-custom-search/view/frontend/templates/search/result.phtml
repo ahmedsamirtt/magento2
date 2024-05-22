@@ -1,0 +1,23 @@
+<?php
+/** @var $block \Gigadesign\GoogleCustomSearch\Block\SearchResult */
+$results = $block->getSearchResultCollection();
+?>
+<?php if (count($results->getItems())): ?>
+<ul class="custom-search results">
+    <?php
+    /** @var \Google_Service_Customsearch_Result $result */
+    foreach ($results->getItems() as $result):
+    ?>
+    <li>
+        <a href="<?= $result->getLink() ?>">
+            <?= $result->getTitle() ?>
+        </a>
+        <p>
+            <?= $result->getSnippet(); ?>
+        </p>
+    </li>
+    <?php endforeach; ?>
+</ul>
+<?php else: ?>
+    <?= $block->escapeHtml(__('Your search returned no results.')) ?>
+<?php endif; ?>
