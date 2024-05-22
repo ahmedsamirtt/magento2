@@ -27,16 +27,20 @@ class SearchPlugin
         // Log that the plugin is being executed
         $this->logger->info('SearchPlugin: Plugin executed.');
 
-        $result = $proceed();
-        $query = $subject->getSearchCriteria()->getQuery()->getQueryText(); // Assuming this is how you get the query
+        // Retrieve the search query text
+        $query = $subject->getQueryText();
+        $this->logger->info('Search query: ' . $query);
+
+        // Fetch product IDs from the API
         $productIds = $this->apiService->getProductIdsFromApi($query);
         
         if (!empty($productIds)) {
+            $this->logger->info('Product IDs from API: ' . implode(', ', $productIds));
             $productCollection = $this->productCollectionFactory->create();
             $productCollection->addAttributeToFilter('entity_id', ['in' => $productIds]);
             return $productCollection->getItems();
         }
 
-        return $result;
+        return $proceed();
     }
 }
