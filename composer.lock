@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c3860374a097d12116bb39a7cd01fc2",
+    "content-hash": "a3ca45f02c236fa6535cca4fb4a4e19a",
     "packages": [
         {
             "name": "braintree/braintree_php",
@@ -6275,16 +6275,16 @@
         },
         {
             "name": "twentytoo/textsearch",
-            "version": "1.0.68",
+            "version": "1.0.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twentytoo-ai/twentytoo-textsearch.git",
-                "reference": "01dddd941e9e7dafeb466b42d350ca674714a30b"
+                "reference": "8e1b5669924368e8229175d724ae8d70d7b6737f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/01dddd941e9e7dafeb466b42d350ca674714a30b",
-                "reference": "01dddd941e9e7dafeb466b42d350ca674714a30b",
+                "url": "https://api.github.com/repos/twentytoo-ai/twentytoo-textsearch/zipball/8e1b5669924368e8229175d724ae8d70d7b6737f",
+                "reference": "8e1b5669924368e8229175d724ae8d70d7b6737f",
                 "shasum": ""
             },
             "require": {
@@ -6303,9 +6303,9 @@
             "description": "Magento 2 for neural text search",
             "support": {
                 "issues": "https://github.com/twentytoo-ai/twentytoo-textsearch/issues",
-                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.68"
+                "source": "https://github.com/twentytoo-ai/twentytoo-textsearch/tree/v1.0.29"
             },
-            "time": "2024-05-23T07:04:32+00:00"
+            "time": "2024-05-16T12:10:43+00:00"
         },
         {
             "name": "webimpress/safe-writer",
