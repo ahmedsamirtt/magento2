@@ -31,7 +31,7 @@ class SearchQueryObserver implements ObserverInterface
 
         // Get the search query from the request
         $query = $observer->getControllerAction();
-        $queryText = $controller->getRequest()->getParam('q');
+        $queryText = $query->getRequest()->getParam('q');
         $this->logger->info('Search query: ' . $queryText);
 
         // Fetch product IDs from the API
