@@ -3,36 +3,33 @@
 namespace TwentyToo\TextSearch\Plugin;
 
 use Psr\Log\LoggerInterface;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Catalog\Model\ResourceModel\Product\Collection as ProductCollection;
+use Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection as SearchCollection;
 
 class SearchResultPlugin
 {
     protected $logger;
-    protected $session;
 
     public function __construct(
-        LoggerInterface $logger,
-        SessionManagerInterface $session
+        LoggerInterface $logger
     ) {
         $this->logger = $logger;
-        $this->session = $session;
     }
 
-    public function aroundLoad(ProductCollection $subject, callable $proceed)
+    public function aroundLoad(SearchCollection $subject, callable $proceed)
     {
         // Log entering the plugin
         $this->logger->info('SearchResultPlugin: In the plugin.');
 
-        // Check if custom product IDs are set in the session
-        $productIds = [1,1,1];
+        // Check if custom product IDs are set (for example, you can retrieve them from session or a service)
+        $productIds = [1, 1, 1]; // This should be dynamically fetched based on your requirements
         if ($productIds) {
             $this->logger->info('Custom Product IDs found: ' . json_encode($productIds));
 
-            // Replace the search results with the custom product IDs
+            // Replace the search results with the custom product IDs by modifying the select query
+            $subject->getSelect()->reset(\Magento\Framework\DB\Select::WHERE);
             $subject->addFieldToFilter('entity_id', ['in' => $productIds]);
         } else {
-            $this->logger->info('No custom Product IDs found in session.');
+            $this->logger->info('No custom Product IDs found.');
         }
 
         // Proceed with the original load method
