@@ -6,18 +6,22 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
 use TwentyToo\TextSearch\Service\ApiService;
+use Magento\Framework\Session\SessionManagerInterface;
 
 class SearchQueryObserver implements ObserverInterface
 {
     protected $logger;
     protected $apiService;
+    protected $session;
 
     public function __construct(
         LoggerInterface $logger,
-        ApiService $apiService
+        ApiService $apiService,
+        SessionManagerInterface $session
     ) {
         $this->logger = $logger;
         $this->apiService = $apiService;
+        $this->session = $session;
     }
 
     public function execute(Observer $observer)
@@ -26,33 +30,17 @@ class SearchQueryObserver implements ObserverInterface
         $this->logger->info('SearchQueryObserver: Observer executed.');
 
         // Get the search query from the request
-        $request = $observer->getData('request');
-        $query = $request->getParam('q');
-        $this->logger->info('Search query: ' . $query);
+        $query = $observer->getData('query');
+        $queryText = $query->getQueryText();
+        $this->logger->info('Search query: ' . $queryText);
 
         // Fetch product IDs from the API
-        $productIds = $this->apiService->getProductIdsFromApi($query);
+        $productIds = $this->apiService->getProductIdsFromApi($queryText);
         $this->logger->info('Service Products: ' . json_encode($productIds));
 
+        // Save the product IDs to the session for use in the plugin
         if (!empty($productIds)) {
-            // Replace search results with the custom product IDs
-            $this->replaceSearchResults($observer, [1]);
+            $this->session->setCustomProductIds($productIds);
         }
-    }
-
-    protected function replaceSearchResults(Observer $observer, array $productIds)
-    {
-        $this->logger->info('Replacing search results with custom product IDs.');
-        
-        // Get the search results collection
-        $collection = $observer->getData('collection');
-
-        // Clear existing items and set new product IDs
-        $collection->clear();
-        $collection->addFieldToFilter('entity_id', ['in' => $productIds]);
-        $collection->load();
-
-        // Log the replacement action
-        $this->logger->info('Search results replaced with product IDs: ' . implode(', ', $productIds));
     }
 }
