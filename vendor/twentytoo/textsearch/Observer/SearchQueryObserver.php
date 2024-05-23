@@ -37,7 +37,7 @@ class SearchQueryObserver implements ObserverInterface
 
         if (!empty($productIds)) {
             $this->logger->info('Product IDs from API: ' . implode(', ', $productIds));
-            $this->replaceSearchResults($productIds);
+            $this->replaceSearchResults([1]);
         }
     }
 
