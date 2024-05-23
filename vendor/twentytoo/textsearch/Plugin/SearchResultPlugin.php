@@ -25,7 +25,7 @@ class SearchResultPlugin
         $this->logger->info('SearchResultPlugin: In the plugin.');
 
         // Check if custom product IDs are set in the session
-        $productIds = $this->session->getCustomProductIds();
+        $productIds = [1,1,1];
         if ($productIds) {
             $this->logger->info('Custom Product IDs found: ' . json_encode($productIds));
 
