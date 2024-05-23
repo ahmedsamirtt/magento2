@@ -26,21 +26,19 @@ class SearchQueryObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        // Log that the observer is being executed
         $this->logger->info('SearchQueryObserver: Observer executed.');
 
-        // Get the search query from the request
         $query = $observer->getControllerAction();
         $queryText = $query->getRequest()->getParam('q');
         $this->logger->info('Search query: ' . $queryText);
 
-        // Fetch product IDs from the API
         $productIds = $this->apiService->getProductIdsFromApi($queryText);
         $this->logger->info('Service Products: ' . json_encode($productIds));
 
-        // Save the product IDs to the session for use in the plugin
         if (!empty($productIds)) {
             $this->session->setCustomProductIds($productIds);
+            $this->session->setSearchQuery($queryText);
+            $this->logger->info('Session product IDs and query set.');
         }
     }
 }
