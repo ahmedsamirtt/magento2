@@ -33,7 +33,7 @@ class SearchQueryObserver implements ObserverInterface
         $this->logger->info('Search query: ' . $query);
 
         $productIds = $this->apiService->getProductIdsFromApi($query);
-        $this->logger->info('Service Products ' . $productIds);
+        $this->logger->info('Service Products ' . json_encode($productIds));
 
         if (!empty($productIds)) {
             $this->logger->info('Product IDs from API: ' . implode(', ', $productIds));
