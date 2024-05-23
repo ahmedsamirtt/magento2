@@ -20,17 +20,13 @@ class SearchResultPlugin
         // Log entering the plugin
         $this->logger->info('SearchResultPlugin: In the plugin.');
 
-        // Check if custom product IDs are set (for example, you can retrieve them from session or a service)
-        $productIds = [1, 1, 1]; // This should be dynamically fetched based on your requirements
-        if ($productIds) {
-            $this->logger->info('Custom Product IDs found: ' . json_encode($productIds));
+        // Use static product IDs for testing
+        $productIds = [1, 2];
+        $this->logger->info('Static Product IDs for testing: ' . json_encode($productIds));
 
-            // Replace the search results with the custom product IDs by modifying the select query
-            $subject->getSelect()->reset(\Magento\Framework\DB\Select::WHERE);
-            $subject->addFieldToFilter('entity_id', ['in' => $productIds]);
-        } else {
-            $this->logger->info('No custom Product IDs found.');
-        }
+        // Clear the existing filters and add a new filter with static product IDs
+        $subject->getSelect()->reset(\Magento\Framework\DB\Select::WHERE);
+        $subject->addFieldToFilter('entity_id', ['in' => $productIds]);
 
         // Proceed with the original load method
         $result = $proceed();
