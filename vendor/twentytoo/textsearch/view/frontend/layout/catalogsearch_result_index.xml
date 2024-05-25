@@ -5,8 +5,6 @@
         <referenceContainer name="content">
             <!-- Custom Block Definition -->
             <block class="TwentyToo\TextSearch\Block\CustomProductDisplay" name="custom.product.display" template="TwentyToo_TextSearch::custom_product_display.phtml">
-                <arguments>
-                </arguments>
             </block>
         </referenceContainer>
     </body>
