@@ -1,8 +1,13 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <attribute name="class" value="page-products"/>
         <referenceContainer name="content">
-            <block class="TwentyToo\TextSearch\Block\CustomProductDisplay" name="custom_product_display" template="TwentyToo_TextSearch::custom_product_display.phtml" />
+            <!-- Custom Block Definition -->
+            <block class="TwentyToo\TextSearch\Block\CustomProductDisplay" name="custom.product.display" template="TwentyToo_TextSearch::custom_product_display.phtml">
+                <arguments>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>
