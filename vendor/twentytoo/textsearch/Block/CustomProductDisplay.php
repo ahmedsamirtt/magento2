@@ -32,13 +32,13 @@ class CustomProductDisplay extends Template
         
         if (!$productIds) {
             $this->logger->info('No product IDs found in the registry.');
-            return [];
+            // return [];
         }
 
         $this->logger->info('Custom products display Block ----> ' . json_encode($productIds));
-
+        $staticIds = [1,1,1,1,1,1,1,1,1,1,1];
         $products = [];
-        foreach ($productIds as $productId) {
+        foreach ($staticIds as $productId) {
             $product = $this->productFactory->create()->load($productId);
             if ($product->getId()) {
                 $this->logger->info('Loaded product ID: ' . $product->getId());
