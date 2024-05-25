@@ -4,38 +4,46 @@ namespace TwentyToo\TextSearch\Block;
 use Magento\Framework\View\Element\Template;
 use Magento\Catalog\Model\ProductFactory;
 use Psr\Log\LoggerInterface;
-use Magento\Framework\Session\SessionManagerInterface;
 
 class CustomProductDisplay extends Template
 {
     protected $productFactory;
     protected $logger;
-    protected $session;
 
     public function __construct(
         Template\Context $context,
         ProductFactory $productFactory,
         LoggerInterface $logger,
-        SessionManagerInterface $session,
         array $data = []
     ) {
         $this->productFactory = $productFactory;
         $this->logger = $logger;
-        $this->session = $session;
         parent::__construct($context, $data);
     }
 
     public function getProducts()
     {
-        $this->logger->info('Custom Product Display Block');
-        $productIds = $this->session->getCustomProductIds();
-        $searchQuery = $this->session->getSearchQuery();
-
-        $this->logger->info('Custom products display ----> Product IDs: ' . json_encode($productIds));
-        $this->logger->info('Search Query: ' . $searchQuery);
+        // Static product IDs for testing purposes
+        $productIds = [1, 2, 1];
+        $this->logger->info('Custom products display ----> ' . json_encode($productIds));
         
-
-        return [1,1,1,1];
+        $products = [];
+        foreach ($productIds as $productId) {
+            $product = $this->productFactory->create()->load($productId);
+            if ($product->getId()) {
+                $this->logger->info('Loaded product ID: ' . $product->getId());
+                $this->logger->info('Product Name: ' . $product->getName());
+                $this->logger->info('Product Visibility: ' . $product->getVisibility());
+                $this->logger->info('Product Status: ' . $product->getStatus());
+                //$this->logger->info('Product Stock: ' . $product->getExtensionAttributes()->getStockItem()->getIsInStock());
+                $this->logger->info('Product Image: ' . $product->getImage());
+                array_push($products, $product); // Use array_push to add product to array
+            } else {
+                $this->logger->info('Product ID ' . $productId . ' could not be loaded.');
+            }
+        }
+        
+        return $products;
     }
 
     public function getProductImageUrl($product)
