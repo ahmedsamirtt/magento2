@@ -5,7 +5,7 @@
                 <a href="<?php echo $product->getProductUrl(); ?>">
                     <img src="<?php echo $block->getProductImageUrl($product); ?>" alt="<?php echo $block->escapeHtml($product->getName()); ?>" />
                     <h2><?php echo $block->escapeHtml($product->getName()); ?></h2>
-                    <span><?php echo $block->escapeHtml($block->formatPrice($product->getFinalPrice())); ?></span>
+                    <span><?php echo $block->escapeHtml($product->getPrice()); ?></span>
                 </a>
             </div>
         <?php endforeach; ?>
