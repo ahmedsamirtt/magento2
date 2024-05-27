@@ -1,37 +1,15 @@
-<?php
-/** @var \TwentyToo\TextSearch\Block\CustomSearchResults $block */
-$products = $block->getLoadedProductCollection();
-?>
-<?php if (!empty($products)): ?>
-    <div class="products wrapper grid products-grid">
-        <ol class="products list items product-items">
-            <?php foreach ($products as $product): ?>
-                <li class="product-item">
-                    <div class="product-item-info">
-                        <a href="<?php echo $product->getProductUrl(); ?>" title="<?php echo $product->getName(); ?>" class="product-item-photo">
-                            <span class="product-image-container">
-                                <span class="product-image-wrapper">
-                                    <img class="product-image-photo" src="<?php echo $block->getProductImageUrl($product); ?>" alt="<?php echo $product->getName(); ?>">
-                                </span>
-                            </span>
-                        </a>
-                        <div class="product-item-details">
-                            <strong class="product-item-name">
-                                <a href="<?php echo $product->getProductUrl(); ?>"><?php echo $product->getName(); ?></a>
-                            </strong>
-                            <div class="price-box price-final_price" data-role="priceBox" data-product-id="<?php echo $product->getId(); ?>">
-                                <span class="price-container price-final_price tax weee">
-                                    <span id="product-price-<?php echo $product->getId(); ?>" data-price-amount="<?php echo $product->getFinalPrice(); ?>" data-price-type="finalPrice" class="price-wrapper">
-                                        <span class="price"><?php echo $block->escapeHtml($block->formatPrice($product->getFinalPrice())); ?></span>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            <?php endforeach; ?>
-        </ol>
+<?php if ($block->getProducts()): ?>
+    <div class="products-grid">
+        <?php foreach ($block->getProducts() as $product): ?>
+            <div class="product-item">
+                <a href="<?php echo $product->getProductUrl(); ?>">
+                    <img src="<?php echo $block->getProductImageUrl($product); ?>" alt="<?php echo $block->escapeHtml($product->getName()); ?>" />
+                    <h2><?php echo $block->escapeHtml($product->getName()); ?></h2>
+                    <span><?php echo $block->escapeHtml($block->formatPrice($product->getFinalPrice())); ?></span>
+                </a>
+            </div>
+        <?php endforeach; ?>
     </div>
 <?php else: ?>
-    <div class="message info empty"><div><?php echo __('No products found.'); ?></div></div>
+    <p>No products found ya Samir.</p>
 <?php endif; ?>
