@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 namespace TwentyToo\TextSearch\Block;
 
 use Magento\Framework\View\Element\Template;
@@ -32,7 +32,7 @@ class CustomProductDisplay extends Template
         
         if (!$productIds) {
             $this->logger->info('No product IDs found in the registry.');
-            // return [];
+             return [];
         }
 
         $this->logger->info('Custom products display Block ----> ' . json_encode($productIds));
@@ -61,4 +61,4 @@ class CustomProductDisplay extends Template
         $this->logger->info('Product Image URL: ' . $imageUrl);
         return $imageUrl;
     }
-}
+} -->
