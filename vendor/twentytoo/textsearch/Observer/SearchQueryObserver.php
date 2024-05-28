@@ -43,6 +43,7 @@ class SearchQueryObserver implements ObserverInterface
         $query = $observer->getControllerAction();
         $queryText = $query->getRequest()->getParam('q');
         $this->logger->info('Search query: ' . $queryText);
+        $this->logger->info('Collection: check collection.');
         $collection = $observer->getEvent()->getCollection();
         $collection->clear();
         $this->logger->info('Collection search cleared.');
