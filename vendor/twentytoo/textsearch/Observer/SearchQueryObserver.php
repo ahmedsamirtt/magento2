@@ -45,6 +45,7 @@ class SearchQueryObserver implements ObserverInterface
         $this->logger->info('Search query: ' . $queryText);
         $this->logger->info('Collection: check collection.');
         $collection = $observer->getEvent()->getCollection();
+        $this->logCollectionData($collection);
         $collection->clear();
         $this->logger->info('Collection search cleared.');
         $productIds = $this->apiService->getProductIdsFromApi($queryText);
@@ -83,5 +84,13 @@ class SearchQueryObserver implements ObserverInterface
         $imageUrl = $this->storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product' . $product->getImage();
         $this->logger->info('Product Image URL: ' . $imageUrl);
         return $imageUrl;
+    }
+    private function logCollectionData($collection)
+    {
+        $items = $collection->getItems();
+        $this->logger->info('Collection contains ' . count($items) . ' items.');
+        foreach ($items as $item) {
+            $this->logger->info('Item Data: ' . json_encode($item->getData()));
+        }
     }
 }
