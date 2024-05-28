@@ -45,7 +45,7 @@ class SearchQueryObserver implements ObserverInterface
         $this->logger->info('Search query: ' . $queryText);
         $this->logger->info('Collection: check collection.');
         $collection = $observer->getEvent()->getData('search_result');
-        $this->logger->info('Search Result Data: ' . json_encode($searchResult->getData()));
+        $this->logger->info('Search Result Data: ' . json_encode($collection->getData()));
         $collection->clear();
         $this->logger->info('Collection search cleared.');
         $productIds = $this->apiService->getProductIdsFromApi($queryText);
