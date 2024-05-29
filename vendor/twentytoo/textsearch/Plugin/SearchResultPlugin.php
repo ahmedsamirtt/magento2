@@ -48,6 +48,7 @@ class SearchResultPlugin
                 $this->logger->info('Product IDs before filtering: ' . implode(', ', $productIds));
                 
                 // Overwrite the search result with new product IDs from the API
+                $result->getSelect()->reset(\Zend_Db_Select::WHERE);
                 $result->addFieldToFilter('entity_id', ['in' => [1,1,1,1]]);
                 $this->logger->info('Search collection updated with new product IDs.');
 
