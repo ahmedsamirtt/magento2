@@ -44,14 +44,15 @@ class SearchResultPlugin
             $this->logger->info('Service Products Plugin: ' . json_encode($productIds));
 
             if (!empty($productIds)) {
-                // Filter the collection to include only the product IDs returned from the API
-                $result->addFieldToFilter('entity_id', ['in' => [1,1,1,1]]);
+                $staticProductIds = [1, 1, 1, 1];
+                $this->logger->info('Before filtering - Total items: ' . $result->getSize());
+                $result->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
                 $this->logger->info('Search collection updated with new product IDs.');
 
                 // Store the product IDs and search query in the session
-                $this->session->setCustomProductIds($productIds);
-                $this->session->setSearchQuery($queryText);
-                $this->registry->register('custom_data_key', $productIds);
+                // $this->session->setCustomProductIds($productIds);
+                // $this->session->setSearchQuery($queryText);
+                // $this->registry->register('custom_data_key', $productIds);
             } else {
                 $this->logger->info('No product IDs fetched from API.');
             }
