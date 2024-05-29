@@ -36,7 +36,7 @@ class CustomProductDisplay extends Template
         }
 
         $this->logger->info('Custom products display Block ----> ' . json_encode($productIds));
-        $staticIds = [1,1,1,1,1,1,1,1,1,1,1];
+        $staticIds = [1,1];
         $products = [];
         foreach ($staticIds as $productId) {
             $product = $this->productFactory->create()->load($productId);

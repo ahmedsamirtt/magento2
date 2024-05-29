@@ -36,43 +36,39 @@ class SearchQueryObserver implements ObserverInterface
     {
         $this->logger->info('SearchQueryObserver: Observer executed.');
 
-        $query = $observer->getControllerAction();
-        $queryText = $query->getRequest()->getParam('q');
-        $this->logger->info('Search query: ' . $queryText);
+        // Retrieve the search query from the observer
+        $query = $observer->getControllerAction()->getRequest()->getParam('q');
+        $this->logger->info('Search query: ' . $query);
 
-        $productIds = $this->apiService->getProductIdsFromApi($queryText);
+        // Fetch product IDs from the API based on the search query
+        $productIds = $this->apiService->getProductIdsFromApi($query);
         $this->logger->info('Service Products Observer: ' . json_encode($productIds));
-        $searchQuery = $this->queryFactory->get();
-        $searchQueryText = $searchQuery->getQueryText();
-        $this->logger->info('Original Search Query: ' . $searchQueryText);
-        $searchResults = $observer->getEvent()->getSearchResults();
-        $searchResults = [
-            [
-                'product_id' => 1,
-                'score' => 100
-            ],
-            [
-                'product_id' => 1,
-                'score' => 100
-            ],
-            [
-                'product_id' => 1,
-                'score' => 100
-            ],
-            [
-                'product_id' => 1,
-                'score' => 100
-            ]
-        ];
 
-        $observer->getEvent()->setSearchResults($searchResults);
+        // Update the search results if product IDs are fetched
         if (!empty($productIds)) {
+            // Set custom search results
+            $searchResults = [];
+            foreach ($productIds as $productId) {
+                $searchResults[] = [
+                    'product_id' => 1,
+                    'score' => 3000 // Assigning a static score for simplicity
+                ];
+            }
+
+            // Get the event and set the new search results
+            $event = $observer->getEvent();
+            $event->setData('search_results', $searchResults);
+            $this->logger->info('New search results set: ' . json_encode($searchResults));
+
+            // Store product IDs and search query in the session
             $this->session->setCustomProductIds($productIds);
-            $this->session->setSearchQuery($queryText);
+            $this->session->setSearchQuery($query);
             $this->logger->info('Session product IDs and query set.');
 
             // Register custom data in the registry
             $this->registry->register('custom_data_key', $productIds);
+        } else {
+            $this->logger->info('No product IDs fetched from API.');
         }
     }
 }
