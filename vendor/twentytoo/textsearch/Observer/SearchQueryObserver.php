@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use TwentyToo\TextSearch\Service\ApiService;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Registry;
+use Magento\Search\Model\QueryFactory;
 
 class SearchQueryObserver implements ObserverInterface
 {
@@ -15,17 +16,20 @@ class SearchQueryObserver implements ObserverInterface
     protected $apiService;
     protected $session;
     protected $registry;
+    private $queryFactory;
 
     public function __construct(
         LoggerInterface $logger,
         ApiService $apiService,
         SessionManagerInterface $session,
-        Registry $registry
+        Registry $registry,
+        QueryFactory $queryFactory
     ) {
         $this->logger = $logger;
         $this->apiService = $apiService;
         $this->session = $session;
         $this->registry = $registry;
+        $this->queryFactory = $queryFactory;
     }
 
     public function execute(Observer $observer)
@@ -38,8 +42,11 @@ class SearchQueryObserver implements ObserverInterface
 
         $productIds = $this->apiService->getProductIdsFromApi($queryText);
         $this->logger->info('Service Products Observer: ' . json_encode($productIds));
-
-
+        $searchQuery = $this->queryFactory->get();
+        $searchQueryText = $searchQuery->getQueryText();
+        $this->logger->info('Original Search Query: ' . $searchQueryText);
+        $searchResults = $observer->getEvent()->getSearchResults();
+        $this->logger->info('Search Results: ' . print_r($searchResults, true));
         if (!empty($productIds)) {
             $this->session->setCustomProductIds($productIds);
             $this->session->setSearchQuery($queryText);
