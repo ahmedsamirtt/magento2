@@ -46,7 +46,26 @@ class SearchQueryObserver implements ObserverInterface
         $searchQueryText = $searchQuery->getQueryText();
         $this->logger->info('Original Search Query: ' . $searchQueryText);
         $searchResults = $observer->getEvent()->getSearchResults();
-        $this->logger->info('Search Results: ' . print_r($searchResults, true));
+        $searchResults = [
+            [
+                'product_id' => 1,
+                'score' => 100
+            ],
+            [
+                'product_id' => 1,
+                'score' => 100
+            ],
+            [
+                'product_id' => 1,
+                'score' => 100
+            ],
+            [
+                'product_id' => 1,
+                'score' => 100
+            ]
+        ];
+
+        $observer->getEvent()->setSearchResults($searchResults);
         if (!empty($productIds)) {
             $this->session->setCustomProductIds($productIds);
             $this->session->setSearchQuery($queryText);
