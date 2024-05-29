@@ -22,13 +22,15 @@ class SearchResultPlugin
         LoggerInterface $logger,
         SessionManagerInterface $session,
         Registry $registry,
-        QueryFactory $queryFactory
+        QueryFactory $queryFactory,
+        Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory
     ) {
         $this->apiService = $apiService;
         $this->logger = $logger;
         $this->session = $session;
         $this->registry = $registry;
         $this->queryFactory = $queryFactory;
+        $this->collectionFactory = $collectionFactory;
     }
 
     public function afterLoad(Collection $subject, Collection $result)
@@ -47,7 +49,7 @@ class SearchResultPlugin
                 $staticProductIds = [1, 1, 1, 1];
                 $this->logger->info('Before filtering - Total items: ' . $result->getSize());
                 $this->logger->info('Product IDs before filtering: ' . implode(', ', $staticProductIds));
-                $newCollection = $this->getCollectionFactory()->create();
+                $newCollection = $this->collectionFactory()->create();
                 $newCollection->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
                 $result = $newCollection;
                 $this->logger->info('Search collection updated with new product IDs.');
