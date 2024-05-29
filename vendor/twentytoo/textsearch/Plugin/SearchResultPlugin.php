@@ -46,7 +46,8 @@ class SearchResultPlugin
             if (!empty($productIds)) {
                 $staticProductIds = [1, 1, 1, 1];
                 $this->logger->info('Before filtering - Total items: ' . $result->getSize());
-                $result->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
+                $this->logger->info('Product IDs before filtering: ' . implode(', ', $staticProductIds));
+                $result->addFieldToFilter('entity_id', ['in' => $productIds]);
                 $this->logger->info('Search collection updated with new product IDs.');
 
                 // Store the product IDs and search query in the session
