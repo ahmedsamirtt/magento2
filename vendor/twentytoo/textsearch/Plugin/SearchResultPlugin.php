@@ -46,11 +46,18 @@ class SearchResultPlugin
 
             // Use static product IDs [1, 1, 1, 1]
             $staticProductIds = [1, 1, 1, 1];
+            $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
             // Clear the current result items
+            $itemsCount = count($result->getItems());
+            $this->logger->info('Number of items before removal: ' . $itemsCount);
+            
             foreach ($result->getItems() as $item) {
+                $this->logger->info('Removing item with ID: ' . $item->getId());
                 $result->removeItemByKey($item->getId());
             }
+
+            $this->logger->info('Items removed, remaining items: ' . count($result->getItems()));
 
             // Load static product IDs into the result collection
             $staticProductCollection = $result->getNewEmptyItem();
@@ -58,11 +65,14 @@ class SearchResultPlugin
                 ->addAttributeToSelect('*')
                 ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
 
+            $this->logger->info('Static product collection loaded.');
+
             foreach ($staticProductCollection->getItems() as $item) {
+                $this->logger->info('Adding static item with ID: ' . $item->getId());
                 $result->addItem($item);
             }
 
-            $this->logger->info('Search collection updated with static product IDs.');
+            $this->logger->info('Search collection updated with static product IDs. Final item count: ' . count($result->getItems()));
 
             // Optionally, store the static product IDs and search query in the session or registry
             // $this->session->setCustomProductIds($staticProductIds);
