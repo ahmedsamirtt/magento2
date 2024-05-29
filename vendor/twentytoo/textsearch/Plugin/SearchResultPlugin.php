@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Search\Model\QueryFactory;
+use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory as ProductCollectionFactory;
 
 class SearchResultPlugin
 {
@@ -16,19 +17,22 @@ class SearchResultPlugin
     protected $session;
     protected $registry;
     protected $queryFactory;
+    protected $productCollectionFactory;
 
     public function __construct(
         ApiService $apiService,
         LoggerInterface $logger,
         SessionManagerInterface $session,
         Registry $registry,
-        QueryFactory $queryFactory
+        QueryFactory $queryFactory,
+        ProductCollectionFactory $productCollectionFactory
     ) {
         $this->apiService = $apiService;
         $this->logger = $logger;
         $this->session = $session;
         $this->registry = $registry;
         $this->queryFactory = $queryFactory;
+        $this->productCollectionFactory = $productCollectionFactory;
     }
 
     public function afterLoad(Collection $subject, Collection $result)
@@ -48,27 +52,16 @@ class SearchResultPlugin
             $staticProductIds = [1, 1, 1, 1];
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
-            // Clear the current result items
-            $itemsCount = count($result->getItems());
-            $this->logger->info('Number of items before removal: ' . $itemsCount);
-            
-            foreach ($result->getItems() as $item) {
-                $this->logger->info('Removing item with ID: ' . $item->getId());
-                $result->removeItemByKey($item->getId());
-            }
-
-            $this->logger->info('Items removed, remaining items: ' . count($result->getItems()));
-
-            // Load static product IDs into the result collection
-            $staticProductCollection = $result->getNewEmptyItem();
-            $staticProductCollection->getCollection()
+            // Load static product collection
+            $staticProductCollection = $this->productCollectionFactory->create()
                 ->addAttributeToSelect('*')
                 ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
 
-            $this->logger->info('Static product collection loaded.');
+            // Clear the current result items
+            $result->clear();
 
-            foreach ($staticProductCollection->getItems() as $item) {
-                $this->logger->info('Adding static item with ID: ' . $item->getId());
+            // Add static products to the result collection
+            foreach ($staticProductCollection as $item) {
                 $result->addItem($item);
             }
 
