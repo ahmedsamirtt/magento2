@@ -40,24 +40,34 @@ class SearchResultPlugin
             $queryText = $searchQuery->getQueryText();
             $this->logger->info('Search query Plugin: ' . $queryText);
 
+            // Fetch dynamic product IDs from API
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
-            $this->logger->info('Service Products Plugin: ' . json_encode($productIds));
+            $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            if (!empty($productIds)) {
-                $this->logger->info('Before filtering - Total items: ' . $result->getSize());
-                $this->logger->info('Product IDs before filtering: ' . implode(', ', $productIds));
-                
-                // Overwrite the search result with new product IDs from the API
-                $result->getSelect()->reset(\Zend_Db_Select::WHERE);
-                $result->addFieldToFilter('entity_id', ['in' => [1,1,1,1]]);
-                $this->logger->info('Search collection updated with new product IDs.');
+            // Use static product IDs [1, 1, 1, 1]
+            $staticProductIds = [1, 1, 1, 1];
 
-                // $this->session->setCustomProductIds($productIds);
-                // $this->session->setSearchQuery($queryText);
-                // $this->registry->register('custom_data_key', $productIds);
-            } else {
-                $this->logger->info('No product IDs fetched from API.');
+            // Clear the current result items
+            foreach ($result->getItems() as $item) {
+                $result->removeItemByKey($item->getId());
             }
+
+            // Load static product IDs into the result collection
+            $staticProductCollection = $result->getNewEmptyItem();
+            $staticProductCollection->getCollection()
+                ->addAttributeToSelect('*')
+                ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
+
+            foreach ($staticProductCollection->getItems() as $item) {
+                $result->addItem($item);
+            }
+
+            $this->logger->info('Search collection updated with static product IDs.');
+
+            // Optionally, store the static product IDs and search query in the session or registry
+            // $this->session->setCustomProductIds($staticProductIds);
+            // $this->session->setSearchQuery($queryText);
+            // $this->registry->register('custom_data_key', $staticProductIds);
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
         }
