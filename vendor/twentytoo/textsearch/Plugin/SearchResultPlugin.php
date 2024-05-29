@@ -22,15 +22,13 @@ class SearchResultPlugin
         LoggerInterface $logger,
         SessionManagerInterface $session,
         Registry $registry,
-        QueryFactory $queryFactory,
-        Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $collectionFactory
+        QueryFactory $queryFactory
     ) {
         $this->apiService = $apiService;
         $this->logger = $logger;
         $this->session = $session;
         $this->registry = $registry;
         $this->queryFactory = $queryFactory;
-        $this->collectionFactory = $collectionFactory;
     }
 
     public function afterLoad(Collection $subject, Collection $result)
@@ -46,15 +44,13 @@ class SearchResultPlugin
             $this->logger->info('Service Products Plugin: ' . json_encode($productIds));
 
             if (!empty($productIds)) {
-                $staticProductIds = [1, 1, 1, 1];
                 $this->logger->info('Before filtering - Total items: ' . $result->getSize());
-                $this->logger->info('Product IDs before filtering: ' . implode(', ', $staticProductIds));
-                $newCollection = $this->collectionFactory()->create();
-                $newCollection->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
-                $result = $newCollection;
+                $this->logger->info('Product IDs before filtering: ' . implode(', ', $productIds));
+                
+                // Overwrite the search result with new product IDs from the API
+                $result->addFieldToFilter('entity_id', ['in' => [1,1,1,1]]);
                 $this->logger->info('Search collection updated with new product IDs.');
 
-                // Store the product IDs and search query in the session
                 // $this->session->setCustomProductIds($productIds);
                 // $this->session->setSearchQuery($queryText);
                 // $this->registry->register('custom_data_key', $productIds);
