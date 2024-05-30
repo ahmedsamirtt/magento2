@@ -35,8 +35,6 @@ class SearchResultPlugin
         Collection $subject,
         callable $proceed
     ) {
-        $result = $proceed();
-        
         try {
             $this->logger->info('SearchQueryPlugin: Plugin executed.');
 
@@ -52,29 +50,25 @@ class SearchResultPlugin
             $staticProductIds = [2];
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
-            // Clear the current result items and replace with static product IDs
-            $subject->clear();
-            $this->logger->info('Current result items cleared.');
-
+            // Modify the select statement with the static product IDs
             $select = $subject->getSelect();
-            $this->logger->info('Current select statement: ' . $select->__toString());
+            $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
+            $select->reset(\Zend_Db_Select::WHERE);
             $select->where('e.entity_id IN (?)', $staticProductIds);
-            $this->logger->info('Select statement updated with static product IDs.');
-
-            $subject->load();
-            $this->logger->info('Search collection loaded with updated select statement.');
-
-            $this->logger->info('Search collection updated with static product IDs.');
+            $this->logger->info('Select statement updated with static product IDs: ' . $select->__toString());
 
             // Optionally, store the static product IDs and search query in the session or registry
-            $this->session->setCustomProductIds($staticProductIds);
-            $this->session->setSearchQuery($queryText);
-            $this->registry->register('custom_data_key', $staticProductIds);
+            // $this->session->setCustomProductIds($staticProductIds);
+            // $this->session->setSearchQuery($queryText);
+            // $this->registry->register('custom_data_key', $staticProductIds);
+
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
         }
 
+        $result = $proceed();
+        
         return $result;
     }
 }
