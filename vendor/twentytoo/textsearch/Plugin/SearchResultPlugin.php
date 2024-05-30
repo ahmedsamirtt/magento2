@@ -36,13 +36,14 @@ class SearchResultPlugin
         callable $proceed
     ) {
         try {
-            $this->logger->info('SearchQueryPlugin: Plugin executed.');
+            $this->logger->info('SearchResultPlugin: Plugin executed.');
 
+            // Get the search query text
             $searchQuery = $this->queryFactory->get();
             $queryText = $searchQuery->getQueryText();
-            $this->logger->info('Search query Plugin: ' . $queryText);
+            $this->logger->info('Search query: ' . $queryText);
 
-            // Fetch dynamic product IDs from API
+            // Fetch dynamic product IDs from API (currently not used)
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
@@ -67,6 +68,7 @@ class SearchResultPlugin
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
         }
 
+        // Proceed with the original method call
         $result = $proceed();
         
         return $result;
