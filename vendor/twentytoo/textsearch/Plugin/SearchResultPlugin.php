@@ -49,7 +49,14 @@ class SearchResultPlugin
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
             $this->logger->info('Before filtering - Total items: ' . $result->getSize());
-            $result->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
+            $staticProductCollection = $this->productCollectionFactory->create()
+            ->addAttributeToSelect('*')
+            ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
+
+            $this->logger->info("Load static product collection");
+            // Clear the current result items
+            $result->clear();
+            $this->logger->info("Clear current");
             $this->logger->info('Search collection updated with static product IDs.');
 
             // Optionally, store the static product IDs and search query in the session or registry
