@@ -47,7 +47,7 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Use static product IDs
-            $staticProductIds = [2];
+            $staticProductIds = [1];
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
             // Modify the select statement with the static product IDs
