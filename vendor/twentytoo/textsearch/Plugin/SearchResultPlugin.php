@@ -48,7 +48,7 @@ class SearchResultPlugin
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            // Use static product IDs [1, 1, 1, 1]
+            // Use static product IDs [1, 2, 3, 4]
             $staticProductIds = [1, 2, 3, 4];
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
