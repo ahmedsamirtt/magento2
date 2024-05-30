@@ -45,10 +45,7 @@ class SearchResultPlugin
             $this->logger->info('Search query Plugin: ' . $queryText);
     
             // Log the initial result items before modification
-            $initialProductIds = [];
-            foreach ($result->getItems() as $item) {
-                $initialProductIds[] = $item->getId();
-            }
+            $initialProductIds = $result->getAllIds();
             $initialProductCount = count($initialProductIds);
             $this->logger->info('Initial product IDs in search result: ' . implode(', ', $initialProductIds));
             $this->logger->info('Initial product count: ' . $initialProductCount);
@@ -90,5 +87,6 @@ class SearchResultPlugin
     
         return $result;
     }
+    
     
 }
