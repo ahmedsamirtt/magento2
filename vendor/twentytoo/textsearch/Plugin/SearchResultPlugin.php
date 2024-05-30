@@ -57,8 +57,12 @@ class SearchResultPlugin
                 ->addAttributeToSelect('*')
                 ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
 
+            $this->logger->info("Load static product collection");
+
             // Clear the current result items
             $result->clear();
+
+            $this->logger->info("clear current");
 
             // Add static products to the result collection
             foreach ($staticProductCollection as $item) {
