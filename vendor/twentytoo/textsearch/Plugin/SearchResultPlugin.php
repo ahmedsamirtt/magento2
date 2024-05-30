@@ -39,42 +39,47 @@ class SearchResultPlugin
     {
         try {
             $this->logger->info('SearchQueryPlugin: Plugin executed.');
-
+    
             $searchQuery = $this->queryFactory->get();
             $queryText = $searchQuery->getQueryText();
             $this->logger->info('Search query Plugin: ' . $queryText);
-
+    
+            // Log the initial result items before modification
+            $initialProductIds = [];
+            foreach ($result->getItems() as $item) {
+                $initialProductIds[] = $item->getId();
+            }
+            $initialProductCount = count($initialProductIds);
+            $this->logger->info('Initial product IDs in search result: ' . implode(', ', $initialProductIds));
+            $this->logger->info('Initial product count: ' . $initialProductCount);
+    
             // Fetch dynamic product IDs from API
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
-
+    
             // Use static product IDs [1, 2, 3, 4]
-            $staticProductIds = [1, 2, 3, 4]; // Ensure these are unique IDs
+            $staticProductIds = [1, 2, 3, 4];
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
-
+    
             // Load static product collection
             $staticProductCollection = $this->productCollectionFactory->create()
                 ->addAttributeToSelect('*')
                 ->addFieldToFilter('entity_id', ['in' => $staticProductIds]);
-
+    
             $this->logger->info("Load static product collection");
-
+    
             // Clear the current result items
             $result->clear();
-
-            $this->logger->info("clear current");
-
+    
+            $this->logger->info("Clear current");
+    
             // Add static products to the result collection
-            $addedProductIds = [];
             foreach ($staticProductCollection as $item) {
-                if (!in_array($item->getId(), $addedProductIds)) {
-                    $result->addItem($item);
-                    $addedProductIds[] = $item->getId();
-                }
+                $result->addItem($item);
             }
-
+    
             $this->logger->info('Search collection updated with static product IDs. Final item count: ' . count($result->getItems()));
-
+    
             // Optionally, store the static product IDs and search query in the session or registry
             // $this->session->setCustomProductIds($staticProductIds);
             // $this->session->setSearchQuery($queryText);
@@ -82,7 +87,8 @@ class SearchResultPlugin
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
         }
-
+    
         return $result;
     }
+    
 }
