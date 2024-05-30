@@ -49,7 +49,7 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Use static product IDs [1, 2, 3, 4]
-            $staticProductIds = [1, 2, 3, 4];
+            $staticProductIds = [1, 2, 3, 4]; // Ensure these are unique IDs
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
             // Load static product collection
@@ -65,8 +65,12 @@ class SearchResultPlugin
             $this->logger->info("clear current");
 
             // Add static products to the result collection
+            $addedProductIds = [];
             foreach ($staticProductCollection as $item) {
-                $result->addItem($item);
+                if (!in_array($item->getId(), $addedProductIds)) {
+                    $result->addItem($item);
+                    $addedProductIds[] = $item->getId();
+                }
             }
 
             $this->logger->info('Search collection updated with static product IDs. Final item count: ' . count($result->getItems()));
