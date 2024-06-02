@@ -47,7 +47,7 @@ class SearchResultPlugin
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            if (empty($productIds)) {
+            if (!empty($productIds)) {
                 // Provide a fallback if no product IDs are returned from the API
                 $this->logger->info('No product IDs returned from the API, using fallback product IDs.');
                 $productIds = [1]; // Use a default product ID or an empty array to return no results
