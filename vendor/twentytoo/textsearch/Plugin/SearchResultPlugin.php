@@ -53,7 +53,7 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Fallback to static IDs if the API returns no product IDs
-            if (empty($productIds)) {
+            if (!empty($productIds)) {
                 $this->logger->info('No product IDs returned from the API, using static IDs [1, 3].');
                 $productIds = [1, 3];
             }
