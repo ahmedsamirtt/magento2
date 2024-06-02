@@ -47,7 +47,7 @@ class SearchResultPlugin
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            if (!empty($productIds)) {
+            if (empty($productIds)) {
                 // Provide a fallback if no product IDs are returned from the API
                 $this->logger->info('No product IDs returned from the API, using fallback product IDs.');
                 $productIds = [1]; // Use a default product ID or an empty array to return no results
@@ -57,18 +57,12 @@ class SearchResultPlugin
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
-           
-            // Add join with stock_status_index table
-            $select->join(
-                ['stock_status_index' => $subject->getTable('cataloginventory_stock_status')],
-                'e.entity_id = stock_status_index.product_id',
-                []
-            );
-            // Reset the WHERE clause and set the new product ID filter
+            // Reset the FROM clause and set the new product ID filter
             $select->reset(\Zend_Db_Select::FROM);
-            $select->from(['e' => 'catalog_product_entity']);
+            $select->reset(\Zend_Db_Select::WHERE);
+            $select->from(['e' => $subject->getTable('catalog_product_entity')]);
             $select->where('e.entity_id IN (?)', $productIds);
-            $this->logger->info('Simplified select statement: ' . $select->__toString());            
+            $this->logger->info('Simplified select statement: ' . $select->__toString());
 
             // Optionally, store the product IDs and search query in the session or registry
             // $this->session->setCustomProductIds($productIds);
