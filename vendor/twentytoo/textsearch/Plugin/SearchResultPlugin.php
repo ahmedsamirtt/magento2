@@ -36,7 +36,7 @@ class SearchResultPlugin
         callable $proceed
     ) {
         try {
-            $this->logger->info('SearchResultPlugin: Plugin executed.');
+            $this->logger->info('SearchResultPlugin: Plugin execution started.');
 
             // Get the search query text
             $searchQuery = $this->queryFactory->get();
@@ -48,15 +48,16 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Use static product IDs
-            $staticProductIds = [1];
+            $staticProductIds = [1]; // Specify the static product ID you want to use
             $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
 
             // Modify the select statement with the static product IDs
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
+            // Reset the WHERE clause and set the new static product ID filter
             $select->reset(\Zend_Db_Select::WHERE);
-            $select->where('e.entity_id IN (?)', $staticProductIds);
+            $select->where('e.entity_id IN (?)', $productIds);
             $this->logger->info('Select statement updated with static product IDs: ' . $select->__toString());
 
             // Optionally, store the static product IDs and search query in the session or registry
@@ -70,6 +71,8 @@ class SearchResultPlugin
 
         // Proceed with the original method call
         $result = $proceed();
+        
+        $this->logger->info('SearchResultPlugin: Plugin execution completed.');
         
         return $result;
     }
