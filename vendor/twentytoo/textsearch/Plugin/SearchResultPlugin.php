@@ -57,32 +57,9 @@ class SearchResultPlugin
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
-            // Reset the FROM clause and set the new product ID filter
-            $select->reset(\Zend_Db_Select::FROM);
-            $select->reset(\Zend_Db_Select::WHERE);
-            $select->reset(\Zend_Db_Select::JOIN);
-            $select->reset(\Zend_Db_Select::COLUMNS);
-            $select->reset(\Zend_Db_Select::ORDER);
-
-            // Join necessary tables
-            $select->from(['e' => $subject->getTable('catalog_product_entity')]);
-            $select->join(
-                ['price_index' => $subject->getTable('catalog_product_index_price')],
-                'e.entity_id = price_index.entity_id',
-                ['price', 'tax_class_id', 'final_price', 'min_price', 'max_price', 'tier_price']
-            );
-            $select->join(
-                ['stock_status_index' => $subject->getTable('cataloginventory_stock_status')],
-                'e.entity_id = stock_status_index.product_id',
-                ['stock_status' => 'is_salable']
-            );
-            $select->joinLeft(
-                ['review_summary' => $subject->getTable('review_entity_summary')],
-                'e.entity_id = review_summary.entity_pk_value AND review_summary.store_id = 1 AND review_summary.entity_type = 1',
-                ['reviews_count', 'rating_summary']
-            );
-            $select->where('e.entity_id IN (?)', $productIds);
-            $select->order(['e.entity_id DESC']);
+             // Reset the WHERE clause and set the new static product ID filter
+             $select->reset(\Zend_Db_Select::WHERE);
+             $select->where('e.entity_id IN (?)', $productIds);
             $this->logger->info('Simplified select statement: ' . $select->__toString());
 
         } catch (\Exception $e) {
