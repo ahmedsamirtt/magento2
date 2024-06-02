@@ -58,9 +58,10 @@ class SearchResultPlugin
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
             // Reset the WHERE clause and set the new product ID filter
-            $select->reset(\Zend_Db_Select::WHERE);
+            $select->reset(\Zend_Db_Select::FROM);
+            $select->from(['e' => 'catalog_product_entity']);
             $select->where('e.entity_id IN (?)', $productIds);
-            $this->logger->info('Select statement updated with product IDs: ' . json_encode($productIds) . ' - ' . $select->__toString());
+            $this->logger->info('Simplified select statement: ' . $select->__toString());            
 
             // Optionally, store the product IDs and search query in the session or registry
             // $this->session->setCustomProductIds($productIds);
