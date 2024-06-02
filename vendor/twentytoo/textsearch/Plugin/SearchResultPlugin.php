@@ -57,7 +57,10 @@ class SearchResultPlugin
                 $productIds = [1, 3];
             }
 
-            // Load product collection from Magento using the product IDs
+            // Get the aggregations before modifying the collection
+            $aggregations = $subject->getAggregations();
+
+            // Create a new collection using the product IDs fetched from the API
             $productCollection = $this->productCollectionFactory->create();
             $productCollection->addAttributeToSelect(['name', 'price', 'image', 'status', 'visibility']);
             $productCollection->addIdFilter($productIds);
@@ -65,15 +68,15 @@ class SearchResultPlugin
             $productCollection->addAttributeToFilter('visibility', ['neq' => \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE]);
             $productCollection->load();
 
-            // Log the loaded product IDs for debugging
-            $loadedProductIds = $productCollection->getAllIds();
-            $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
+            // Set the new product collection as the result of the plugin
+            $subject->setItems($productCollection->getItems());
 
-            // Clear the original collection and set the new product data
-            $subject->clear();
-            foreach ($productCollection as $product) {
-                $subject->addItem($product);
-            }
+            // Set the aggregations back to the modified collection
+            $subject->setAggregations($aggregations);
+
+            // Log the loaded product IDs for debugging
+            $loadedProductIds = $subject->getAllIds();
+            $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
 
             $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getData(), true));
             $this->logger->info('SearchResultPlugin: Plugin execution completed.');
@@ -82,7 +85,7 @@ class SearchResultPlugin
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
             // Handle errors here
-            return $subject->clear();
+            return $subject;
         }
     }
 }
