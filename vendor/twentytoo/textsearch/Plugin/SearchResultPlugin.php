@@ -53,7 +53,7 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Fallback to static IDs if the API returns no product IDs
-            if (!empty($productIds)) {
+            if (empty($productIds)) {
                 $this->logger->info('No product IDs returned from the API, using static IDs [1, 3].');
                 $productIds = [1, 3];
             }
@@ -70,13 +70,16 @@ class SearchResultPlugin
             $loadedProductIds = $productCollection->getAllIds();
             $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
 
-            // Clear the original collection and set the new product data
-            $subject->clear();
+            // Replace the original result with the new product data
+            $items = [];
             foreach ($productCollection as $product) {
-                $subject->addItem($product);
+                $items[] = $product;
             }
 
-            $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getData(), true));
+            // Set the loaded items to the collection
+            $subject->setItems($items);
+
+            $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getItems(), true));
             $this->logger->info('SearchResultPlugin: Plugin execution completed.');
 
             return $subject;
