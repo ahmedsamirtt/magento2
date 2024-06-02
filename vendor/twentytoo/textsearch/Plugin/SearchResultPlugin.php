@@ -9,6 +9,7 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Search\Model\QueryFactory;
+use Magento\Framework\DataObject;
 
 class SearchResultPlugin
 {
@@ -52,7 +53,7 @@ class SearchResultPlugin
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
             // Fallback to static IDs if the API returns no product IDs
-            if (!empty($productIds)) {
+            if (empty($productIds)) {
                 $this->logger->info('No product IDs returned from the API, using static IDs [1, 3].');
                 $productIds = [1, 3];
             }
@@ -66,14 +67,7 @@ class SearchResultPlugin
             // Clear the original collection and set the new product data
             $subject->clear();
             foreach ($productCollection as $product) {
-                $productData = [
-                    'entity_id' => $product->getId(),
-                    'name' => $product->getName(),
-                    'price' => $product->getPrice(),
-                    'image' => $product->getImage(),
-                ];
-                $item = new \Magento\Framework\DataObject($productData);
-                $subject->addItem($item);
+                $subject->addItem($product);
             }
 
             $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getData(), true));
