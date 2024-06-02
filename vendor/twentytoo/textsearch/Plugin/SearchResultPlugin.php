@@ -60,9 +60,15 @@ class SearchResultPlugin
 
             // Load product collection from Magento using the product IDs
             $productCollection = $this->productCollectionFactory->create();
-            $productCollection->addAttributeToSelect(['name', 'price', 'image']);
+            $productCollection->addAttributeToSelect(['name', 'price', 'image', 'status', 'visibility']);
             $productCollection->addIdFilter($productIds);
+            $productCollection->addAttributeToFilter('status', ['eq' => \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED]);
+            $productCollection->addAttributeToFilter('visibility', ['neq' => \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE]);
             $productCollection->load();
+
+            // Log the loaded product IDs for debugging
+            $loadedProductIds = $productCollection->getAllIds();
+            $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
 
             // Clear the original collection and set the new product data
             $subject->clear();
