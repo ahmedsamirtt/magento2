@@ -57,11 +57,11 @@ class SearchResultPlugin
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
-            // Reset the WHERE clause and set the new static product ID filter
+            // Reset the SELECT, FROM, and WHERE clauses to avoid duplications
+$select->reset(\Zend_Db_Select::COLUMNS);
+$select->reset(\Zend_Db_Select::FROM);
 $select->reset(\Zend_Db_Select::WHERE);
-
-// Remove the join with the temporary table if it exists
-$select->reset(\Zend_Db_Select::FROM); // This will reset the whole FROM clause
+$select->reset(\Zend_Db_Select::ORDER);
 
 // Re-add the necessary joins and base table
 $select->from(['e' => 'catalog_product_entity'])
@@ -94,8 +94,7 @@ $select->from(['e' => 'catalog_product_entity'])
 $select->where('e.entity_id IN (?)', $productIds);
 
 // Apply sorting and limiting
-$select->order(['e.entity_id DESC'])->limit(12);
-
+$select->order('e.entity_id DESC')->limit(12);
             $this->logger->info('Simplified select statement: ' . $select->__toString());
 
         } catch (\Exception $e) {
