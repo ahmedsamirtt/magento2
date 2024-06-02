@@ -57,6 +57,13 @@ class SearchResultPlugin
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
+           
+            // Add join with stock_status_index table
+            $select->join(
+                ['stock_status_index' => $subject->getTable('cataloginventory_stock_status')],
+                'e.entity_id = stock_status_index.product_id',
+                []
+            );
             // Reset the WHERE clause and set the new product ID filter
             $select->reset(\Zend_Db_Select::FROM);
             $select->from(['e' => 'catalog_product_entity']);
