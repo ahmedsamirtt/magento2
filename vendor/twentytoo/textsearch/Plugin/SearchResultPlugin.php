@@ -9,7 +9,6 @@ use Psr\Log\LoggerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Search\Model\QueryFactory;
-use Magento\Framework\DataObject;
 
 class SearchResultPlugin
 {
@@ -70,22 +69,19 @@ class SearchResultPlugin
             $loadedProductIds = $productCollection->getAllIds();
             $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
 
-            // Replace the original result with the new product data
-            $items = [];
+            // Clear the original collection and set the new product data
+            $subject->clear();
             foreach ($productCollection as $product) {
-                $items[] = $product;
+                $subject->addItem($product);
             }
 
-            // Set the loaded items to the collection
-            $subject->setItems($items);
-
-            $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getItems(), true));
+            $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getData(), true));
             $this->logger->info('SearchResultPlugin: Plugin execution completed.');
 
             return $subject;
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
-            // You can return an empty array or handle errors here
+            // Handle errors here
             return $subject->clear();
         }
     }
