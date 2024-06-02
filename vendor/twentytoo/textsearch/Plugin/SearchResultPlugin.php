@@ -47,23 +47,25 @@ class SearchResultPlugin
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            if (empty($productIds)) {
-                // Modify the select statement with the dynamic product IDs
-                $select = $subject->getSelect();
-                $this->logger->info('Current select statement before modification: ' . $select->__toString());
-
-                // Reset the WHERE clause and set the new dynamic product ID filter
-                $select->reset(\Zend_Db_Select::WHERE);
-                $select->where('e.entity_id IN (?)', $productIds);
-                $this->logger->info('Select statement updated with dynamic product IDs: ' . $select->__toString());
-
-                // Optionally, store the dynamic product IDs and search query in the session or registry
-                // $this->session->setCustomProductIds($productIds);
-                // $this->session->setSearchQuery($queryText);
-                // $this->registry->register('custom_data_key', $productIds);
-            } else {
-                $this->logger->info('No product IDs returned from the API, proceeding with default search behavior.');
+            if (!empty($productIds)) {
+                // Provide a fallback if no product IDs are returned from the API
+                $this->logger->info('No product IDs returned from the API, using fallback product IDs.');
+                $productIds = [1]; // Use a default product ID or an empty array to return no results
             }
+
+            // Modify the select statement with the dynamic or fallback product IDs
+            $select = $subject->getSelect();
+            $this->logger->info('Current select statement before modification: ' . $select->__toString());
+
+            // Reset the WHERE clause and set the new product ID filter
+            $select->reset(\Zend_Db_Select::WHERE);
+            $select->where('e.entity_id IN (?)', $productIds);
+            $this->logger->info('Select statement updated with product IDs: ' . json_encode($productIds) . ' - ' . $select->__toString());
+
+            // Optionally, store the product IDs and search query in the session or registry
+            // $this->session->setCustomProductIds($productIds);
+            // $this->session->setSearchQuery($queryText);
+            // $this->registry->register('custom_data_key', $productIds);
 
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
