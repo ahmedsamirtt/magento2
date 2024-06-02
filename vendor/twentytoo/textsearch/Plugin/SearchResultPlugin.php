@@ -41,32 +41,32 @@ class SearchResultPlugin
     ) {
         try {
             $this->logger->info('SearchResultPlugin: Plugin execution started.');
-
+    
             // Get the search query text
             $searchQuery = $this->queryFactory->get();
             $queryText = $searchQuery->getQueryText();
             $this->logger->info('Search query: ' . $queryText);
-
+    
             // Fetch dynamic product IDs from API
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
-
+    
             if (!empty($productIds)) {
                 // Provide a fallback if no product IDs are returned from the API
                 $this->logger->info('No product IDs returned from the API, using fallback product IDs.');
                 $productIds = [1, 3]; // Use default product IDs
             }
-
+    
             // Modify the select statement with the dynamic or fallback product IDs
             $select = $subject->getSelect();
             $this->logger->info('Current select statement before modification: ' . $select->__toString());
-
+    
             // Reset the SELECT, FROM, and WHERE clauses to avoid duplications
             $select->reset(\Zend_Db_Select::COLUMNS);
             $select->reset(\Zend_Db_Select::FROM);
             $select->reset(\Zend_Db_Select::WHERE);
             $select->reset(\Zend_Db_Select::ORDER);
-
+    
             // Re-add the necessary joins and base table
             $select->from(['e' => 'catalog_product_entity'])
                 ->join(
@@ -93,27 +93,32 @@ class SearchResultPlugin
                     'e.entity_id = stock_status_index.product_id AND stock_status_index.website_id = 0 AND stock_status_index.stock_id = 1',
                     ['stock_status AS is_salable']
                 );
-
+    
             // Apply the product ID filter
             $select->where('e.entity_id IN (?)', $productIds);
-
+    
             // Apply sorting and limiting
             $select->order('e.entity_id DESC')->limit(12);
             $this->logger->info('Simplified select statement: ' . $select->__toString());
-
+    
+            // Load the modified collection
+            $subject->load();
+            $this->logger->info('SearchResultPlugin: Loaded collection with modified select statement.');
+    
+            // Proceed with the original method call if necessary
+            // $result = $proceed();
+    
+            // Dispatch an event with the loaded collection
+            $this->eventManager->dispatch('catalogsearch_product_collection_load_after', ['collection' => $subject]);
+    
+            $this->logger->info('SearchResultPlugin: Result after proceeding: ' . print_r($subject->getData(), true));
+            $this->logger->info('SearchResultPlugin: Plugin execution completed.');
+    
+            return $subject;
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
+            return $proceed();
         }
-
-        // Proceed with the original method call
-        $result = $proceed();
-
-        // Dispatch an event with the loaded collection
-        $this->eventManager->dispatch('catalogsearch_product_collection_load_after', ['collection' => $result]);
-
-        $this->logger->info('SearchResultPlugin: Result after proceeding: ' . print_r($result->getData(), true));
-        $this->logger->info('SearchResultPlugin: Plugin execution completed.');
-
-        return $result;
     }
+    
 }
