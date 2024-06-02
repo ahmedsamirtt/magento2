@@ -43,27 +43,27 @@ class SearchResultPlugin
             $queryText = $searchQuery->getQueryText();
             $this->logger->info('Search query: ' . $queryText);
 
-            // Fetch dynamic product IDs from API (currently not used)
+            // Fetch dynamic product IDs from API
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            // Use static product IDs
-            $staticProductIds = [1]; // Specify the static product ID you want to use
-            $this->logger->info('Using static product IDs: ' . implode(', ', $staticProductIds));
+            if (empty($productIds)) {
+                // Modify the select statement with the dynamic product IDs
+                $select = $subject->getSelect();
+                $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
-            // Modify the select statement with the static product IDs
-            $select = $subject->getSelect();
-            $this->logger->info('Current select statement before modification: ' . $select->__toString());
+                // Reset the WHERE clause and set the new dynamic product ID filter
+                $select->reset(\Zend_Db_Select::WHERE);
+                $select->where('e.entity_id IN (?)', $productIds);
+                $this->logger->info('Select statement updated with dynamic product IDs: ' . $select->__toString());
 
-            // Reset the WHERE clause and set the new static product ID filter
-            $select->reset(\Zend_Db_Select::WHERE);
-            $select->where('e.entity_id IN (?)', $productIds);
-            $this->logger->info('Select statement updated with static product IDs: ' . $select->__toString());
-
-            // Optionally, store the static product IDs and search query in the session or registry
-            // $this->session->setCustomProductIds($staticProductIds);
-            // $this->session->setSearchQuery($queryText);
-            // $this->registry->register('custom_data_key', $staticProductIds);
+                // Optionally, store the dynamic product IDs and search query in the session or registry
+                // $this->session->setCustomProductIds($productIds);
+                // $this->session->setSearchQuery($queryText);
+                // $this->registry->register('custom_data_key', $productIds);
+            } else {
+                $this->logger->info('No product IDs returned from the API, proceeding with default search behavior.');
+            }
 
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
