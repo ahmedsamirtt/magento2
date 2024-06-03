@@ -2,7 +2,6 @@
 
 namespace TwentyToo\TextSearch\Plugin;
 
-use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\CatalogSearch\Model\ResourceModel\Fulltext\Collection;
 use TwentyToo\TextSearch\Service\ApiService;
 use Psr\Log\LoggerInterface;
@@ -17,22 +16,19 @@ class SearchResultPlugin
     protected $session;
     protected $registry;
     protected $queryFactory;
-    protected $productCollectionFactory;
 
     public function __construct(
         ApiService $apiService,
         LoggerInterface $logger,
         SessionManagerInterface $session,
         Registry $registry,
-        QueryFactory $queryFactory,
-        CollectionFactory $productCollectionFactory
+        QueryFactory $queryFactory
     ) {
         $this->apiService = $apiService;
         $this->logger = $logger;
         $this->session = $session;
         $this->registry = $registry;
         $this->queryFactory = $queryFactory;
-        $this->productCollectionFactory = $productCollectionFactory;
     }
 
     public function aroundLoad(
@@ -51,41 +47,65 @@ class SearchResultPlugin
             $productIds = $this->apiService->getProductIdsFromApi($queryText);
             $this->logger->info('Dynamic product IDs fetched from API: ' . json_encode($productIds));
 
-            // Fallback to static IDs if the API returns no product IDs
             if (!empty($productIds)) {
-                $this->logger->info('No product IDs returned from the API, using static IDs [1, 3].');
-                $productIds = [1, 3];
+                // Provide a fallback if no product IDs are returned from the API
+                $this->logger->info('No product IDs returned from the API, using fallback product IDs.');
+                $productIds = [1,3]; // Use a default product ID or an empty array to return no results
             }
 
-            // Get the aggregations before modifying the collection
-            $aggregations = $subject->getAggregations();
+            // Modify the select statement with the dynamic or fallback product IDs
+            $select = $subject->getSelect();
+            $this->logger->info('Current select statement before modification: ' . $select->__toString());
 
-            // Create a new collection using the product IDs fetched from the API
-            $productCollection = $this->productCollectionFactory->create();
-            $productCollection->addAttributeToSelect(['name', 'price', 'image', 'status', 'visibility']);
-            $productCollection->addIdFilter($productIds);
-            $productCollection->addAttributeToFilter('status', ['eq' => \Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED]);
-            $productCollection->addAttributeToFilter('visibility', ['neq' => \Magento\Catalog\Model\Product\Visibility::VISIBILITY_NOT_VISIBLE]);
-            $productCollection->load();
+           // Reset the SELECT, FROM, and WHERE clauses to avoid duplications
+           $select->reset(\Zend_Db_Select::COLUMNS);
+           $select->reset(\Zend_Db_Select::FROM);
+           $select->reset(\Zend_Db_Select::WHERE);
+           $select->reset(\Zend_Db_Select::ORDER);
 
-            // Set the new product collection as the result of the plugin
-            $subject->setItems($productCollection->getItems());
+           $select->from(['e' => 'catalog_product_entity'])
+               ->join(
+                   ['price_index' => 'catalog_product_index_price'],
+                   'price_index.entity_id = e.entity_id AND price_index.customer_group_id = 0 AND price_index.website_id = 1',
+                   [
+                       'price', 'tax_class_id', 'final_price', 
+                       new \Zend_Db_Expr('IF(price_index.tier_price IS NOT NULL, LEAST(price_index.min_price, price_index.tier_price), price_index.min_price) AS minimal_price'), 
+                       'min_price', 'max_price', 'tier_price'
+                   ]
+               )
+               ->join(
+                   ['cat_index' => 'catalog_category_product_index_store1'],
+                   'cat_index.product_id = e.entity_id AND cat_index.store_id = 1 AND cat_index.visibility IN (3, 4) AND cat_index.category_id = 2',
+                   ['position AS cat_index_position']
+               )
+               ->joinLeft(
+                   ['review_summary' => 'review_entity_summary'],
+                   'e.entity_id = review_summary.entity_pk_value AND review_summary.store_id = 1 AND review_summary.entity_type = (SELECT entity_id FROM review_entity WHERE entity_code = "product")',
+                   [new \Zend_Db_Expr('IFNULL(review_summary.reviews_count, 0) AS reviews_count'), new \Zend_Db_Expr('IFNULL(review_summary.rating_summary, 0) AS rating_summary')]
+               )
+               ->join(
+                   ['stock_status_index' => 'cataloginventory_stock_status'],
+                   'e.entity_id = stock_status_index.product_id AND stock_status_index.website_id = 0 AND stock_status_index.stock_id = 1',
+                   ['stock_status AS is_salable']
+               );
 
-            // Set the aggregations back to the modified collection
-            $subject->setAggregations($aggregations);
+           // Apply the product ID filter
+           $select->where('e.entity_id IN (?)', $productIds);
 
-            // Log the loaded product IDs for debugging
-            $loadedProductIds = $subject->getAllIds();
-            $this->logger->info('Loaded product IDs from Magento: ' . json_encode($loadedProductIds));
+           // Apply sorting and limiting
+           $select->order('e.entity_id DESC')->limit(12);
+            $this->logger->info('Simplified select statement: ' . $select->__toString());
 
-            $this->logger->info('SearchResultPlugin: Result after processing: ' . print_r($subject->getData(), true));
-            $this->logger->info('SearchResultPlugin: Plugin execution completed.');
-
-            return $subject;
         } catch (\Exception $e) {
             $this->logger->error('Error in SearchResultPlugin: ' . $e->getMessage());
-            // Handle errors here
-            return $subject;
         }
+
+        // Proceed with the original method call
+        $result = $proceed();
+        $this->logger->info('SearchResultPlugin: Result after proceeding: ' . print_r($result->getData(), true));
+        $this->logger->info('SearchResultPlugin: Plugin execution completed.');
+        
+        return $result;
     }
 }
+
